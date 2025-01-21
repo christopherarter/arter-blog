@@ -38,12 +38,12 @@ export type SiteConfig = {
 };
 
 const siteConfig: SiteConfig = {
-    title: 'Dante',
-    subtitle: 'Minimal Astro.js theme',
-    description: 'Astro.js and Tailwind CSS theme for blog and portfolio by justgoodui.com',
+    title: 'Chris Arter',
+    subtitle: 'Software Engineer',
+    description: "Hey there! I'm a software engineer based in North Carolina, USA. I'm a huge fan of Laravel and Docker, and I'm always looking for ways to improve my skills and learn new things.",
     image: {
-        src: '/dante-preview.jpg',
-        alt: 'Dante - Astro.js and Tailwind CSS theme'
+        src: '/images/chris-arter.jpeg',
+        alt: 'Chris Arter'
     },
     headerNavLinks: [
         {
@@ -68,52 +68,41 @@ const siteConfig: SiteConfig = {
             text: 'About',
             href: '/about'
         },
-        {
-            text: 'Contact',
-            href: '/contact'
-        },
-        {
-            text: 'Terms',
-            href: '/terms'
-        },
-        {
-            text: 'Download theme',
-            href: 'https://github.com/JustGoodUI/dante-astro-theme'
-        }
+
     ],
     socialLinks: [
         {
-            text: 'Dribbble',
-            href: 'https://dribbble.com/'
+            text: 'BlueSky',
+            href: 'https://bluesky.social/chrisarter'
         },
         {
-            text: 'Instagram',
-            href: 'https://instagram.com/'
+            text: 'GitHub',
+            href: 'https://github.com/christopherarter'
         },
         {
-            text: 'X/Twitter',
-            href: 'https://twitter.com/'
-        }
+            text: 'LinkedIn',
+            href: 'https://www.linkedin.com/in/chrisarter1/'
+        },
     ],
     hero: {
-        title: 'Hi There & Welcome to My Corner of the Web!',
-        text: "I'm **Ethan Donovan**, a web developer at Amazing Studio, dedicated to the realms of collaboration and artificial intelligence. My approach involves embracing intuition, conducting just enough research, and leveraging aesthetics as a catalyst for exceptional products. I have a profound appreciation for top-notch software, visual design, and the principles of product-led growth. Feel free to explore some of my coding endeavors on <a href='https://github.com/JustGoodUI/dante-astro-theme'>GitHub</a> or follow me on <a href='https://twitter.com/justgoodui'>Twitter/X</a>.",
+        title: 'Hey there 👋',
+        text: "I'm a senior software engineer with over a decade of experience based in North Carolina, USA. I'm a Laravel core contributor, ",
         image: {
-            src: '/hero.jpeg',
+            src: '/images/chris-arter.jpg',
             alt: 'A person sitting at a desk in front of a computer'
         },
         actions: [
             {
-                text: 'Get in Touch',
-                href: '/contact'
+                text: 'Let\'s Connect',
+                href: 'https://www.linkedin.com/in/chrisarter1/'
             }
         ]
     },
-    subscribe: {
-        title: 'Subscribe to Dante Newsletter',
-        text: 'One update per week. All the latest posts directly in your inbox.',
-        formUrl: '#'
-    },
+    // subscribe: {
+    //     title: 'Subscribe to Dante Newsletter',
+    //     text: 'One update per week. All the latest posts directly in your inbox.',
+    //     formUrl: '#'
+    // },
     postsPerPage: 8,
     projectsPerPage: 8
 };
