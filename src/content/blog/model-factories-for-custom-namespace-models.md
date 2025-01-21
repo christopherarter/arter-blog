@@ -4,7 +4,13 @@ slug: "model-factories-for-custom-namespace-models"
 subtitle: "A quick tip on how to allow Laravel to detect custom namespace models"
 author: "Chris Arter"
 publishDate: "2023-05-02T12:46:58.598Z"
-dateUpdated: ""
+updatedDate: "2025-01-21T12:46:58.598Z"
+---
+
+_Update:_
+
+You can now use the `#[UseFactory(YourFactory::class)]` attribute to tell Laravel to use a factory for a model. This is a much cleaner solution than the one below, and it was written by yours truly :)
+
 ---
 
 If you like to follow certain patterns, such as DDD, you may find models in different directories than the typical App\\Models namespace in your Laravel app.
@@ -15,26 +21,29 @@ Laravel can work with this no problem, except ...for Factories. These normally r
 
 Let's say we have this structure below:
 
-    app/
-      Content/
-        Models/
-          Post.php
-    
+```
+app/
+  Content/
+    Models/
+      Post.php
+```
 
 This would make our namespace for our `Post` model `App\Content\Models\Post`.
 
 Next, we'll create our factory:
 
-    php artisan make:factory PostFactory
-    
+```bash
+php artisan make:factory PostFactory
+```
 
 We can set the model to be used by this factory by setting the $model property:
 
-    class PostFactory extends Factory {
-       protected $model = \App\Content\Models\Post::class;
-    // other code
-    }
-    
+```php
+class PostFactory extends Factory {
+   protected $model = \App\Content\Models\Post::class;
+// other code
+}
+```
 
 ### Step 2: Service Provider
 
@@ -42,17 +51,18 @@ The previous step is not enough on its own, we will also want to tell Laravel ho
 
 Update your `AppProvider` in `app/Providers/AppServiceProvider.php`
 
-    use Illuminate\Database\Eloquent\Factories\Factory;
-    
-    class AppServiceProvider extends ServiceProvider
-    {
-      public function boot(): void {
-         // ...  
-        Factory::guessFactoryNamesUsing(function(string $modelName) {
-          return 'Database\\Factories\\' . class_basename($modelName) . 'Factory';
-        });
-    }
-    
+```php
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class AppServiceProvider extends ServiceProvider
+{
+  public function boot(): void {
+     // ...  
+    Factory::guessFactoryNamesUsing(function(string $modelName) {
+      return 'Database\\Factories\\' . class_basename($modelName) . 'Factory';
+    });
+}
+```
 
 (Tip provided by [@ejunker](https://twitter.com/ejunker/status/1306007589940068352), thank you!)
 
