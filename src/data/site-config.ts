@@ -73,7 +73,7 @@ const siteConfig: SiteConfig = {
     socialLinks: [
         {
             text: 'BlueSky',
-            href: 'https://bluesky.social/chrisarter'
+            href: 'https://bsky.app/profile/arter.dev'
         },
         {
             text: 'GitHub',
