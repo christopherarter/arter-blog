@@ -9,20 +9,21 @@ const hero = siteConfig.hero;
 {
     (hero?.title || hero?.image?.src || hero?.text || (hero?.actions && hero.actions.length > 0)) && (
         <section class="w-full flex flex-col gap-8 mb-16 sm:mb-24">
-            <div class="flex flex-col md:flex-row items-start gap-4">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-4">
                 {hero.image?.src && (
                     <figure>
-                        <img class="w-50 rounded-full" src={hero.image.src} loading="lazy" decoding="async" alt={hero.image.alt || ''} />
+                        <img class="w-40 md:w-[900px] rounded-full" src={hero.image.src} loading="lazy" decoding="async" alt={hero.image.alt || ''} />
                         {hero.image.caption && <figcaption class="mt-1.5 text-xs sm:text-sm">{hero.image.caption}</figcaption>}
                     </figure>
                 )}
                 <div class="flex flex-col gap-4">
-                    <h1 class="text-4xl font-bold font-serif italic">Chris Arter</h1>
+                    <h1 class="text-4xl font-bold font-serif italic text-center md:text-left">Chris Arter</h1>
+                    <h2 class="text-2xl font-bold font-serif italic text-center md:text-left">Senior Software Engineer</h2>
                     <p>
                         Hey there! 👋 I'm a senior software engineer with over a decade of experience based in North Carolina, USA. I'm a Laravel core
-                        contributor, and I'm passionate about building tools that make developers' lives easier.
+                        contributor, and I'm passionate about problem solving, community building, and learning new things. Above all else, I'm a Dad to two
+                        amazing kids, and husband to an amazing wife.
                     </p>
-                    <p>Let's connect on Bluesky:</p>
                     <a href="https://bsky.app/profile/arter.dev" class="flex items-center gap-2 hover:underline">
                         <img src="/images/bluesky-logo-light-theme.svg" alt="BlueSky Logo" class="w-6 h-6 dark:hidden" />
                         <img src="/images/bluesky-logo-dark-theme.svg" alt="BlueSky Logo" class="w-6 h-6 hidden dark:block" />

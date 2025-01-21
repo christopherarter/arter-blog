@@ -51,17 +51,17 @@ const siteConfig: SiteConfig = {
             href: '/'
         },
         {
-            text: 'Projects',
-            href: '/projects'
-        },
-        {
             text: 'Blog',
             href: '/blog'
         },
         {
-            text: 'Tags',
-            href: '/tags'
-        }
+            text: 'Projects',
+            href: '/projects'
+        },
+        {
+            text: 'About',
+            href: '/about'
+        },
     ],
     footerNavLinks: [
         {
@@ -83,6 +83,14 @@ const siteConfig: SiteConfig = {
             text: 'LinkedIn',
             href: 'https://www.linkedin.com/in/chrisarter1/'
         },
+        {
+            text: 'php.social Mastodon',
+            href: 'https://phpc.social/@chrisarter'
+        },
+        {
+            text: 'YouTube',
+            href: 'https://www.youtube.com/@codebeans'
+        }
     ],
     hero: {
         title: 'Hey there 👋',
