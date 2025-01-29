@@ -9,9 +9,6 @@ seo:
 
 ## Authorization Patterns
 
-<img src="/images/auth-onion.svg" alt="Laravel Authorization Patterns" class="w-full">
-
-
 Almost all systems follow a similar pattern when it comes to authorization. In this post, I'll highlight how authorization systems generally work, and how those stages can be applied to Laravel.
 
 Learning this structure tends to make using other systems easier, and it's a great way to understand how authorization works in general.
