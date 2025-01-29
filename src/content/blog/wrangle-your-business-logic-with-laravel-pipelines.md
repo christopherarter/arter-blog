@@ -3,6 +3,10 @@ title: "Wrangle Your Business Logic with Laravel Pipelines"
 slug: "wrangle-your-business-logic-with-laravel-pipelines"
 subtitle: "A guide on how to use pipe patterns in Laravel to handle complex data processing tasks."
 author: "Chris Arter"
+seo:
+  image:
+    src: "/images/laravel-pipelines-chris-arter.jpg"
+    alt: "A cat herder"
 publishDate: "2025-01-29T14:48:31.175Z"
 dateUpdated: ""
 ---
