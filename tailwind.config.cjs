@@ -6,7 +6,7 @@ module.exports = {
     theme: {
         fontFamily: {
             sans: ['Inter Variable', ...defaultTheme.fontFamily.sans],
-            serif: ['Newsreader Variable', ...defaultTheme.fontFamily.serif]
+            serif: ['DM Serif Text', ...defaultTheme.fontFamily.serif]
         },
         extend: {
             textColor: {
@@ -16,8 +16,14 @@ module.exports = {
                 main: 'rgb(var(--color-bg-main) / <alpha-value>)',
                 muted: 'rgb(var(--color-bg-muted) / <alpha-value>)'
             },
+            gradientColorStops: {
+                main: 'rgb(var(--color-bg-main) / <alpha-value>)'
+            },
             borderColor: {
                 main: 'rgb(var(--color-border-main) / <alpha-value>)'
+            },
+            transitionProperty: {
+                'colors': 'color, background-color, border-color, text-decoration-color, fill, stroke'
             },
             typography: (theme) => ({
                 dante: {
@@ -54,7 +60,7 @@ module.exports = {
                         },
                         'h1,h2,h3,h4,h5,h6': {
                             fontFamily: theme('fontFamily.sans'),
-                            fontWeight: 500
+                            fontWeight: 700,
                         },
                         blockquote: {
                             border: 0,

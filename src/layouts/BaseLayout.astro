@@ -19,10 +19,27 @@ const { showHeader = true, ...head } = Astro.props;
                 document.documentElement.classList.add('dark');
             }
         </script>
+        <style>
+            .bg-fade {
+                background-image: url('/images/page-bg.svg');
+                background-repeat: no-repeat;
+                background-position: center -300px;
+                background-size: 100% auto;
+                opacity: 0.2;
+                height: 600px;
+            }
+            .gradient-overlay {
+                @apply h-[600px] bg-gradient-to-b from-transparent to-main transition-colors duration-300;
+            }
+        </style>
         <ClientRouter />
     </head>
-    <body class="bg-main text-main">
-        <div class="flex flex-col min-h-screen px-4 md:px-8">
+    <body class="bg-main text-main relative">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-fade"></div>
+            <div class="absolute inset-0 gradient-overlay"></div>
+        </div>
+        <div class="relative flex flex-col min-h-screen px-4 md:px-8">
             <Nav />
             {showHeader && <Header />}
             <main class="grow w-full max-w-3xl mx-auto">
