@@ -6,14 +6,21 @@ import FormattedDate from './FormattedDate.astro';
 type Props = { post: CollectionEntry<'blog'>; class?: string; headingLevel?: 'h2' | 'h3' };
 
 const { post, class: className, headingLevel = 'h2' } = Astro.props;
-const { title, publishDate, updatedDate, excerpt } = post.data;
+const { title, publishDate, updatedDate, excerpt, seo } = post.data;
 const TitleTag = headingLevel;
 ---
 
-<a class:list={['flex justify-between items-start gap-8 group', className]} href={`/blog/${post.id}/`}>
+<a class:list={['flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-8 group', className]} href={`/blog/${post.id}/`}>
+    {
+        seo?.image?.src && (
+            <div class="w-full sm:w-24 h-48 sm:h-24 shrink-0">
+                <img src={seo.image.src} alt="" class="w-full h-full object-cover rounded" />
+            </div>
+        )
+    }
     <div class="grow">
         <TitleTag
-            class="text-xl leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl"
+            class="text-3xl leading-tight font-serif font-bold group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl"
         >
             {title}
         </TitleTag>

@@ -30,6 +30,7 @@ const { Content } = await render(project);
             <h1 class="text-3xl leading-tight font-serif font-medium sm:text-5xl sm:leading-tight">{title}</h1>
         </header>
         <div class="max-w-none prose prose-dante sm:prose-lg">
+            {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
             <Content />
         </div>
     </article>

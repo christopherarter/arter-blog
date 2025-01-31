@@ -1,0 +1,24 @@
+---
+const { author } = Astro.props;
+---
+
+<div class="flex items-center gap-4 border-t dark:border-gray-200 border-gray-300 pt-4">
+    <img src="/images/chris-arter.jpg" alt="Chris Arter" class="h-24 w-24 rounded-full" />
+    <div class="flex flex-col">
+        <span class="text-2xl font-bold font-serif">Chris Arter</span>
+        <span class="text-sm text-muted-foreground">Software Engineer</span>
+    </div>
+</div>
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Chris Arter",
+        "image": "/images/chris-arter.jpg",
+        "url": "https://arter.dev",
+        "sameAs": ["https://bsky.app/profile/arter.dev"],
+        "jobTitle": "Software Engineer",
+        "description": "I'm a senior software engineer with over a decade of experience based in North Carolina, USA. I'm a Laravel core contributor, and I'm passionate about problem solving, community building, and learning new things. Above all else, I'm a Dad to two amazing kids, and husband to an amazing wife."
+    }
+</script>

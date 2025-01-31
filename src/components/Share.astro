@@ -1,0 +1,14 @@
+---
+const { title, url } = Astro.props;
+
+const blueskyContent = `${title} ${url}`;
+const encodedBlueskyContent = encodeURIComponent(blueskyContent);
+
+const blueskyUrl = `https://bsky.app/intent/compose?text=${encodedBlueskyContent}`;
+---
+
+<a href={blueskyUrl} class="flex items-center gap-2 hover:underline" target="_blank" rel="noopener noreferrer">
+    <img src="/images/bluesky-logo-light-theme.svg" alt="BlueSky Logo" class="w-6 h-6 dark:hidden" />
+    <img src="/images/bluesky-logo-dark-theme.svg" alt="BlueSky Logo" class="w-6 h-6 hidden dark:block" />
+    <span>Share on Bluesky</span>
+</a>

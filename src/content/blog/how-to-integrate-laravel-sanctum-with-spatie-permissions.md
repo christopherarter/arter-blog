@@ -244,5 +244,3 @@ If a user wants to be more granular with token scopes, we can alter our approach
 If you are a visual learner, I recorded this video just for you :)
 
 [https://www.youtube.com/watch?v=YX\_X-kYLN8c](https://www.youtube.com/watch?v=YX_X-kYLN8c)
-
-Thanks for reading, and if you’d like to chat more about this, you can find me over at [https://bsky.app/profile/arter.dev](https://bsky.app/profile/arter.dev)
