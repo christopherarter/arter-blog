@@ -53,6 +53,11 @@ JavaScript / TypeScript projects I enjoy:
 - **Code Reviews and Optimization**
 - **Team Training**
 
+### What I'm looking for
+
+- I'm looking for a long term home. Culture and impact are huge, and I'm looking for a position that I can directly move the needle.
+- Full time employment, founder, freelance, or something in between.
+
 ### Recent Projects & Experience
 
 I've worked on various projects involving:
