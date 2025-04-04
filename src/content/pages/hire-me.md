@@ -20,6 +20,19 @@ I'm a senior software engineer specializing in Laravel, PHP, and modern web deve
 - **Testing**: Strong advocate for automated testing and quality assurance
 - **Database Design**: Strong experience in data modeling.
 
+### Chris, do you only work with Laravel?
+
+I'm so glad you asked! 😅
+
+No way. I have extensive experience with serverless Node APIs, TypeScript, Vue and React. I particularly enjoy building on the edge in Cloudflare Workers.
+
+JavaScript / TypeScript projects I enjoy:
+- NuxtJS & VueJS
+- React
+- Hono / Cloudflare Workers
+- Vite
+- NestJS & Fastify
+
 #### Notable Achievements
 - Laravel Core Contributor
 - Author and contributor to several open source packages
