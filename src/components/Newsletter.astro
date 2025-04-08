@@ -1,0 +1,56 @@
+---
+const placeholderUrl = 'https://api.example.com/subscribe';
+---
+
+<form class="max-w-2xl p-4 mx-auto space-y-4 py-8 text-center rounded w-full border dark:border-white border-black" id="newsletter-form">
+    <h3 class="text-3xl font-bold">Let's stay in touch. Get new posts in your inbox. No spam, completely free.</h3>
+    <p>Get new posts in your inbox. No spam, completely free.</p>
+    <input type="email" name="email" placeholder="Your email address" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" />
+    <button type="submit" class="w-full px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"> Subscribe </button>
+</form>
+
+<div id="message-container" class="mt-4 text-center hidden"></div>
+
+<script is:inline>
+    const form = document.getElementById('newsletter-form');
+    const messageContainer = document.getElementById('message-container');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        const button = form.querySelector('button');
+
+        // Clear previous messages
+        messageContainer.classList.add('hidden');
+
+        try {
+            button.disabled = true;
+            button.innerHTML = 'Submitting...';
+
+            const response = await fetch(placeholderUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+
+            if (!response.ok) throw new Error('Subscription failed');
+
+            messageContainer.textContent = 'Thanks for subscribing!';
+            messageContainer.classList.remove('hidden', 'text-red-600');
+            messageContainer.classList.add('text-green-600');
+            form.reset();
+        } catch (error) {
+            messageContainer.textContent = 'Subscription failed. Please try again.';
+            messageContainer.classList.remove('hidden', 'text-green-600');
+            messageContainer.classList.add('text-red-600');
+            messageContainer.classList.remove('hidden');
+        } finally {
+            button.disabled = false;
+            button.innerHTML = 'Subscribe';
+            setTimeout(() => {
+                messageContainer.classList.add('hidden');
+            }, 5000);
+        }
+    });
+</script>

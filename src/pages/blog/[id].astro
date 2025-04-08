@@ -55,6 +55,23 @@ const { Content } = await render(post);
             <Content />
             <Share title={title} url={href} />
             <AuthorCard />
+            <div class="giscus mt-12">
+                <script
+                    src="https://giscus.app/client.js"
+                    data-repo="christopherarter/arter-blog"
+                    data-repo-id="YOUR_REPO_ID"
+                    data-category="Announcements"
+                    data-category-id="YOUR_CATEGORY_ID"
+                    data-mapping="pathname"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="en"
+                    crossorigin="anonymous"
+                    async></script>
+            </div>
         </div>
         <div class="mt-8 flex flex-wrap items-center gap-6 text-sm justify-between sm:mt-12 sm:text-base">
             {
