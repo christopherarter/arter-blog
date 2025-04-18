@@ -3,16 +3,20 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
-import PostPreview from '../components/PostPreview.astro';
+import PostList from '../components/PostList.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
 import siteConfig from '../data/site-config';
 import { sortItemsByDateDesc } from '../utils/data-utils';
 
 const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-const latestPosts = posts.slice(0, 3);
+const latestPosts = posts.filter(({ data }) => !data.tags.includes('cars')).slice(0, 3);
+const latestCarsPosts = posts.filter(({ data }) => data.tags.includes('cars')).slice(0, 3);
 
 const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
 const featuredProjects = projects.filter(({ data }) => data.isFeatured);
+
+const tags = posts.map(({ data }) => data.tags).flat();
+const uniqueTags = [...new Set(tags)];
 ---
 
 <BaseLayout showHeader={false} description={siteConfig.description} image={siteConfig.image}>
@@ -33,12 +37,27 @@ const featuredProjects = projects.filter(({ data }) => data.isFeatured);
     {
         latestPosts?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Latest Posts</h2>
-                {latestPosts.map((post) => (
-                    <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
-                ))}
-                <div class="mt-12 sm:mt-16">
-                    <Button href="/blog">View All Posts</Button>
+                <h2 class="mb-12 text-3xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Latest in Tech</h2>
+                <PostList posts={latestPosts} />
+            </div>
+        )
+    }
+    {
+        latestCarsPosts?.length > 0 && (
+            <div class="mb-16 sm:mb-24">
+                <h2 class="mb-12 text-3xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Latest in Cars</h2>
+                <PostList posts={latestCarsPosts} />
+            </div>
+        )
+    }
+    {
+        uniqueTags?.length > 0 && (
+            <div class="mb-16 sm:mb-24">
+                <h2 class="mb-12 text-xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Browse by Topic</h2>
+                <div class="flex flex-wrap gap-2">
+                    {uniqueTags.map((tag) => (
+                        <Button href={`/tags/${tag.toLowerCase().replace(/ /g, '-')}`}>{tag}</Button>
+                    ))}
                 </div>
             </div>
         )
