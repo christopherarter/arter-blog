@@ -27,57 +27,18 @@ type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>;
 
 const { href } = Astro.url;
 const { post, prevPost, nextPost } = Astro.props;
-const { title, publishDate, updatedDate, excerpt, tags = [], seo } = post.data;
+const { title, publishDate, updatedDate, excerpt, tags = [], seo, subtitle } = post.data;
 const { Content } = await render(post);
 ---
 
 <BaseLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} pageType="article" showHeader={false}>
-    <article class="mb-16 sm:mb-24">
-        <header class="mb-8">
+    <article class="">
+        <header class="mb-8 flex flex-col gap-8">
             <h1 class="text-4xl md:text-7xl font-serif font-bold">{title}</h1>
-            <div class="mt-4 text-sm">
-                <FormattedDate date={publishDate} />
-                {
-                    updatedDate && (
-                        <>
-                            {' '}
-                            <span>
-                                (Updated on <FormattedDate date={updatedDate} />)
-                            </span>
-                        </>
-                    )
-                }
-            </div>
-        </header>
-        <div class="max-w-none prose prose-dante sm:prose-lg">
-            {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
-
-            <Content />
-            <Newsletter />
-            <Share title={title} url={href} />
-            <AuthorCard />
-            <div class="giscus mt-12">
-                <script
-                    src="https://giscus.app/client.js"
-                    data-repo="christopherarter/arter-blog"
-                    data-repo-id="R_kgDONtMC0Q"
-                    data-category="General"
-                    data-category-id="DIC_kwDONtMC0c4Cmpzl"
-                    data-mapping="pathname"
-                    data-strict="0"
-                    data-reactions-enabled="1"
-                    data-emit-metadata="0"
-                    data-input-position="bottom"
-                    data-theme="preferred_color_scheme"
-                    data-lang="en"
-                    crossorigin="anonymous"
-                    async></script>
-            </div>
-        </div>
-        <div class="mt-8 flex flex-wrap items-center gap-6 text-sm justify-between sm:mt-12 sm:text-base">
+            {subtitle && <p class="text-2xl md:text-3xl font-serif font-medium">{subtitle}</p>}
             {
                 tags.length > 0 && (
-                    <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                    <div class="mt-4 text-sm">
                         {tags.map((tag) => (
                             <a class="text-main hover:underline" href={`/tags/${slugify(tag)}`}>
                                 #{tag}
@@ -86,9 +47,65 @@ const { Content } = await render(post);
                     </div>
                 )
             }
-            <Button class="copy-url-button" aria-label="Copy link" data-url={href} data-tooltip-default="Copy link" data-tooltip-success="Copied">Share</Button>
-        </div>
+            {
+                publishDate && (
+                    <>
+                        <span>
+                            Written by <strong>Chris Arter</strong> | Published on <FormattedDate date={publishDate} />
+                        </span>
+                    </>
+                )
+            }
+            {
+                updatedDate && (
+                    <>
+                        {' '}
+                        <span>
+                            (Updated on <FormattedDate date={updatedDate} />)
+                        </span>
+                    </>
+                )
+            }
+        </header>
     </article>
+    <div class="max-w-none prose prose-dante sm:prose-lg">
+        {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
+        <Content />
+        <Newsletter />
+        <Share title={title} url={href} />
+        <AuthorCard />
+        <div class="giscus mt-12">
+            <script
+                src="https://giscus.app/client.js"
+                data-repo="christopherarter/arter-blog"
+                data-repo-id="R_kgDONtMC0Q"
+                data-category="General"
+                data-category-id="DIC_kwDONtMC0c4Cmpzl"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="preferred_color_scheme"
+                data-lang="en"
+                crossorigin="anonymous"
+                async></script>
+        </div>
+    </div>
+    <div class="mt-8 flex flex-wrap items-center gap-6 text-sm justify-between sm:mt-12 sm:text-base">
+        {
+            tags.length > 0 && (
+                <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                    {tags.map((tag) => (
+                        <a class="text-main hover:underline" href={`/tags/${slugify(tag)}`}>
+                            #{tag}
+                        </a>
+                    ))}
+                </div>
+            )
+        }
+        <Button class="copy-url-button" aria-label="Copy link" data-url={href} data-tooltip-default="Copy link" data-tooltip-success="Copied">Share</Button>
+    </div>
     {
         (prevPost || nextPost) && (
             <div class="my-16 sm:my-24">

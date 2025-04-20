@@ -69,6 +69,10 @@ const siteConfig: SiteConfig = {
         {
             text: 'Hire Me',
             href: '/hire-me'
+        },
+        {
+            text: 'Newsletter',
+            href: 'https://newsletter.arter.dev/subscription/form'
         }
     ],
     footerNavLinks: [
