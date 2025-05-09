@@ -63,22 +63,22 @@ const siteConfig: SiteConfig = {
             href: '/about'
         },
         {
-            text: 'Tags',
-            href: '/tags'
-        },
-        {
             text: 'Hire Me',
             href: '/hire-me'
         },
-        {
-            text: 'Newsletter',
-            href: 'https://newsletter.arter.dev/subscription/form'
-        }
+        // {
+        //     text: 'Newsletter',
+        //     href: 'https://newsletter.arter.dev/subscription/form'
+        // }
     ],
     footerNavLinks: [
         {
             text: 'About',
             href: '/about'
+        },
+        {
+            text: 'Tags',
+            href: '/tags'
         },
 
     ],
