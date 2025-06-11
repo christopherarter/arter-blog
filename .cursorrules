@@ -1,0 +1,78 @@
+{
+    "ai_rules": {
+        "use_language_models": true,
+        "use_chat_interactively": true,
+        "use_linters": true,
+        "use_formatters": true,
+        "use_package_manager": true
+    },
+    "language_rules": {
+        "typescript": {
+            "use_strict": true,
+            "prefer_interfaces": false,
+            "prefer_type_aliases": true,
+            "use_optional_chaining": true,
+            "use_nullish_coalescing": true
+        },
+        "markdown": {
+            "respect_frontmatter": true
+        },
+        "astro": {
+            "respect_component_structure": true,
+            "prefer_client_directives": true
+        }
+    },
+    "framework_rules": {
+        "astro": {
+            "content_collections": {
+                "use_zod_schemas": true,
+                "respect_collection_schemas": true
+            },
+            "prefer_static_rendering": true,
+            "follow_astro_file_conventions": true
+        },
+        "tailwind": {
+            "prefer_utility_classes": true,
+            "respect_tailwind_config": true,
+            "use_typography_plugin": true
+        }
+    },
+    "project_rules": {
+        "file_structure": {
+            "respect_src_directory": true,
+            "components_in_components_dir": true,
+            "layouts_in_layouts_dir": true,
+            "pages_in_pages_dir": true,
+            "content_in_content_dir": true
+        },
+        "code_style": {
+            "prefer_arrow_functions": true,
+            "prefer_const": true,
+            "use_semantic_naming": true,
+            "max_line_length": 100,
+            "use_prettier_config": true
+        },
+        "imports": {
+            "prefer_named_exports": true,
+            "group_imports": true,
+            "sort_imports": true
+        }
+    },
+    "specific_rules": {
+        "content": {
+            "respect_frontmatter_schema": true,
+            "validate_dates": true,
+            "ensure_required_fields": true
+        },
+        "seo": {
+            "ensure_meta_tags": true,
+            "validate_descriptions": true,
+            "check_image_alt_text": true
+        },
+        "accessibility": {
+            "ensure_semantic_html": true,
+            "check_contrast_ratios": true,
+            "require_alt_text": true
+        }
+    }
+}
