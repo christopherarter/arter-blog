@@ -62,7 +62,9 @@
         "content": {
             "respect_frontmatter_schema": true,
             "validate_dates": true,
-            "ensure_required_fields": true
+            "ensure_required_fields": true,
+            "show_dont_tell": true,
+            "explain_complex_concepts_in_easy_to_understand_terms": true
         },
         "seo": {
             "ensure_meta_tags": true,
