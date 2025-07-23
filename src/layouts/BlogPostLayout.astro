@@ -23,16 +23,18 @@ const { href } = Astro.url;
 ---
 
 <BaseLayout showHeader={showHeader ?? false} title={title} description={description} image={resolvedImage} headings={headings}>
-    <div class="flex gap-4 pb-20 md:pb-0">
-        <main class="w-full md:w-3/4" role="main" aria-label="Article content">
+    <div class={`flex gap-4 pb-20 md:pb-0 ${headings && headings.length > 0 ? '' : 'md:justify-center'}`}>
+        <main class={`w-full ${headings && headings.length > 0 ? 'md:w-3/4' : 'md:max-w-4xl'}`} role="main" aria-label="Article content">
             <slot />
         </main>
-        <aside class="w-full md:w-1/4" role="complementary" aria-label="Table of contents sidebar">
-            <div class="sticky top-0 hidden md:block">
-                <TableOfContents headings={headings} />
-                <ShareLinks title={title} url={href} />
-            </div>
-        </aside>
+        {headings && headings.length > 0 && (
+            <aside class="w-full md:w-1/4" role="complementary" aria-label="Table of contents sidebar">
+                <div class="sticky top-0 hidden md:block">
+                    <TableOfContents headings={headings} />
+                    <ShareLinks title={title} url={href} />
+                </div>
+            </aside>
+        )}
     </div>
     <TableOfContentsMobile headings={headings} title={title} url={href} />
 </BaseLayout>
