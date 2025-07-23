@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import TableOfContentsMobile from '../components/TableOfContentsMobile.astro';
 import ShareLinks from '../components/ShareLinks.astro';
 import type { Heading } from '../utils/markdown-utils';
 
@@ -22,7 +23,7 @@ const { href } = Astro.url;
 ---
 
 <BaseLayout showHeader={showHeader ?? false} title={title} description={description} image={resolvedImage} headings={headings}>
-    <div class="flex gap-4">
+    <div class="flex gap-4 pb-20 md:pb-0">
         <main class="w-full md:w-3/4" role="main" aria-label="Article content">
             <slot />
         </main>
@@ -33,4 +34,5 @@ const { href } = Astro.url;
             </div>
         </aside>
     </div>
+    <TableOfContentsMobile headings={headings} title={title} url={href} />
 </BaseLayout>
