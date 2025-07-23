@@ -24,7 +24,7 @@ const uniqueTags = [...new Set(tags)];
     {
         featuredProjects?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="font-serif mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">Projects</h2>
+                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Projects</h2>
                 {featuredProjects.map((project) => (
                     <ProjectPreview project={project} class="mb-10 sm:mb-12" headingLevel="h3" />
                 ))}
@@ -37,7 +37,7 @@ const uniqueTags = [...new Set(tags)];
     {
         latestPosts?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-3xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Latest in Tech</h2>
+                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Latest in Tech</h2>
                 <PostList posts={latestPosts} />
             </div>
         )
@@ -45,7 +45,7 @@ const uniqueTags = [...new Set(tags)];
     {
         latestCarsPosts?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-3xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Latest in Cars</h2>
+                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Latest in Cars</h2>
                 <PostList posts={latestCarsPosts} />
             </div>
         )
@@ -53,7 +53,7 @@ const uniqueTags = [...new Set(tags)];
     {
         uniqueTags?.length > 0 && (
             <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-xl font-bold font-serif italic sm:mb-16 sm:text-2xl">Browse by Topic</h2>
+                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Browse by Topic</h2>
                 <div class="flex flex-wrap gap-2">
                     {uniqueTags.map((tag) => (
                         <Button href={`/tags/${tag.toLowerCase().replace(/ /g, '-')}`}>{tag}</Button>

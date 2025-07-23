@@ -41,7 +41,7 @@ const headings = extractHeadingsFromMarkdown(post.body || '');
 <BlogPostLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} showHeader={false} headings={headings}>
     <article class="">
         <header class="mb-8 flex flex-col gap-8">
-            <h1 class="text-4xl md:text-7xl font-serif font-bold">{title}</h1>
+            <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight">{title}</h1>
             {subtitle && <p class="text-2xl md:text-3xl font-serif font-medium">{subtitle}</p>}
             {
                 tags.length > 0 && (
@@ -116,7 +116,7 @@ const headings = extractHeadingsFromMarkdown(post.body || '');
     {
         (prevPost || nextPost) && (
             <div class="my-16 sm:my-24">
-                <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">Read Next</h2>
+                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Read Next</h2>
                 {nextPost && <PostPreview post={nextPost} class="mb-10 sm:mb-12" headingLevel="h3" />}
                 {prevPost && <PostPreview post={prevPost} class="mb-10 sm:mb-12" headingLevel="h3" />}
             </div>
