@@ -130,21 +130,38 @@ const { headings = [], title = '', url = '' } = Astro.props;
 </style>
 
 <script>
-    document.addEventListener('astro:page-load', () => {
+    function initMobileTOC() {
         const toggle = document.querySelector('button[aria-controls="mobile-toc-content"]');
         const content = document.querySelector('#mobile-toc-content');
         const links = document.querySelectorAll('a[data-heading-id]');
 
-        if (!toggle || !content) return;
+        if (!toggle || !content) {
+            console.log('Mobile TOC: Elements not found');
+            return;
+        }
 
         // Toggle functionality
         const toggleTOC = () => {
             const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
             toggle.setAttribute('aria-expanded', (!isExpanded).toString());
             content.classList.toggle('expanded');
+            console.log('Mobile TOC toggled:', !isExpanded);
         };
 
-        toggle.addEventListener('click', toggleTOC);
+        // Add both click and touch events for better mobile support
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleTOC();
+        });
+        
+        toggle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+        });
+        
+        toggle.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            toggleTOC();
+        });
 
         // Keyboard support for toggle
         toggle.addEventListener('keydown', (e) => {
@@ -158,11 +175,34 @@ const { headings = [], title = '', url = '' } = Astro.props;
             }
         });
 
-        // Close TOC when clicking a link
+        // Close TOC when clicking/touching a link
         links.forEach((link, index) => {
-            link.addEventListener('click', () => {
+            const closeTOC = () => {
                 toggle.setAttribute('aria-expanded', 'false');
                 content.classList.remove('expanded');
+            };
+            
+            link.addEventListener('click', (e) => {
+                closeTOC();
+            });
+            
+            link.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+            });
+            
+            link.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                closeTOC();
+                // Navigate manually since we prevented default
+                setTimeout(() => {
+                    const href = link.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                }, 100);
             });
 
             // Keyboard navigation within TOC
@@ -286,5 +326,16 @@ const { headings = [], title = '', url = '' } = Astro.props;
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('resize', updateActiveSection);
         });
-    });
+    }
+
+    // Initialize on different events for better mobile support
+    document.addEventListener('astro:page-load', initMobileTOC);
+    document.addEventListener('DOMContentLoaded', initMobileTOC);
+    
+    // Fallback for cases where events don't fire
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileTOC);
+    } else {
+        initMobileTOC();
+    }
 </script>
