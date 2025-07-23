@@ -10,6 +10,10 @@ import AuthorCard from '../../components/AuthorCard.astro';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 import { slugify } from '../../utils/common-utils';
 import Newsletter from '../../components/Newsletter.astro';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
+import TableOfContents from '../../components/TableOfContents.astro';
+
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
     const postCount = posts.length;
@@ -29,9 +33,12 @@ const { href } = Astro.url;
 const { post, prevPost, nextPost } = Astro.props;
 const { title, publishDate, updatedDate, excerpt, tags = [], seo, subtitle } = post.data;
 const { Content } = await render(post);
+
+// Extract headings from markdown for table of contents
+const headings = extractHeadingsFromMarkdown(post.body || '');
 ---
 
-<BaseLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} pageType="article" showHeader={false}>
+<BlogPostLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} showHeader={false} headings={headings}>
     <article class="">
         <header class="mb-8 flex flex-col gap-8">
             <h1 class="text-4xl md:text-7xl font-serif font-bold">{title}</h1>
@@ -68,7 +75,7 @@ const { Content } = await render(post);
             }
         </header>
     </article>
-    <div class="max-w-none prose prose-dante sm:prose-lg">
+    <div class="max-w-none prose prose-dante sm:prose-lg content" id="main-content">
         {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
         <Content />
         <Newsletter />
@@ -116,10 +123,27 @@ const { Content } = await render(post);
         )
     }
     <Subscribe class="my-16 sm:my-24" />
-</BaseLayout>
+</BlogPostLayout>
 
 <script>
     document.addEventListener('astro:page-load', () => {
+        // Add IDs to headings to match table of contents
+        const content = document.getElementById('main-content');
+        if (content) {
+            const headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+            headings.forEach((element) => {
+                const heading = element as HTMLHeadingElement;
+                if (!heading.id) {
+                    const text = heading.textContent || '';
+                    heading.id = text
+                        .toLowerCase()
+                        .replace(/[^\w\s-]/g, '') // Remove special characters
+                        .replace(/\s+/g, '-') // Replace spaces with hyphens
+                        .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+                }
+            });
+        }
+
         const copyUrlButton = document.querySelector('.copy-url-button') as HTMLButtonElement;
         copyUrlButton?.addEventListener('click', async () => {
             await copyUrl(copyUrlButton);

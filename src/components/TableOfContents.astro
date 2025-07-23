@@ -1,0 +1,323 @@
+---
+import type { Heading } from '../utils/markdown-utils';
+
+export type Props = {
+    headings?: Heading[];
+    title?: string;
+};
+
+const { headings = [], title = 'Table of Contents' } = Astro.props;
+
+// Generate nested HTML for table of contents with accessibility improvements
+function renderHeadingsToHTML(headings: Heading[], isNested = false, level = 1): string {
+    if (headings.length === 0) return '';
+    
+    const listClass = isNested ? 'ml-4 mt-1 space-y-1' : '';
+    const ariaLabel = isNested ? '' : 'aria-label="Table of contents navigation"';
+    let html = `<ul class="${listClass}" ${ariaLabel} ${isNested ? '' : 'role="navigation"'}>`;
+    
+    headings.forEach((heading, index) => {
+        const linkClass = `block py-1 px-2 text-sm rounded  transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            heading.level === 2 ? 'font-medium' : 'text-gray-600 dark:text-gray-400'
+        }`;
+        
+        // Add structured data attributes for SEO
+        const structuredData = !isNested ? `data-toc-level="${heading.level}" data-toc-index="${index}"` : '';
+        
+        html += `
+            <li>
+                <a href="#${heading.id}" 
+                   class="${linkClass}"
+                   ${structuredData}
+                   aria-describedby="toc-description"
+                   title="Jump to section: ${heading.text.replace(/"/g, '&quot;')}"
+                   data-heading-id="${heading.id}">
+                    <span class="sr-only">Go to section: </span>
+                    ${heading.text}
+                    ${heading.children.length > 0 ? '<span class="sr-only"> (has subsections)</span>' : ''}
+                </a>
+                ${renderHeadingsToHTML(heading.children, true, level + 1)}
+            </li>
+        `;
+    });
+    
+    html += '</ul>';
+    return html;
+}
+
+const tocHTML = renderHeadingsToHTML(headings);
+const hasHeadings = headings.length > 0;
+---
+
+{hasHeadings && (
+    <aside class="table-of-contents" role="complementary" aria-labelledby="toc-heading">
+        <header class="toc-header">
+            <h2 id="toc-heading" class=" font-serif toc-title text-xl font-semibold mb-4">
+                {title}
+            </h2>
+            <p id="toc-description" class="sr-only">
+                Navigate to different sections of this article using the links below. This table of contents contains {headings.length} main {headings.length === 1 ? 'section' : 'sections'}.
+            </p>
+        </header>
+        <nav 
+            class="toc-nav" 
+            set:html={tocHTML}
+            aria-label="Article sections navigation"
+        ></nav>
+        
+        <!-- Skip link for keyboard users -->
+        <a href="#main-content" class="skip-link sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-blue-600 text-white px-3 py-2 rounded z-50">
+            Skip to main content
+        </a>
+        
+        <!-- Structured data for SEO -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SiteNavigationElement",
+            "name": title,
+            "description": "Table of contents for this article",
+            "hasPart": headings.map((heading, index) => ({
+                "@type": "WebPageElement",
+                "name": heading.text,
+                "url": `#${heading.id}`,
+                "position": index + 1
+            }))
+        })}></script>
+    </aside>
+)}
+
+<script>
+    function initTableOfContents() {
+        const tocContainer = document.querySelector('.table-of-contents');
+        if (!tocContainer) return;
+
+        const tocLinks = tocContainer.querySelectorAll('a[href^="#"]');
+
+        // Enhanced click handlers for smooth scrolling with accessibility
+        tocLinks.forEach((link) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href')?.slice(1);
+                if (targetId) {
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        // Announce to screen readers
+                        const announcement = document.createElement('div');
+                        announcement.setAttribute('aria-live', 'polite');
+                        announcement.setAttribute('aria-atomic', 'true');
+                        announcement.className = 'sr-only';
+                        announcement.textContent = `Navigated to section: ${targetElement.textContent?.trim() || targetId}`;
+                        document.body.appendChild(announcement);
+                        
+                        // Smooth scroll to target
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Set focus to the target heading for screen readers
+                        setTimeout(() => {
+                            if (targetElement.tabIndex === -1) {
+                                targetElement.tabIndex = -1;
+                            }
+                            targetElement.focus({ preventScroll: true });
+                            
+                            // Clean up announcement after screen reader has time to read it
+                            setTimeout(() => {
+                                document.body.removeChild(announcement);
+                            }, 1000);
+                        }, 100);
+                        
+                        // Update URL without triggering scroll
+                        history.pushState(null, '', `#${targetId}`);
+                    }
+                }
+            });
+            
+            // Keyboard navigation support
+            link.addEventListener('keydown', (e) => {
+                const keyEvent = e as KeyboardEvent;
+                if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
+                    keyEvent.preventDefault();
+                    (link as HTMLElement).click();
+                }
+            });
+        });
+
+        // Enhanced section highlighting with accessibility
+        function highlightCurrentSection() {
+            if (!tocContainer) return;
+
+            const scrollPosition = window.scrollY + 100;
+            const headingElements = Array.from(document.querySelectorAll('h2[id], h3[id], h4[id], h5[id], h6[id]'));
+
+            let currentSection = '';
+            headingElements.forEach((heading) => {
+                const element = heading as HTMLElement;
+                if (element.offsetTop <= scrollPosition) {
+                    currentSection = element.id;
+                }
+            });
+
+            // Remove previous highlights and ARIA states
+            tocLinks.forEach((link) => {
+                link.classList.remove('bg-blue-100', 'dark:bg-blue-900', 'text-blue-700', 'dark:text-blue-300');
+                link.removeAttribute('aria-current');
+            });
+
+            // Highlight current section with accessibility attributes
+            if (currentSection) {
+                const currentLink = tocContainer.querySelector(`a[href="#${currentSection}"]`);
+                if (currentLink) {
+                    currentLink.classList.add('bg-blue-100', 'dark:bg-blue-900', 'text-blue-700', 'dark:text-blue-300');
+                    currentLink.setAttribute('aria-current', 'location');
+                }
+            }
+        }
+
+        // Add scroll-based spacing
+        function handleScrollSpacing() {
+            if (!tocContainer) return;
+            
+            const scrollThreshold = 20; // Distance in pixels before adding space
+            const scrollY = window.scrollY;
+            
+            // Find the sticky container (parent of TOC)
+            const stickyContainer = tocContainer.closest('.sticky');
+            
+            if (scrollY > scrollThreshold) {
+                if (stickyContainer) {
+                    stickyContainer.classList.add('scrolled');
+                }
+                tocContainer.classList.add('scrolled');
+            } else {
+                if (stickyContainer) {
+                    stickyContainer.classList.remove('scrolled');
+                }
+                tocContainer.classList.remove('scrolled');
+            }
+        }
+
+        // Debounced scroll listener for performance (both highlighting and spacing)
+        let scrollTimeout: number;
+        let isScrolling = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    highlightCurrentSection();
+                    handleScrollSpacing();
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        });
+
+        // Initial setup
+        highlightCurrentSection();
+        handleScrollSpacing();
+        
+        // Handle hash changes (e.g., back/forward navigation)
+        window.addEventListener('hashchange', () => {
+            highlightCurrentSection();
+            handleScrollSpacing();
+        });
+    }
+
+    // Initialize on DOM load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTableOfContents);
+    } else {
+        initTableOfContents();
+    }
+
+    // Re-initialize if navigating in SPA mode
+    document.addEventListener('astro:page-load', initTableOfContents);
+</script>
+
+<style>
+    .table-of-contents {
+        @apply p-4 rounded-lg border border-gray-300 dark:border-gray-700;
+        transition: margin-top 0.3s ease-in-out;
+    }
+    
+    .table-of-contents.scrolled {
+        @apply mt-5 md:mt-5; /* 0 on mobile, 20px on md+ screens */
+    }
+    
+    /* Apply spacing to the sticky container when scrolled */
+    :global(.sticky.scrolled) {
+        padding-top: 1.25rem; /* 20px spacing from viewport top */
+        transition: padding-top 0.3s ease-in-out;
+    }
+
+    .toc-title {
+        @apply text-gray-900 dark:text-gray-100;
+    }
+
+    .toc-nav ul {
+        @apply list-none;
+    }
+
+    .toc-nav a {
+        @apply no-underline;
+    }
+    
+    /* Screen reader only content */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+    
+    /* Show screen reader content when focused */
+    .sr-only:focus,
+    .focus\:not-sr-only:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: inherit;
+        margin: inherit;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+    }
+    
+    /* Skip link styles */
+    .skip-link {
+        @apply transition-all duration-200;
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+        .table-of-contents {
+            @apply border-2 border-black dark:border-white;
+        }
+        
+        .toc-nav a:hover,
+        .toc-nav a:focus {
+            @apply bg-black text-white dark:bg-white dark:text-black;
+        }
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+        .toc-nav a {
+            @apply transition-none;
+        }
+        
+        .table-of-contents {
+            transition: none;
+        }
+        
+        :global(.sticky.scrolled) {
+            transition: none;
+        }
+    }
+</style>
