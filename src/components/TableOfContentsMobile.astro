@@ -1,0 +1,279 @@
+---
+import type { Heading } from '../utils/markdown-utils';
+import ShareLinks from './ShareLinks.astro';
+
+type Props = {
+    headings?: Heading[];
+    title?: string;
+    url?: string;
+};
+
+const { headings = [], title = '', url = '' } = Astro.props;
+---
+
+{headings.length > 0 && (
+    <div class="mobile-toc-container fixed bottom-0 left-0 right-0 z-50 md:hidden backdrop-blur-md transition-transform duration-300" id="mobile-toc">
+        <button 
+            class="w-full p-4 bg-transparent border-none flex items-center justify-between cursor-pointer text-base font-medium text-black/95 dark:text-white/80 transition-colors duration-200 hover:bg-black/5 dark:hover:bg-white/5 focus:outline-2 focus:outline-blue-600 dark:focus:outline-blue-400 focus:-outline-offset-2 focus:bg-black/5 dark:focus:bg-white/5"
+            aria-expanded="false"
+            aria-controls="mobile-toc-content"
+            aria-label="Toggle table of contents"
+            role="button"
+            tabindex="0"
+        >
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span class="flex-1 text-center overflow-hidden text-ellipsis whitespace-nowrap px-2">Contents</span>
+            <svg class="chevron-icon w-5 h-5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+            </svg>
+        </button>
+        
+        <nav 
+            class="mobile-toc-content max-h-0 overflow-hidden transition-all duration-300 bg-black/[0.02] dark:bg-white/[0.02] border-t border-black/5 dark:border-white/5" 
+            id="mobile-toc-content"
+            aria-label="Table of contents"
+        >
+            <ul class="list-none p-0 m-0">
+                {headings.map((heading) => (
+                    <li style={`margin-left: ${(heading.level - 2) * 1}rem;`}>
+                        <a 
+                            href={`#${heading.id}`}
+                            class="block py-3 px-4 text-black/85 dark:text-white/60 no-underline text-sm transition-all duration-200 border-l-2 border-transparent hover:text-black/90 hover:bg-black/5 dark:hover:text-white/90 dark:hover:bg-white/5 focus:outline-2 focus:outline-blue-600 dark:focus:outline-blue-400 focus:-outline-offset-2 focus:bg-blue-600/10 dark:focus:bg-blue-400/10"
+                            data-heading-id={heading.id}
+                        >
+                            {heading.text}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+            {title && url && (
+                <div class="border-t border-black/5 dark:border-white/5 p-4">
+                    <ShareLinks title={title} url={url} />
+                </div>
+            )}
+        </nav>
+    </div>
+)}
+
+<style>
+    .mobile-toc-container {
+        background-color: rgba(255, 255, 255, 0.85);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .mobile-toc-container {
+            background-color: rgba(30, 30, 30, 0.85);
+            border-top-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+    }
+    
+    :global(.dark) .mobile-toc-container {
+        background-color: rgba(30, 30, 30, 0.85);
+        border-top-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .mobile-toc-toggle[aria-expanded="true"] .chevron-icon {
+        transform: rotate(180deg);
+    }
+    
+    .mobile-toc-content.expanded {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    
+    .mobile-toc-link.active {
+        color: #0066cc;
+        border-left-color: #0066cc;
+        background-color: rgba(0, 102, 204, 0.1);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .mobile-toc-link.active {
+            color: #4da6ff;
+            border-left-color: #4da6ff;
+            background-color: rgba(77, 166, 255, 0.1);
+        }
+    }
+    
+    :global(.dark) .mobile-toc-link.active {
+        color: #4da6ff;
+        border-left-color: #4da6ff;
+        background-color: rgba(77, 166, 255, 0.1);
+    }
+    
+    /* Smooth scroll behavior */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Offset for fixed header if needed */
+    :target {
+        scroll-margin-top: 5rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const toggle = document.querySelector('button[aria-controls="mobile-toc-content"]');
+        const content = document.querySelector('#mobile-toc-content');
+        const links = document.querySelectorAll('a[data-heading-id]');
+        
+        if (!toggle || !content) return;
+        
+        // Toggle functionality
+        const toggleTOC = () => {
+            const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.setAttribute('aria-expanded', (!isExpanded).toString());
+            content.classList.toggle('expanded');
+        };
+        
+        toggle.addEventListener('click', toggleTOC);
+        
+        // Keyboard support for toggle
+        toggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleTOC();
+            }
+            if (e.key === 'Escape') {
+                toggle.setAttribute('aria-expanded', 'false');
+                content.classList.remove('expanded');
+            }
+        });
+        
+        // Close TOC when clicking a link
+        links.forEach((link, index) => {
+            link.addEventListener('click', () => {
+                toggle.setAttribute('aria-expanded', 'false');
+                content.classList.remove('expanded');
+            });
+            
+            // Keyboard navigation within TOC
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    toggle.setAttribute('aria-expanded', 'false');
+                    content.classList.remove('expanded');
+                    toggle.focus();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextLink = links[index + 1] as HTMLElement;
+                    if (nextLink) nextLink.focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevLink = links[index - 1] as HTMLElement;
+                    if (prevLink) {
+                        prevLink.focus();
+                    } else {
+                        toggle.focus();
+                    }
+                }
+            });
+        });
+        
+        // Highlight active section and update current section text
+        const currentSectionSpan = toggle.querySelector('span');
+        let activeHeadingId: string | null = null;
+        
+        // Track all headings and their positions
+        const updateActiveSection = () => {
+            // Wait a bit to ensure heading IDs are set
+            setTimeout(() => {
+                const mainContent = document.getElementById('main-content');
+                const allHeadings = mainContent ? mainContent.querySelectorAll('h2[id], h3[id], h4[id], h5[id], h6[id]') : [];
+                const scrollPosition = window.scrollY + (window.innerHeight * 0.75); // Check position 25% from bottom
+                
+                let currentHeading: Element | null = null;
+                let currentTopLevelHeading: Element | null = null;
+                
+                // Find the current heading based on scroll position
+                allHeadings.forEach(heading => {
+                    // Skip TOC heading
+                    if (heading.id === 'toc-heading' || heading.textContent?.includes('Table of Contents')) {
+                        return;
+                    }
+                    
+                    const rect = heading.getBoundingClientRect();
+                    const absoluteTop = rect.top + window.scrollY;
+                    
+                    if (absoluteTop <= scrollPosition) {
+                        currentHeading = heading;
+                        // Track the last h2 we've passed
+                        if (heading.tagName === 'H2') {
+                            currentTopLevelHeading = heading;
+                        }
+                    }
+                });
+                
+                // Use the top-level heading for display
+                const headingToDisplay = currentTopLevelHeading || currentHeading;
+                
+                if (currentHeading && currentHeading.id !== activeHeadingId) {
+                    activeHeadingId = currentHeading.id;
+                    
+                    // Remove active class from all links
+                    links.forEach(link => link.classList.remove('active'));
+                    
+                    // Find matching TOC link for highlighting in the expanded tray
+                    links.forEach(link => {
+                        const linkElement = link as HTMLAnchorElement;
+                        const headingId = linkElement.getAttribute('data-heading-id');
+                        
+                        if (headingId === activeHeadingId) {
+                            linkElement.classList.add('active');
+                        }
+                    });
+                    
+                    // Update current section text with top-level heading
+                    if (currentSectionSpan && headingToDisplay) {
+                        // Find the TOC link for the heading to display
+                        let displayText = headingToDisplay.textContent?.trim() || 'Contents';
+                        
+                        links.forEach(link => {
+                            const linkElement = link as HTMLAnchorElement;
+                            const headingId = linkElement.getAttribute('data-heading-id');
+                            
+                            if (headingId === headingToDisplay.id) {
+                                displayText = linkElement.textContent?.trim() || displayText;
+                            }
+                        });
+                        
+                        currentSectionSpan.textContent = displayText;
+                    }
+                } else if (!currentHeading && currentSectionSpan) {
+                    // At the top of the page
+                    currentSectionSpan.textContent = 'Contents';
+                    links.forEach(link => link.classList.remove('active'));
+                    activeHeadingId = null;
+                }
+            }, 100);
+        };
+        
+        // Update on scroll with debouncing
+        let scrollTimeout: number;
+        const handleScroll = () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(updateActiveSection, 50);
+        };
+        
+        // Initial check and event listeners
+        // Delay initial check to ensure heading IDs are set
+        setTimeout(() => {
+            updateActiveSection();
+        }, 200);
+        
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', updateActiveSection);
+        
+        // Clean up on page navigation
+        document.addEventListener('astro:before-swap', () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', updateActiveSection);
+        });
+    });
+</script>

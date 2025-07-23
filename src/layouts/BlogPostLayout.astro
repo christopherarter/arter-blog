@@ -1,0 +1,38 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import TableOfContentsMobile from '../components/TableOfContentsMobile.astro';
+import ShareLinks from '../components/ShareLinks.astro';
+import type { Heading } from '../utils/markdown-utils';
+
+type Props = {
+    title: string;
+    description?: string;
+    image?: string | { src: string; alt?: string };
+    showHeader?: boolean;
+    headings?: Heading[];
+};
+
+const { title, description, image, showHeader, headings } = Astro.props;
+
+// Ensure `image` prop matches the shape expected by `BaseLayout` / `BaseHead`
+const resolvedImage = typeof image === 'string' ? { src: image } : image;
+
+// Get the current URL
+const { href } = Astro.url;
+---
+
+<BaseLayout showHeader={showHeader ?? false} title={title} description={description} image={resolvedImage} headings={headings}>
+    <div class="flex gap-4 pb-20 md:pb-0">
+        <main class="w-full md:w-3/4" role="main" aria-label="Article content">
+            <slot />
+        </main>
+        <aside class="w-full md:w-1/4" role="complementary" aria-label="Table of contents sidebar">
+            <div class="sticky top-0 hidden md:block">
+                <TableOfContents headings={headings} />
+                <ShareLinks title={title} url={href} />
+            </div>
+        </aside>
+    </div>
+    <TableOfContentsMobile headings={headings} title={title} url={href} />
+</BaseLayout>
