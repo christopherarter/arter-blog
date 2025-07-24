@@ -1,0 +1,35 @@
+---
+import siteConfig from '../data/site-config';
+
+const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": siteConfig.title,
+    "description": siteConfig.description,
+    "url": "https://arter.dev",
+    "author": {
+        "@type": "Person",
+        "name": "Chris Arter",
+        "url": "https://arter.dev"
+    },
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://arter.dev/blog?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Chris Arter",
+        "url": "https://arter.dev",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://arter.dev/images/logo.png"
+        }
+    }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema, null, 2)} />

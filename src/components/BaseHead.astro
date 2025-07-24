@@ -50,6 +50,7 @@ function formatCanonicalURL(url: string | URL) {
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
+<link rel="alternate" type="application/feed+json" href="/feed.json" title="JSON Feed" />
 
 <!-- Page Metadata -->
 <link rel="canonical" href={formatCanonicalURL(canonicalURL)} />
@@ -70,3 +71,20 @@ function formatCanonicalURL(url: string | URL) {
 <meta property="twitter:description" content={description} />
 {resolvedImage?.src && <meta property="twitter:image" content={resolvedImage.src} />}
 {resolvedImage?.alt && <meta name="twitter:image:alt" content={resolvedImage?.alt} />}
+
+<!-- Additional SEO Meta Tags -->
+<meta name="author" content="Chris Arter" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="revisit-after" content="7 days" />
+<meta name="theme-color" content="#000000" />
+<meta name="msapplication-TileColor" content="#000000" />
+
+<!-- Article specific tags -->
+{pageType === 'article' && (
+    <>
+        <meta property="article:author" content="Chris Arter" />
+        <meta property="article:publisher" content="https://arter.dev" />
+        <meta name="twitter:creator" content="@chris_arter" />
+    </>
+)}

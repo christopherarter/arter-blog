@@ -14,6 +14,7 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
 import TableOfContents from '../../components/TableOfContents.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro';
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
@@ -37,10 +38,18 @@ const { Content } = await render(post);
 
 // Extract headings from markdown for table of contents
 const headings = extractHeadingsFromMarkdown(post.body || '');
+
+// Breadcrumb data
+const breadcrumbs = [
+    { name: 'Home', url: 'https://arter.dev/' },
+    { name: 'Blog', url: 'https://arter.dev/blog/' },
+    { name: title, url: href }
+];
 ---
 
 <BlogPostLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} showHeader={false} headings={headings}>
     <ArticleSchema post={post} url={href} />
+    <BreadcrumbSchema items={breadcrumbs} />
     <article class="">
         <header class="mb-8 flex flex-col gap-8">
             <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight blog-post-title">{title}</h1>

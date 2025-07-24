@@ -5,6 +5,7 @@ import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
 import PostList from '../components/PostList.astro';
 import ProjectPreview from '../components/ProjectPreview.astro';
+import WebsiteSchema from '../components/WebsiteSchema.astro';
 import siteConfig from '../data/site-config';
 import { sortItemsByDateDesc } from '../utils/data-utils';
 
@@ -20,6 +21,7 @@ const uniqueTags = [...new Set(tags)];
 ---
 
 <BaseLayout showHeader={false} description={siteConfig.description} image={siteConfig.image}>
+    <WebsiteSchema />
     <Hero />
     {
         featuredProjects?.length > 0 && (
