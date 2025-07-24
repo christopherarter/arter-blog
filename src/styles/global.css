@@ -55,3 +55,33 @@
 .arter-button {
     @apply inline-flex items-center justify-center px-6 py-2 font-serif leading-tight italic text-main bg-main border border-main rounded-full transition hover:bg-muted;
 }
+
+/* Fix Chrome Lighthouse audit: Explicit font-size for h1 within sectioning elements */
+article h1,
+section h1,
+aside h1,
+nav h1 {
+    font-size: 2.25rem; /* Default to text-4xl equivalent */
+    line-height: 2.5rem;
+}
+
+/* Responsive sizing for larger screens */
+@media (min-width: 768px) {
+    /* Hero section h1 (homepage) - larger sizing */
+    section h1 {
+        font-size: 3.75rem; /* text-6xl */
+        line-height: 1;
+    }
+    
+    /* Article h1s for blog posts - largest sizing */
+    article h1.blog-post-title {
+        font-size: 3.75rem; /* text-6xl */
+        line-height: 1;
+    }
+    
+    /* Article h1s for projects and pages - medium sizing */
+    article h1:not(.blog-post-title) {
+        font-size: 3rem; /* text-5xl */
+        line-height: 1;
+    }
+}
