@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    post: CollectionEntry<'blog'>;
+    url: string;
+}
+
+const { post, url } = Astro.props;
+const { title, publishDate, updatedDate, excerpt, tags = [], seo, subtitle } = post.data;
+
+// Build the article schema
+const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: seo?.title || title,
+    name: seo?.title || title,
+    description: seo?.description || excerpt || subtitle,
+    datePublished: publishDate.toISOString(),
+    dateModified: (updatedDate || publishDate).toISOString(),
+    url: url,
+    mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': url
+    },
+    author: {
+        '@type': 'Person',
+        name: 'Chris Arter',
+        url: 'https://arter.dev',
+        sameAs: ['https://github.com/christopherarter', 'https://bsky.app/profile/arter.dev']
+    },
+    publisher: {
+        '@type': 'Organization',
+        name: 'Chris Arter',
+        url: 'https://arter.dev',
+        logo: {
+            '@type': 'ImageObject',
+            url: 'https://arter.dev/images/logo.png'
+        }
+    },
+    articleSection: tags.length > 0 ? tags[0] : 'Technology',
+    keywords: tags.join(', ')
+};
+
+// Add image if available
+if (seo?.image?.src) {
+    articleSchema['image'] = {
+        '@type': 'ImageObject',
+        url: seo.image.src.startsWith('http') ? seo.image.src : `https://arter.dev${seo.image.src}`,
+        alt: seo.image.alt || title
+    };
+}
+
+// Add word count and reading time if available
+const wordCount = post.body ? post.body.split(/\s+/).length : 0;
+if (wordCount > 0) {
+    articleSchema['wordCount'] = wordCount;
+    // Rough estimate: 200 words per minute
+    const readingTimeMinutes = Math.ceil(wordCount / 200);
+    articleSchema['timeRequired'] = `PT${readingTimeMinutes}M`;
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema, null, 2)} />

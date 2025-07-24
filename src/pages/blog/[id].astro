@@ -13,6 +13,7 @@ import Newsletter from '../../components/Newsletter.astro';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
 import TableOfContents from '../../components/TableOfContents.astro';
+import ArticleSchema from '../../components/ArticleSchema.astro';
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
@@ -39,6 +40,7 @@ const headings = extractHeadingsFromMarkdown(post.body || '');
 ---
 
 <BlogPostLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} showHeader={false} headings={headings}>
+    <ArticleSchema post={post} url={href} />
     <article class="">
         <header class="mb-8 flex flex-col gap-8">
             <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight">{title}</h1>
