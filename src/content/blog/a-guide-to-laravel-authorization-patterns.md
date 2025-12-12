@@ -1,18 +1,19 @@
 ---
-title: 'A Guide to Laravel Authorization Patterns'
-publishDate: '2025-01-21'
-seo:
-  image:
-    src: '/images/auth-onion.png'
-    alt: 'Laravel Authorization Patterns'
+title: A Guide to Laravel Authorization Patterns
+subtitle: ''
+excerpt: ''
+publishDate: 2025-01-21
+updatedDate: ''
 tags:
   - Laravel
   - Authentication
   - Authorization
   - Software Patterns
+seo:
+  image:
+    src: /images/auth-onion.png
+    alt: Laravel Authorization Patterns
 ---
-import Newsletter from '../../components/Newsletter.astro'
-
 ## Authorization Patterns
 
 Almost all systems follow a similar pattern when it comes to authorization. In this post, I'll highlight how authorization systems generally work, and how those stages can be applied to Laravel.
@@ -24,7 +25,6 @@ The main layers of authorization are below. These may go by different names, but
 2. **Authorization** - Are you allowed to do this? (Is your ID a driver's license?)
 3. **Resource Policy** - Are you allowed to do this on this resource? (Do you own _this_ car?)
 4. **Temporal Access** - Are you allowed to do this at this time? (Can you drive _this_ car at night?)
-
 
 ## Authentication
 
