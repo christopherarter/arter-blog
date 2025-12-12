@@ -12,7 +12,7 @@ During the recession (early 2010), I lived between my car and a friend's garage.
 
 Since then I've worked in start-ups, agencies, lead gen firms as well as aerospace companies. I've created brands that have made Inc 500s Fastest Growing Companies in America (twice), contributed to the Laravel PHP framework, and have shipped amazing products.
 
-I now live in North Carolina? USA with my wife and two kids.
+I now live in North Carolina USA with my wife and two kids.
 
 Outside of tech:
 
