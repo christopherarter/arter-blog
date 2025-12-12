@@ -12,9 +12,10 @@ During the recession (early 2010), I lived between my car and a friend's garage.
 
 Since then I've worked in start-ups, agencies, lead gen firms as well as aerospace companies. I've created brands that have made Inc 500s Fastest Growing Companies in America (twice), contributed to the Laravel PHP framework, and have shipped amazing products.
 
-I now live in North Carolina, USA with my wife and two kids.
+I now live in North Carolina? USA with my wife and two kids.
 
 Outside of tech:
+
 - I'm a huge Jags fan (DUUUUVAL)
 - I'm deeply involved in Miata community and own too many of them.
 - I'm a life long gamer, and have been a fan of the Diablo series from the start.
