@@ -1,0 +1,96 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - { label: "Subtitle", name: "subtitle", widget: "string", required: false }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Publish Date", name: "publishDate", widget: "datetime", date_format: "YYYY-MM-DD", required: true }
+      - { label: "Updated Date", name: "updatedDate", widget: "datetime", date_format: "YYYY-MM-DD", required: false }
+      - { label: "Featured", name: "isFeatured", widget: "boolean", default: false }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        collapsed: true
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }
+          - label: "SEO Image"
+            name: "image"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "Image", name: "src", widget: "image", required: false }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false }
+          - { label: "Page Type", name: "pageType", widget: "select", options: ["website", "article"], default: "article", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Publish Date", name: "publishDate", widget: "datetime", date_format: "YYYY-MM-DD", required: true }
+      - { label: "Featured", name: "isFeatured", widget: "boolean", default: false }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        collapsed: true
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }
+          - label: "SEO Image"
+            name: "image"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "Image", name: "src", widget: "image", required: false }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false }
+          - { label: "Page Type", name: "pageType", widget: "select", options: ["website", "article"], default: "website", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Pages"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    fields:
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        collapsed: true
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }
+          - label: "SEO Image"
+            name: "image"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "Image", name: "src", widget: "image", required: false }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false }
+          - { label: "Page Type", name: "pageType", widget: "select", options: ["website", "article"], default: "website", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
