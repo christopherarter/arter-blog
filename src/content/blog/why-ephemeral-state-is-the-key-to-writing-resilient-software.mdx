@@ -62,6 +62,8 @@ I keep calling the first version a "testing problem," but it's not. It's a _stat
 
 I've watched teams try to fix this with better monitoring, incident processes, deployment checklists. None of it works because the bottleneck is upstream. You can't monitor your way out of having no ability to recreate state.
 
+Ephemeral state forces you to really flesh out your data models, and ultimately, your problem statements core to the product itself.
+
 ## Getting there
 
 The goal is being able to spin up any contrived scenario in your application in an isolated test.
@@ -72,6 +74,6 @@ None of this is novel. I think that's why it gets skipped, but ,eangingful tests
 
 > The goal is being able to spin up any contrived scenario in your application in an isolated test.
 
-Teams that deploy daily far more bites at the apple than teams that deploy every few weeks. I don't have a clever way to end this :) but, That gap is the whole point.
+Teams that deploy daily get far more bites at the feedback apple than teams that deploy every few weeks. I don't have a clever way to end this :) but, That gap is the whole point.
 
 If you're on a team where deploys are stressful and you're not sure why, check whether you can express arbitrary application state in a test. If you can't, fix that and watch how it will exponetially impact your shipping speed and confidence.
