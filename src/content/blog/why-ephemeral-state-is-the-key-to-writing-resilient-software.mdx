@@ -1,0 +1,77 @@
+---
+title: "Why Ephemeral State Is The Key To Writing Resilient Software"
+slug: "why-ephemeral-state-is-the-key-to-writing-resilient-software"
+subtitle: "The one lever to rule them all."
+author: "Chris Arter"
+publishDate: "2025-12-03"
+seo:
+  image:
+    src: '/images/clay-ephemeral-state.jpg'
+    alt: 'Image of clay wheel sculpting'
+---
+
+Ephemeral state is state you can create, use, and destroy within a single test. It's the ability to ask "what if" in code.
+
+What if a deactivated user tries to reset their password? What if a payment webhook fires while the queue is down? What if the token expired three seconds ago?
+
+I keep coming back to this concept because it explains something I've seen over and over: teams that can answer these questions in code ship constantly. Teams that can't are basically guessing every time they deploy.
+
+> **The inability to express state cascades.** 
+
+## The actual problem
+
+I've worked with teams that deploy multiple times a day, no stress. Others ship once a quarter and everyone looks five years older after. The difference isn't test coverage or CI sophistication. It's whether the team can express their application's state at all.
+
+Look at this test:
+
+```php
+public function test_deactivated_user_cannot_reset_password()
+{
+    $response = $this->post('/password-reset', [
+        'email' => 'deactivated-user-from-staging@example.com'
+    ]);
+
+    $response->assertForbidden();
+}
+```
+
+There's a glaring failure point here: if someone cleans up staging, this test fails.
+
+Now:
+
+```php
+public function test_deactivated_user_cannot_reset_password()
+{
+    $user = User::factory()->deactivated()->create();
+
+    $response = $this->post('/password-reset', [
+        'email' => $user->email
+    ]);
+
+    $response->assertForbidden();
+}
+```
+
+Creates the state it needs. Runs. Rolls back. No dependencies on anything external. The test actually specifies the behavior instead of hoping to discover it.
+
+I keep calling the first version a "testing problem," but it's not. It's a _state problem_. The test is bad because the team has no way to say "give me a deactivated user."
+
+## Why this matters more than it seems
+
+**The inability to express state cascades.** You can't express state, so you write tests against shared databases. Those tests are flaky. You lose trust in them. You stop running them, or you ignore failures. Now you're batching changes into big quarterly releases because nobody knows if anything works. Big releases are riskier. They break more. The stress compounds.
+
+I've watched teams try to fix this with better monitoring, incident processes, deployment checklists. None of it works because the bottleneck is upstream. You can't monitor your way out of having no ability to recreate state.
+
+## Getting there
+
+The goal is being able to spin up any contrived scenario in your application in an isolated test.
+
+Database credentials come from environment variables so you can swap databases. Your test database is containerized with no persistent volume, so it's fresh every run. You have factories that let you say `User::factory()->deactivated()->create()` or the equivalent in whatever language you're using.
+
+None of this is novel. I think that's why it gets skipped, but ,eangingful tests almost always involve a data layer.
+
+> The goal is being able to spin up any contrived scenario in your application in an isolated test.
+
+Teams that deploy daily far more bites at the apple than teams that deploy every few weeks. I don't have a clever way to end this :) but, That gap is the whole point.
+
+If you're on a team where deploys are stressful and you're not sure why, check whether you can express arbitrary application state in a test. If you can't, fix that and watch how it will exponetially impact your shipping speed and confidence.

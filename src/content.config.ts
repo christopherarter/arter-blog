@@ -17,10 +17,13 @@ const blog = defineCollection({
     loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
     schema: z.object({
         title: z.string(),
+        slug: z.string().optional(),
         subtitle: z.string().optional(),
+        author: z.string().optional(),
         excerpt: z.string().optional(),
         publishDate: z.coerce.date(),
         updatedDate: z.coerce.date().optional(),
+        dateUpdated: z.union([z.coerce.date(), z.literal('')]).optional().transform(val => val === '' ? undefined : val),
         isFeatured: z.boolean().default(false),
         tags: z.array(z.string()).default([]),
         seo: seoSchema.optional()

@@ -15,6 +15,7 @@ import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
 import TableOfContents from '../../components/TableOfContents.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro';
+import Footnotes from '../../components/Footnotes.astro';
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
@@ -89,6 +90,7 @@ const breadcrumbs = [
     <div class="max-w-none prose prose-dante sm:prose-lg content" id="main-content">
         {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
         <Content />
+        <Footnotes />
         <Newsletter />
         <Share title={title} url={href} />
         <AuthorCard />
@@ -171,6 +173,55 @@ const breadcrumbs = [
             setTimeout(() => {
                 button.innerText = label;
             }, 2500);
+        }
+
+        // Handle source citations and footnotes
+        const citations = document.querySelectorAll('.source-citation');
+        const footnotesList = document.querySelector('.footnotes-list');
+        const footnotesContainer = document.getElementById('footnotes');
+
+        if (citations.length > 0 && footnotesList && footnotesContainer) {
+            const sources: Array<{ num: number; url: string; title: string }> = [];
+
+            citations.forEach((cite, index) => {
+                const url = cite.getAttribute('data-source-url') || '';
+                const title = cite.getAttribute('data-source-title') || url;
+                const num = index + 1;
+
+                // Update inline citation
+                cite.textContent = `[${num}]`;
+                cite.setAttribute('href', `#footnote-${num}`);
+                cite.id = `citation-${num}`;
+
+                sources.push({ num, url, title });
+            });
+
+            // Render footnotes
+            sources.forEach(({ num, url, title }) => {
+                const li = document.createElement('li');
+                li.id = `footnote-${num}`;
+                li.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="text-main hover:underline">${title}</a> <a href="#citation-${num}" class="text-main/60 hover:text-main ml-1">↩</a>`;
+                footnotesList.appendChild(li);
+            });
+
+            // Show footnotes container
+            footnotesContainer.classList.remove('hidden');
+
+            // Update schema with citations
+            const schemaScript = document.querySelector('script[type="application/ld+json"]');
+            if (schemaScript && schemaScript.textContent) {
+                try {
+                    const schema = JSON.parse(schemaScript.textContent);
+                    schema.citation = sources.map(({ url, title }) => ({
+                        '@type': 'WebPage',
+                        url: url,
+                        name: title
+                    }));
+                    schemaScript.textContent = JSON.stringify(schema);
+                } catch (e) {
+                    // Schema parsing failed, skip citation injection
+                }
+            }
         }
     });
 </script>
