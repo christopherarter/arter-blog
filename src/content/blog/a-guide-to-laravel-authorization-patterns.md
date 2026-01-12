@@ -1,9 +1,6 @@
 ---
 title: A Guide to Laravel Authorization Patterns
-subtitle: ''
-excerpt: ''
 publishDate: 2025-01-21
-updatedDate: ''
 tags:
   - Laravel
   - Authentication

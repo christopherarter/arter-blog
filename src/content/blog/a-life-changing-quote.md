@@ -1,18 +1,12 @@
 ---
 title: A Life Changing Quote About Anxiety
 subtitle: Dr. Emily Anhalt shares a quote that changed her life, and now mine.
-excerpt: ''
 publishDate: 2025-07-07
-updatedDate: ''
 tags:
   - Life
 seo:
-  title: ''
-  description: ''
-  image: null
   pageType: article
 author: Chris Arter
-dateUpdated: 2025-07-07
 slug: a-life-changing-quote-about-anxiety
 ---
 Occasionally I come across quotes that eventually change me. They physically burrow their way through my brain via creating new neural pathways. With these new pathways, I’m able to see the world in new ways. I’d like to share the latest quote that started as a simmer, and is now boiling over into a compulsion to share its impact on me.
