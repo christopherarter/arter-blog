@@ -38,7 +38,7 @@ const hasToc = !!(headings && headings.length > 0);
                 hasToc ? 'md:grid-cols-[1fr_260px]' : 'max-w-[900px]'
             ]}
         >
-            <article>
+            <article class="min-w-0">
                 <slot />
             </article>
 
@@ -57,7 +57,7 @@ const hasToc = !!(headings && headings.length > 0);
         <div class="mobile-toc-root md:hidden" data-mobile-toc>
             <button
                 type="button"
-                class="mobile-toc-toggle fixed left-4 right-4 bottom-4 z-[60] grid grid-cols-[auto_1fr_auto] items-center gap-3.5 px-[18px] py-3 rounded-full border border-hair-2 font-mono text-[11px] tracking-wider uppercase cursor-pointer shadow-[0_6px_24px_rgba(0,0,0,0.4)] transition-colors hover:border-ink"
+                class="mobile-toc-toggle fixed left-4 right-4 bottom-4 z-60 grid grid-cols-[auto_1fr_auto] items-center gap-3.5 px-[18px] py-3 rounded-full border border-hair-2 font-mono text-[11px] tracking-wider uppercase cursor-pointer shadow-[0_6px_24px_rgba(0,0,0,0.4)] transition-colors hover:border-ink"
                 style="background: rgba(27,26,23,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: rgb(var(--ink));"
                 aria-controls="mobile-toc-panel"
                 aria-expanded="false"
@@ -69,11 +69,11 @@ const hasToc = !!(headings && headings.length > 0);
                 <span class="mobile-toc-caret text-ink-3 text-xs transition-transform" aria-hidden="true">↑</span>
             </button>
 
-            <div class="mobile-toc-backdrop fixed inset-0 bg-black/55 opacity-0 pointer-events-none transition-opacity z-[58]" aria-hidden="true"></div>
+            <div class="mobile-toc-backdrop fixed inset-0 bg-black/55 opacity-0 pointer-events-none transition-opacity z-58" aria-hidden="true"></div>
 
             <div
                 id="mobile-toc-panel"
-                class="mobile-toc-panel fixed inset-x-0 bottom-0 z-[61] max-h-[75vh] bg-paper-2 border-t border-hair-2 rounded-t-2xl translate-y-full transition-transform flex flex-col"
+                class="mobile-toc-panel fixed inset-x-0 bottom-0 z-61 max-h-[75vh] bg-paper-2 border-t border-hair-2 rounded-t-2xl translate-y-full transition-transform flex flex-col"
                 style="padding-bottom: env(safe-area-inset-bottom);"
                 role="dialog"
                 aria-modal="true"

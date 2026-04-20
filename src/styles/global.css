@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../../tailwind.config.cjs';
 
 @layer base {
     :root {
@@ -43,16 +42,31 @@
 .prose-editorial {
     font-size: 18px;
     line-height: 1.75;
-    color: rgb(var(--ink));
+    color: rgb(230 228 219);
     max-width: 68ch;
 }
-.prose-editorial > * + * { margin-top: 1.5em; }
+
+/* Unified block rhythm — every block gets the same trailing gap so spacing
+   stays consistent whether neighbors are paragraphs, lists, or code blocks.
+   Margin collapsing handles overlap with the larger heading margins cleanly. */
+.prose-editorial :where(p, ul, ol, blockquote, figure, table) {
+    margin-block: 0 1.25em;
+}
+.prose-editorial :where(h2, h3, h4) {
+    margin-block: 2em 0.5em;
+}
+.prose-editorial pre,
+.prose-editorial hr {
+    margin-block: 1.75em;
+}
+.prose-editorial > :first-child { margin-block-start: 0; }
+.prose-editorial > :last-child { margin-block-end: 0; }
+
+/* Type treatments — size, font, color. Spacing handled above. */
 .prose-editorial h2 {
     font-family: 'DM Serif Display', 'DM Serif Text', serif;
     font-size: 34px;
     line-height: 1.12;
-    margin-top: 2.4em;
-    margin-bottom: 0.6em;
     font-weight: 400;
     letter-spacing: -0.015em;
 }
@@ -60,8 +74,6 @@
     font-family: 'DM Serif Display', 'DM Serif Text', serif;
     font-size: 24px;
     line-height: 1.25;
-    margin-top: 2em;
-    margin-bottom: 0.5em;
     font-weight: 400;
     letter-spacing: -0.01em;
 }
@@ -73,15 +85,9 @@
     letter-spacing: 0.22em;
     font-weight: 500;
     color: rgb(var(--ink-3));
-    margin-top: 2.8em;
-    margin-bottom: 1.2em;
     padding-bottom: 0.7em;
     border-bottom: 1px solid rgba(243, 241, 234, 0.08);
 }
-.prose-editorial h4 + ul,
-.prose-editorial h4 + ol,
-.prose-editorial h4 + p { margin-top: 0.5em; }
-.prose-editorial p { margin: 0; }
 .prose-editorial a {
     color: rgb(var(--ink));
     text-decoration: underline;
@@ -96,7 +102,6 @@
     font-size: 28px;
     line-height: 1.32;
     color: rgb(var(--ink));
-    margin: 1.8em 0;
     padding-left: 28px;
     border-left: 1px solid rgb(var(--ink-4));
 }
@@ -110,8 +115,6 @@
     font-size: 13.5px;
     line-height: 1.65;
     color: rgb(var(--ink-2));
-    margin-top: 2em;
-    margin-bottom: 2em;
 }
 .prose-editorial code {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -126,7 +129,10 @@
     border: 1px solid rgba(243, 241, 234, 0.10);
 }
 .prose-editorial ul,
-.prose-editorial ol { padding-left: 1.2em; margin: 0; }
+.prose-editorial ol { padding-left: 1.4em; }
+.prose-editorial ul { list-style: disc; }
+.prose-editorial ol { list-style: decimal; }
+.prose-editorial li::marker { color: rgb(var(--ink-4)); }
 .prose-editorial li + li { margin-top: 0.55em; }
 .prose-editorial strong { color: rgb(var(--ink)); font-weight: 600; }
 /* Repeating "label: description" items read as definition terms, not emphasis */
@@ -140,5 +146,4 @@
 .prose-editorial hr {
     border: 0;
     border-top: 1px solid rgba(243, 241, 234, 0.10);
-    margin: 2.4em 0;
 }

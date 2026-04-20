@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -49,6 +49,9 @@ collectLastmods('src/content/projects', '/projects/', lastmodByUrl);
 export default defineConfig({
     site: SITE,
     output: 'static',
+    vite: {
+        plugins: [tailwindcss()]
+    },
     integrations: [
         mdx(),
         sitemap({
@@ -58,7 +61,6 @@ export default defineConfig({
                 return lastmod ? { ...item, lastmod } : item;
             }
         }),
-        tailwind({ applyBaseStyles: false }),
         react(),
         markdoc()
     ]
