@@ -65,6 +65,22 @@
     font-weight: 400;
     letter-spacing: -0.01em;
 }
+.prose-editorial h4 {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: rgb(var(--ink-3));
+    margin-top: 2.8em;
+    margin-bottom: 1.2em;
+    padding-bottom: 0.7em;
+    border-bottom: 1px solid rgba(243, 241, 234, 0.08);
+}
+.prose-editorial h4 + ul,
+.prose-editorial h4 + ol,
+.prose-editorial h4 + p { margin-top: 0.5em; }
 .prose-editorial p { margin: 0; }
 .prose-editorial a {
     color: rgb(var(--ink));
@@ -111,8 +127,14 @@
 }
 .prose-editorial ul,
 .prose-editorial ol { padding-left: 1.2em; margin: 0; }
-.prose-editorial li + li { margin-top: 0.4em; }
+.prose-editorial li + li { margin-top: 0.55em; }
 .prose-editorial strong { color: rgb(var(--ink)); font-weight: 600; }
+/* Repeating "label: description" items read as definition terms, not emphasis */
+.prose-editorial li > strong:first-child {
+    font-weight: 550;
+    color: rgb(var(--ink-2));
+    letter-spacing: 0.005em;
+}
 .prose-editorial img,
 .prose-editorial figure { max-width: 100%; }
 .prose-editorial hr {
