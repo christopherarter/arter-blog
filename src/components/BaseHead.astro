@@ -1,6 +1,5 @@
 ---
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
-import newsreaderWoff2 from '@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2?url';
 import siteConfig from '../data/site-config';
 import '../styles/global.css';
 
@@ -44,7 +43,12 @@ function formatCanonicalURL(url: string | URL) {
 
 <!-- Fonts -->
 <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin="anonymous" />
-<link rel="preload" as="font" type="font/woff2" href={newsreaderWoff2} crossorigin="anonymous" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+/>
 
 <!-- Low Priority Global Metadata -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -77,8 +81,8 @@ function formatCanonicalURL(url: string | URL) {
 <meta name="robots" content="index, follow" />
 <meta name="language" content="English" />
 <meta name="revisit-after" content="7 days" />
-<meta name="theme-color" content="#000000" />
-<meta name="msapplication-TileColor" content="#000000" />
+<meta name="theme-color" content="#141311" />
+<meta name="msapplication-TileColor" content="#141311" />
 
 <!-- Article specific tags -->
 {pageType === 'article' && (

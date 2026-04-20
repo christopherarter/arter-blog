@@ -1,0 +1,366 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "[ arter.dev ] A Log of Tech & Cars" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]:
+          - generic [ref=e6]: "["
+          - text: arter.dev
+          - generic [ref=e7]: "]"
+        - generic [ref=e8]: A Log of Tech & Cars
+      - list [ref=e9]:
+        - listitem [ref=e10]:
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=e12]:
+          - link "→ Writing" [ref=e13] [cursor=pointer]:
+            - /url: /blog
+        - listitem [ref=e14]:
+          - link "Projects" [ref=e15] [cursor=pointer]:
+            - /url: /projects
+        - listitem [ref=e16]:
+          - link "About" [ref=e17] [cursor=pointer]:
+            - /url: /about
+        - listitem [ref=e18]:
+          - link "Hire" [ref=e19] [cursor=pointer]:
+            - /url: /hire-me
+  - generic [ref=e21]:
+    - article [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: Laravel
+          - generic [ref=e26]: ·
+          - generic [ref=e27]: Authentication · Authorization
+          - generic [ref=e28]: ·
+          - generic [ref=e29]: 4 min read
+        - heading "A Guide to Laravel Authorization Patterns" [level=1] [ref=e30]
+        - generic [ref=e31]:
+          - generic [ref=e32]: Written by Chris Arter
+          - generic [ref=e33]: ·
+          - generic [ref=e34]:
+            - text: Published
+            - time [ref=e35]: January 20, 2025
+      - figure [ref=e36]:
+        - img "Laravel Authorization Patterns" [ref=e37]
+      - generic [ref=e38]:
+        - heading "Authorization Patterns" [level=2] [ref=e39]
+        - paragraph [ref=e40]: Almost all systems follow a similar pattern when it comes to authorization. In this post, I’ll highlight how authorization systems generally work, and how those stages can be applied to Laravel. Learning this structure tends to make using other systems easier, and it’s a great way to understand how authorization works in general.
+        - paragraph [ref=e41]: The main layers of authorization are below. These may go by different names, but the core concepts are the same. Let’s use driving a car as an analogy.
+        - list [ref=e42]:
+          - listitem [ref=e43]:
+            - strong [ref=e44]: Authentication
+            - text: "- Who are you? (Do you have identification?)"
+          - listitem [ref=e45]:
+            - strong [ref=e46]: Authorization
+            - text: "- Are you allowed to do this? (Is your ID a driver’s license?)"
+          - listitem [ref=e47]:
+            - strong [ref=e48]: Resource Policy
+            - text: "- Are you allowed to do this on this resource? (Do you own"
+            - emphasis [ref=e49]: this
+            - text: car?)
+          - listitem [ref=e50]:
+            - strong [ref=e51]: Temporal Access
+            - text: "- Are you allowed to do this at this time? (Can you drive"
+            - emphasis [ref=e52]: this
+            - text: car at night?)
+        - heading "Authentication" [level=2] [ref=e53]
+        - paragraph [ref=e54]: Let’s start with the first stage of the authorization process, authentication. This is the process of verifying your identity. In our analogy, this is your driver’s license.
+        - img "Brian Spilner" [ref=e55]
+        - paragraph [ref=e56]: This is the process of going from a guest user, to an authenticated user.
+        - heading "Using the Auth Facade" [level=3] [ref=e57]:
+          - text: Using the
+          - code [ref=e58]: Auth
+          - text: Facade
+        - paragraph [ref=e59]:
+          - text: The most straightfoward way to do this in Laravel is to use the
+          - code [ref=e60]: Auth
+          - text: facade.
+        - code [ref=e62]:
+          - generic [ref=e63]: Auth::login($user);
+        - paragraph [ref=e64]:
+          - text: This will set the user’s session, and they will be authenticated using the
+          - code [ref=e65]: auth
+          - text: middleware.
+        - heading "Using Laravel Sanctum" [level=3] [ref=e66]
+        - paragraph [ref=e67]: You can also authenticate in a restful way, using a token from Laravel Sanctum.
+        - code [ref=e69]:
+          - generic [ref=e70]: $token = $user->createToken('auth_token')->plainTextToken;
+        - paragraph [ref=e71]:
+          - text: Once you have a token, you can use it to authenticate requests to your API through the
+          - code [ref=e72]: Authorization
+          - text: header using the
+          - code [ref=e73]: auth:sanctum
+          - text: middleware.
+        - code [ref=e75]:
+          - generic [ref=e76]: $response = Http::withHeaders([
+          - generic [ref=e77]: "'Authorization' => 'Bearer ' . $token,"
+          - generic [ref=e78]: "])->get('https://api.example.com/user');"
+        - heading "Socialite" [level=3] [ref=e79]
+        - paragraph [ref=e80]: You can also use Socialite to authenticate users.
+        - code [ref=e82]:
+          - generic [ref=e83]: $user = Socialite::driver('github')->user();
+        - paragraph [ref=e84]: This will use an external application to authenticate the user, and then return a user object.
+        - list [ref=e85]:
+          - listitem [ref=e86]:
+            - link "Laravel Socialite" [ref=e87] [cursor=pointer]:
+              - /url: https://laravel.com/docs/socialite
+          - listitem [ref=e88]:
+            - link "Authentication" [ref=e89] [cursor=pointer]:
+              - /url: https://laravel.com/docs/authentication
+          - listitem [ref=e90]:
+            - link "Sanctum" [ref=e91] [cursor=pointer]:
+              - /url: https://laravel.com/docs/sanctum
+        - heading "Authorization & Resource Policy" [level=2] [ref=e92]
+        - paragraph [ref=e93]: The second stage of the authorization process is authorization. This is the process of verifying that you are allowed to do something.
+        - heading "Using the Gate Facade" [level=3] [ref=e94]:
+          - text: Using the
+          - code [ref=e95]: Gate
+          - text: Facade
+        - paragraph [ref=e96]:
+          - text: The most straightfoward way to do this in Laravel is to use the
+          - code [ref=e97]: Gate
+          - text: facade.
+        - code [ref=e99]:
+          - generic [ref=e100]: "Gate::allows('update-post', function ($user, $post) {"
+          - generic [ref=e101]: return $user->id === $post->user_id;
+          - generic [ref=e102]: "});"
+        - paragraph [ref=e103]:
+          - text: This will return a boolean value, indicating whether the user is allowed to update the post and is defined in the
+          - code [ref=e104]: boot
+          - text: method of the
+          - code [ref=e105]: AppServiceProvider
+          - text: class.
+        - paragraph [ref=e106]: This is the most basic form of authorization, and it’s a great way to start. But, as your application grows, organization becomes more important.
+        - heading "Using Policies" [level=3] [ref=e107]
+        - paragraph [ref=e108]: Policies are a great way to organize your authorization logic. They allow you to group related authorization logic into a single class for a given eloquent model. They are also automatically recognized by very popular packages like Filament.
+        - code [ref=e110]:
+          - generic [ref=e111]: class PostPolicy
+          - generic [ref=e112]: "{"
+          - generic [ref=e113]: public function update(User $user, Post $post)
+          - generic [ref=e114]: "{"
+          - generic [ref=e115]: return $user->id === $post->user_id;
+          - generic [ref=e116]: "}"
+          - generic [ref=e117]: "}"
+        - heading "Roles and Permissions" [level=3] [ref=e118]
+        - paragraph [ref=e119]:
+          - text: The most robust way to handle authorization is to use roles and permissions. This allows you to define a set of permissions for a given role, and then assign roles to users. Spatie has a great package for this, called
+          - link "Laravel Permission" [ref=e120] [cursor=pointer]:
+            - /url: https://spatie.be/docs/laravel-permission
+          - text: ", and is a personal favorite of mine."
+        - paragraph [ref=e121]:
+          - text: Let’s show how this works with our PostPolicy example above, and add an aditional capability check for the
+          - code [ref=e122]: update
+          - text: method.
+        - code [ref=e124]:
+          - generic [ref=e125]: class PostPolicy
+          - generic [ref=e126]: "{"
+          - generic [ref=e127]: public function update(User $user, Post $post)
+          - generic [ref=e128]: "{"
+          - generic [ref=e129]: return $user->hasPermissionTo('update-post') && $user->id === $post->user_id;
+          - generic [ref=e130]: "}"
+          - generic [ref=e131]: "}"
+        - paragraph [ref=e132]:
+          - text: This will check if the user has the
+          - code [ref=e133]: update-post
+          - text: permission,
+          - emphasis [ref=e134]: and
+          - text: "that they own the post. This is a blend of both Authorization and Resource Policy. In AWS, a similar policy may be written as:"
+        - code [ref=e136]:
+          - generic [ref=e137]: "{"
+          - generic [ref=e138]: "\"Effect\": \"Allow\","
+          - generic [ref=e139]: "\"Action\": [\"s3:PutObject\"],"
+          - generic [ref=e140]: "\"Resource\": [\"arn:aws:s3:::my-bucket/*\"]"
+          - generic [ref=e141]: "}"
+        - paragraph [ref=e142]:
+          - text: The key is that a user must be allowed to do something, and then they must have the right to do it on a given resource. So in our car example, just because you have a driver’s license, doesn’t mean you can drive any car. You must have the right to drive
+          - emphasis [ref=e143]: this
+          - text: car.
+        - list [ref=e144]:
+          - listitem [ref=e145]:
+            - link "Laravel Permission" [ref=e146] [cursor=pointer]:
+              - /url: https://spatie.be/docs/laravel-permission
+          - listitem [ref=e147]:
+            - link "Policies" [ref=e148] [cursor=pointer]:
+              - /url: https://laravel.com/docs/authorization#policies
+          - listitem [ref=e149]:
+            - link "Gates" [ref=e150] [cursor=pointer]:
+              - /url: https://laravel.com/docs/authorization#gates
+        - heading "Temporal Access" [level=2] [ref=e151]
+        - paragraph [ref=e152]: The final stage of the authorization process is temporal access. This is the process of verifying that you are allowed to do something at a given time.
+        - paragraph [ref=e153]: The most common way to do this in Laravel is adding an expiration date to a Sanctum token.
+        - code [ref=e155]:
+          - generic [ref=e156]: $token = $user->createToken('auth_token', ['update-post'], now()->addMinutes(15))->plainTextToken;
+        - paragraph [ref=e157]:
+          - text: This will create a token that expires in 15 minutes, and only allows the
+          - code [ref=e158]: update-post
+          - text: action.
+        - paragraph [ref=e159]:
+          - text: For traditional
+          - code [ref=e160]: web
+          - text: guard sessions, this can be handled by things like session lifetimes.
+      - generic [ref=e161]:
+        - link "#Laravel" [ref=e162] [cursor=pointer]:
+          - /url: /tags/laravel
+        - link "#Authentication" [ref=e163] [cursor=pointer]:
+          - /url: /tags/authentication
+        - link "#Authorization" [ref=e164] [cursor=pointer]:
+          - /url: /tags/authorization
+        - link "#Software Patterns" [ref=e165] [cursor=pointer]:
+          - /url: /tags/software-patterns
+      - navigation "Post navigation" [ref=e166]:
+        - link "← Previous How to Integrate Laravel Sanctum with Spatie Permissions" [ref=e167] [cursor=pointer]:
+          - /url: /blog/how-to-integrate-laravel-sanctum-with-spatie-permissions/
+          - generic [ref=e168]: ← Previous
+          - generic [ref=e169]: How to Integrate Laravel Sanctum with Spatie Permissions
+        - link "Next → Wrangle Your Business Logic with Laravel Pipelines" [ref=e170] [cursor=pointer]:
+          - /url: /blog/wrangle-your-business-logic-with-laravel-pipelines/
+          - generic [ref=e171]: Next →
+          - generic [ref=e172]: Wrangle Your Business Logic with Laravel Pipelines
+      - iframe [ref=e175]:
+        - main [ref=f5e3]:
+          - generic [ref=f5e6]: Loading comments…
+    - complementary [ref=e176]:
+      - generic [ref=e177]:
+        - navigation "Article sections navigation" [ref=e178]:
+          - heading "Contents 10" [level=4] [ref=e179]:
+            - generic [ref=e180]: Contents
+            - generic [ref=e181]: "10"
+          - list [ref=e182]:
+            - listitem [ref=e183]:
+              - link "Authorization Patterns" [ref=e184] [cursor=pointer]:
+                - /url: "#authorization-patterns"
+            - listitem [ref=e185]:
+              - link "Authentication" [ref=e186] [cursor=pointer]:
+                - /url: "#authentication"
+            - listitem [ref=e187]:
+              - 'link "Using the `Auth` Facade" [ref=e188] [cursor=pointer]':
+                - /url: "#using-the-auth-facade"
+            - listitem [ref=e189]:
+              - link "Using Laravel Sanctum" [ref=e190] [cursor=pointer]:
+                - /url: "#using-laravel-sanctum"
+            - listitem [ref=e191]:
+              - link "Socialite" [ref=e192] [cursor=pointer]:
+                - /url: "#socialite"
+            - listitem [ref=e193]:
+              - link "Authorization & Resource Policy" [ref=e194] [cursor=pointer]:
+                - /url: "#authorization-resource-policy"
+            - listitem [ref=e195]:
+              - 'link "Using the `Gate` Facade" [ref=e196] [cursor=pointer]':
+                - /url: "#using-the-gate-facade"
+            - listitem [ref=e197]:
+              - link "Using Policies" [ref=e198] [cursor=pointer]:
+                - /url: "#using-policies"
+            - listitem [ref=e199]:
+              - link "Roles and Permissions" [ref=e200] [cursor=pointer]:
+                - /url: "#roles-and-permissions"
+            - listitem [ref=e201]:
+              - link "Temporal Access" [ref=e202] [cursor=pointer]:
+                - /url: "#temporal-access"
+        - generic [ref=e203]:
+          - generic [ref=e204]: Share
+          - generic [ref=e205]:
+            - link "Share on Bluesky" [ref=e206] [cursor=pointer]:
+              - /url: https://bsky.app/intent/compose?text=A%20Guide%20to%20Laravel%20Authorization%20Patterns%20http%3A%2F%2Flocalhost%3A4321%2Fblog%2Fa-guide-to-laravel-authorization-patterns%2F
+              - img [ref=e207]
+            - link "Share on LinkedIn" [ref=e209] [cursor=pointer]:
+              - /url: https://www.linkedin.com/sharing/share-offsite/?url=http%3A%2F%2Flocalhost%3A4321%2Fblog%2Fa-guide-to-laravel-authorization-patterns%2F
+              - img [ref=e210]
+            - button "Copy link" [ref=e212] [cursor=pointer]:
+              - img [ref=e213]
+  - contentinfo [ref=e216]:
+    - generic [ref=e217]:
+      - generic [ref=e218]:
+        - paragraph [ref=e219]: Colophon
+        - paragraph [ref=e220]:
+          - text: Written & wrenched
+          - text: from Raleigh, NC.
+        - paragraph [ref=e221]: This site is my field notebook. Occasional essays on software, the long game of learning, and (sometimes) a Miata that refuses to die.
+        - generic [ref=e222]:
+          - generic [ref=e223]: Since 2014
+          - generic [ref=e224]: Posts 040
+          - generic [ref=e225]: Built with Astro
+      - generic [ref=e226]:
+        - paragraph [ref=e227]: Navigate
+        - list [ref=e228]:
+          - listitem [ref=e229]:
+            - link "· Writing" [ref=e230] [cursor=pointer]:
+              - /url: /blog
+              - generic [ref=e231]: ·
+              - text: Writing
+          - listitem [ref=e232]:
+            - link "· Projects" [ref=e233] [cursor=pointer]:
+              - /url: /projects
+              - generic [ref=e234]: ·
+              - text: Projects
+          - listitem [ref=e235]:
+            - link "· About" [ref=e236] [cursor=pointer]:
+              - /url: /about
+              - generic [ref=e237]: ·
+              - text: About
+          - listitem [ref=e238]:
+            - link "· Hire Me" [ref=e239] [cursor=pointer]:
+              - /url: /hire-me
+              - generic [ref=e240]: ·
+              - text: Hire Me
+          - listitem [ref=e241]:
+            - link "· Tags" [ref=e242] [cursor=pointer]:
+              - /url: /tags
+              - generic [ref=e243]: ·
+              - text: Tags
+          - listitem [ref=e244]:
+            - link "· RSS" [ref=e245] [cursor=pointer]:
+              - /url: /rss.xml
+              - generic [ref=e246]: ·
+              - text: RSS
+      - generic [ref=e247]:
+        - paragraph [ref=e248]: Elsewhere
+        - list [ref=e249]:
+          - listitem [ref=e250]:
+            - link "↗ BlueSky" [ref=e251] [cursor=pointer]:
+              - /url: https://bsky.app/profile/arter.dev
+              - generic [ref=e252]: ↗
+              - text: BlueSky
+          - listitem [ref=e253]:
+            - link "↗ GitHub" [ref=e254] [cursor=pointer]:
+              - /url: https://github.com/christopherarter
+              - generic [ref=e255]: ↗
+              - text: GitHub
+          - listitem [ref=e256]:
+            - link "↗ LinkedIn" [ref=e257] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/chrisarter1/
+              - generic [ref=e258]: ↗
+              - text: LinkedIn
+          - listitem [ref=e259]:
+            - link "↗ php.social Mastodon" [ref=e260] [cursor=pointer]:
+              - /url: https://phpc.social/@chrisarter
+              - generic [ref=e261]: ↗
+              - text: php.social Mastodon
+          - listitem [ref=e262]:
+            - link "↗ YouTube" [ref=e263] [cursor=pointer]:
+              - /url: https://www.youtube.com/@codebeans
+              - generic [ref=e264]: ↗
+              - text: YouTube
+      - generic [ref=e265]:
+        - paragraph [ref=e266]: Contact
+        - paragraph [ref=e267]: Questions, collaborations, or a shared appreciation of well-composed code.
+        - generic [ref=e268]:
+          - generic [ref=e269]: hi@arter.dev
+          - generic [ref=e270]: tz America/New_York
+    - generic [ref=e271]:
+      - generic [ref=e272]: © 2026 Chris Arter
+      - generic [ref=e273]: All rights reserved · Set in DM Serif + JetBrains Mono
+  - generic [ref=e276]:
+    - button "Menu" [ref=e277]:
+      - img [ref=e279]
+      - generic: Menu
+    - button "Inspect" [ref=e283]:
+      - img [ref=e285]
+      - generic: Inspect
+    - button "Audit" [ref=e287]:
+      - generic [ref=e288]:
+        - img [ref=e289]
+        - img [ref=e292]
+      - generic: Audit
+    - button "Settings" [ref=e295]:
+      - img [ref=e297]
+      - generic: Settings

@@ -3,30 +3,46 @@ import type { GetStaticPathsOptions, Page } from 'astro';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Pagination from '../../components/Pagination.astro';
-import PostPreview from '../../components/PostPreview.astro';
-import Subscribe from '../../components/Subscribe.astro';
+import PostList from '../../components/PostList.astro';
 import siteConfig from '../../data/site-config';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-    return paginate(posts, { pageSize: siteConfig.postsPerPage || 4 });
+    return paginate(posts, { pageSize: siteConfig.postsPerPage || 8 });
 }
 
 type Props = { page: Page<CollectionEntry<'blog'>> };
 
 const { page } = Astro.props;
-const blog = page.data;
+const allPosts = page.data;
+const startIndex = (page.currentPage - 1) * page.size;
+const startNumber = page.total - startIndex;
 ---
 
 <BaseLayout
-    title="Blog"
-    description="Embark on a journey of personal insights and experiences through my blog"
-    image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
+    title="Writing"
+    description="Essays and notes on software, the craft of shipping, and the long game of learning."
+    image={{ src: '/dante-preview.jpg', alt: 'arter.dev writing archive' }}
     showHeader={false}
 >
-    <h1 class="mb-12 text-4xl md:text-6xl font-serif font-bold leading-tight sm:mb-16">Blog Archive</h1>
-    {blog.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
-    <Pagination page={page} class="my-16 sm:my-24" />
-    <Subscribe class="my-16 sm:my-24" />
+    <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
+        <header class="border-b border-ink-4 pb-10 mb-8">
+            <span class="block font-mono text-[11px] tracking-widest text-ink-3 uppercase mb-4">
+                Page {page.currentPage} of {page.lastPage} · {page.total} posts
+            </span>
+            <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0 mb-5">
+                Writing
+            </h1>
+            <p class="max-w-[54ch] text-ink-2 text-[17px] leading-relaxed m-0">
+                Essays and notes on software, the craft of shipping, and the long game of learning.
+            </p>
+        </header>
+
+        <PostList posts={allPosts} startNumber={startNumber} />
+
+        <div class="mt-14">
+            <Pagination page={page} />
+        </div>
+    </main>
 </BaseLayout>

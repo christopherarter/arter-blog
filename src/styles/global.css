@@ -1,87 +1,122 @@
-@import '@fontsource/dm-serif-text';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
     :root {
-        --color-text-main: 23 23 23; /* #171717 */
-        --color-bg-main: 242 241 236; /* #F2F1EC */
-        --color-bg-muted: 234 233 225; /* #EAE9E1 */
-        --color-border-main: 23 23 23; /* #171717 */
-    }
-    html.dark {
-        --color-text-main: 242 241 236; /* #F2F1EC */
-        --color-bg-main: 23 23 23; /* #171717 */
-        --color-bg-muted: 36 36 36; /* #242424 */
-        --color-border-main: 242 241 236; /* #F2F1EC */
+        --ink: 243 241 234;        /* #f3f1ea */
+        --ink-2: 201 197 183;      /* #c9c5b7 */
+        --ink-3: 138 133 118;      /* #8a8576 */
+        --ink-4: 90 86 72;         /* #5a5648 */
+        --paper: 20 19 17;         /* #141311 */
+        --paper-2: 27 26 23;       /* #1b1a17 */
+        --paper-3: 36 34 29;       /* #24221d */
+
+        --color-text-main: var(--ink);
+        --color-bg-main: var(--paper);
+        --color-bg-muted: var(--paper-2);
+        --color-border-main: var(--ink);
     }
 
-    /* Cyan */
-    /*
-    :root {
-        --color-text-main: 22 42 43;
-        --color-bg-main: 214 224 226;
-        --color-bg-muted: 204 216 219;
-        --color-border-main: 22 42 43;
+    html {
+        color-scheme: dark;
+        background: rgb(var(--paper));
     }
-    html.dark {
-        --color-text-main: 214 224 226;
-        --color-bg-main: 22 42 43;
-        --color-bg-muted: 28 53 55;
-        --color-border-main: 214 224 226;
-    }
-    */
 
-    /* Green */
-    /*
-    :root {
-        --color-text-main: 58 66 56;
-        --color-bg-main: 243 239 230;
-        --color-bg-muted: 238 233 220;
-        --color-border-main: 58 66 56;
+    body {
+        font-family: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
     }
-    html.dark {
-        --color-text-main: 243 239 230;
-        --color-bg-main: 94 108 91;
-        --color-bg-muted: 89 103 86;
-        --color-border-main: 243 239 230;
+
+    ::selection {
+        background: rgb(var(--ink));
+        color: rgb(var(--paper));
     }
-    */
 }
 
-
-.arter-button {
-    @apply inline-flex items-center justify-center px-6 py-2 font-serif leading-tight italic text-main bg-main border border-main rounded-full transition hover:bg-muted;
+/* -------------------------------------------------------------------------- */
+/* Prose (article body) — editorial refined                                   */
+/* -------------------------------------------------------------------------- */
+.prose-editorial {
+    font-size: 18px;
+    line-height: 1.75;
+    color: rgb(var(--ink));
+    max-width: 68ch;
 }
-
-/* Fix Chrome Lighthouse audit: Explicit font-size for h1 within sectioning elements */
-article h1,
-section h1,
-aside h1,
-nav h1 {
-    font-size: 2.25rem; /* Default to text-4xl equivalent */
-    line-height: 2.5rem;
+.prose-editorial > * + * { margin-top: 1.5em; }
+.prose-editorial h2 {
+    font-family: 'DM Serif Display', 'DM Serif Text', serif;
+    font-size: 34px;
+    line-height: 1.12;
+    margin-top: 2.4em;
+    margin-bottom: 0.6em;
+    font-weight: 400;
+    letter-spacing: -0.015em;
 }
-
-/* Responsive sizing for larger screens */
-@media (min-width: 768px) {
-    /* Hero section h1 (homepage) - larger sizing */
-    section h1 {
-        font-size: 3.75rem; /* text-6xl */
-        line-height: 1;
-    }
-    
-    /* Article h1s for blog posts - largest sizing */
-    article h1.blog-post-title {
-        font-size: 3.75rem; /* text-6xl */
-        line-height: 1;
-    }
-    
-    /* Article h1s for projects and pages - medium sizing */
-    article h1:not(.blog-post-title) {
-        font-size: 3rem; /* text-5xl */
-        line-height: 1;
-    }
+.prose-editorial h3 {
+    font-family: 'DM Serif Display', 'DM Serif Text', serif;
+    font-size: 24px;
+    line-height: 1.25;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+.prose-editorial p { margin: 0; }
+.prose-editorial a {
+    color: rgb(var(--ink));
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--ink-4));
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+.prose-editorial a:hover { text-decoration-color: rgb(var(--ink)); }
+.prose-editorial blockquote {
+    font-family: 'DM Serif Display', 'DM Serif Text', serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.32;
+    color: rgb(var(--ink));
+    margin: 1.8em 0;
+    padding-left: 28px;
+    border-left: 1px solid rgb(var(--ink-4));
+}
+.prose-editorial pre {
+    background: rgb(var(--paper-2));
+    border: 1px solid rgba(243, 241, 234, 0.10);
+    border-radius: 2px;
+    padding: 22px 24px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: rgb(var(--ink-2));
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+.prose-editorial code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.88em;
+    color: rgb(var(--ink));
+}
+.prose-editorial pre code { color: inherit; background: transparent; padding: 0; }
+.prose-editorial :not(pre) > code {
+    background: rgb(var(--paper-2));
+    padding: 0.1em 0.4em;
+    border-radius: 2px;
+    border: 1px solid rgba(243, 241, 234, 0.10);
+}
+.prose-editorial ul,
+.prose-editorial ol { padding-left: 1.2em; margin: 0; }
+.prose-editorial li + li { margin-top: 0.4em; }
+.prose-editorial strong { color: rgb(var(--ink)); font-weight: 600; }
+.prose-editorial img,
+.prose-editorial figure { max-width: 100%; }
+.prose-editorial hr {
+    border: 0;
+    border-top: 1px solid rgba(243, 241, 234, 0.10);
+    margin: 2.4em 0;
 }

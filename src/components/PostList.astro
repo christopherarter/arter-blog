@@ -1,9 +1,22 @@
 ---
 import PostPreview from './PostPreview.astro';
 import { type CollectionEntry } from 'astro:content';
-const { posts } = Astro.props;
+
+type Props = {
+    posts: CollectionEntry<'blog'>[];
+    numbers?: number[];
+    startNumber?: number;
+};
+
+const { posts, numbers, startNumber } = Astro.props;
+
+function numberFor(index: number, post: CollectionEntry<'blog'>): number {
+    if (numbers && numbers[index] !== undefined) return numbers[index];
+    if (startNumber !== undefined) return startNumber - index;
+    return posts.length - index;
+}
 ---
 
-<div class="flex flex-col gap-8">
-    {posts.map((post: CollectionEntry<'blog'>) => <PostPreview post={post} />)}
-</div>
+<ul class="list-none p-0 m-0">
+    {posts.map((post, i) => <PostPreview post={post} number={numberFor(i, post)} />)}
+</ul>

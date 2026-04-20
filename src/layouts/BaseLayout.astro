@@ -2,50 +2,22 @@
 import { ClientRouter } from 'astro:transitions';
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
 import Nav from '../components/Nav.astro';
 
 export type Props = HeadProps & { showHeader?: boolean };
 
-const { showHeader = true, ...head } = Astro.props;
+const { showHeader: _showHeader = true, ...head } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en" class="antialiased break-words">
     <head>
         <BaseHead {...head} />
-        <script>
-            if (localStorage.theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
-        </script>
-        <style>
-            .bg-fade {
-                background-image: url('/images/page-bg.svg');
-                background-repeat: no-repeat;
-                background-position: center -300px;
-                background-size: 100% auto;
-                opacity: 0.2;
-                height: 600px;
-            }
-            .gradient-overlay {
-                @apply h-[600px] bg-gradient-to-b from-transparent to-main transition-colors duration-300;
-            }
-        </style>
         <ClientRouter />
     </head>
-    <body class="bg-main text-main relative">
-        <div class="absolute inset-0">
-            <div class="absolute inset-0 bg-fade"></div>
-            <div class="absolute inset-0 gradient-overlay"></div>
-        </div>
-        <div class="relative flex flex-col min-h-screen px-4 md:px-8">
-            <Nav />
-            {showHeader && <Header />}
-            <main class="grow w-full max-w-5xl mx-auto">
-                <slot />
-            </main>
-            <Footer />
-        </div>
+    <body class="bg-paper text-ink">
+        <Nav />
+        <slot />
+        <Footer />
     </body>
 </html>

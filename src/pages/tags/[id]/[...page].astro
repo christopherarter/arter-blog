@@ -3,8 +3,7 @@ import type { GetStaticPathsOptions, Page } from 'astro';
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Pagination from '../../../components/Pagination.astro';
-import PostPreview from '../../../components/PostPreview.astro';
-import Subscribe from '../../../components/Subscribe.astro';
+import PostList from '../../../components/PostList.astro';
 import siteConfig from '../../../data/site-config';
 import { sortItemsByDateDesc, getAllTags, getPostsByTag } from '../../../utils/data-utils';
 
@@ -16,7 +15,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
         const filteredPosts = getPostsByTag(posts, tag.id);
         return paginate(filteredPosts, {
             params: { id: tag.id },
-            pageSize: siteConfig.postsPerPage || 4
+            pageSize: siteConfig.postsPerPage || 8
         });
     });
 }
@@ -28,19 +27,30 @@ const blog = page.data;
 const params = Astro.params;
 const allPosts = await getCollection('blog');
 const allTags = getAllTags(allPosts);
-const currentTag = allTags.find((tag) => {
-    return tag.id === params.id;
-});
+const currentTag = allTags.find((tag) => tag.id === params.id);
+
+const startIndex = (page.currentPage - 1) * page.size;
+const startNumber = page.total - startIndex;
 ---
 
 <BaseLayout
-    title={`Posts Tagged ${currentTag?.name}`}
-    description={`Explore a curated collection of blog posts under ${currentTag?.name}`}
-    image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
+    title={`Posts tagged ${currentTag?.name}`}
+    description={`A curated collection of posts under ${currentTag?.name}.`}
+    image={{ src: '/dante-preview.jpg', alt: 'arter.dev tag archive' }}
     showHeader={false}
 >
-    <h1 class="mb-12 text-4xl md:text-6xl font-serif font-bold leading-tight sm:mb-16">Posts Tagged "{currentTag?.name}"</h1>
-    {blog.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
-    <Pagination page={page} class="my-16 sm:my-24" />
-    <Subscribe class="my-16 sm:my-24" />
+    <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
+        <header class="border-b border-ink-4 pb-10 mb-8 flex items-baseline justify-between gap-6 flex-wrap">
+            <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0">
+                {currentTag?.name}
+            </h1>
+            <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">
+                {page.total} post{page.total === 1 ? '' : 's'}
+            </span>
+        </header>
+        <PostList posts={blog} startNumber={startNumber} />
+        <div class="mt-14">
+            <Pagination page={page} />
+        </div>
+    </main>
 </BaseLayout>

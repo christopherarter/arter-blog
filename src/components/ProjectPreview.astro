@@ -1,6 +1,5 @@
 ---
 import { type CollectionEntry } from 'astro:content';
-import ArrowRight from '../icons/ArrowRight.astro';
 
 type Props = { project: CollectionEntry<'projects'>; class?: string; headingLevel?: 'h2' | 'h3' };
 
@@ -9,16 +8,18 @@ const { title, description } = project.data;
 const TitleTag = headingLevel;
 ---
 
-<a class:list={['flex justify-between items-start gap-8 group', className]} href={`/projects/${project.id}/`}>
-    <div class="grow">
-        <TitleTag
-            class="text-xl leading-tight font-serif font-medium group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl"
-        >
+<a
+    href={`/projects/${project.id}/`}
+    class:list={[
+        'group grid grid-cols-[1fr_auto] gap-8 py-7 border-b border-hair text-ink no-underline transition-[padding] duration-200 ease-out hover:pl-3',
+        className
+    ]}
+>
+    <div>
+        <TitleTag class="font-serif font-normal text-[28px] leading-tight tracking-[-0.015em] m-0 mb-2.5 group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-4">
             {title}
         </TitleTag>
-        {description && <div class="mt-1 text-sm leading-normal">{description}</div>}
+        {description && <p class="text-ink-2 text-[15px] leading-[1.55] m-0">{description}</p>}
     </div>
-    <div class="hidden font-serif italic opacity-0 transition group-hover:opacity-100 sm:inline-flex sm:gap-1 sm:items-center sm:shrink-0">
-        View Project <ArrowRight class="fill-current w-4 h-4" />
-    </div>
+    <span class="self-center text-ink-3 font-mono text-base opacity-0 transition-opacity group-hover:opacity-100">→</span>
 </a>

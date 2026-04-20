@@ -9,7 +9,7 @@ import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
-    return paginate(projects, { pageSize: siteConfig.projectsPerPage || 6 });
+    return paginate(projects, { pageSize: siteConfig.projectsPerPage || 8 });
 }
 
 type Props = { page: Page<CollectionEntry<'projects'>> };
@@ -19,12 +19,30 @@ const portfolio = page.data;
 ---
 
 <BaseLayout
-    title="Portfolio"
-    description="Explore a diverse portfolio showcasing my passion and expertise"
-    image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
+    title="Projects"
+    description="Things I've built, maintained, or contributed to."
+    image={{ src: '/dante-preview.jpg', alt: 'arter.dev projects' }}
     showHeader={false}
 >
-    <h1 class="mb-12 text-4xl md:text-6xl font-serif font-bold leading-tight sm:mb-16">Projects</h1>
-    {portfolio.map((project) => <ProjectPreview project={project} class="mb-10 sm:mb-12" />)}
-    <Pagination page={page} class="my-16 sm:my-24" />
+    <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
+        <header class="border-b border-ink-4 pb-10 mb-8">
+            <div class="flex items-baseline justify-between gap-6 flex-wrap">
+                <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0 mb-5">
+                    Projects
+                </h1>
+                <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">
+                    {page.total} project{page.total === 1 ? '' : 's'}
+                </span>
+            </div>
+            <p class="max-w-[54ch] text-ink-2 text-[17px] leading-relaxed m-0">
+                Things I've built, maintained, or contributed to.
+            </p>
+        </header>
+        <div>
+            {portfolio.map((project) => <ProjectPreview project={project} />)}
+        </div>
+        <div class="mt-14">
+            <Pagination page={page} />
+        </div>
+    </main>
 </BaseLayout>

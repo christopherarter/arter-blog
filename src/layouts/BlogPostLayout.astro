@@ -1,7 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-import TableOfContentsMobile from '../components/TableOfContentsMobile.astro';
 import ShareLinks from '../components/ShareLinks.astro';
 import type { Heading } from '../utils/markdown-utils';
 
@@ -13,28 +12,153 @@ type Props = {
     headings?: Heading[];
 };
 
-const { title, description, image, showHeader, headings } = Astro.props;
-
-// Ensure `image` prop matches the shape expected by `BaseLayout` / `BaseHead`
+const { title, description, image, headings } = Astro.props;
 const resolvedImage = typeof image === 'string' ? { src: image } : image;
-
-// Get the current URL
 const { href } = Astro.url;
+const hasToc = !!(headings && headings.length > 0);
 ---
 
-<BaseLayout showHeader={showHeader ?? false} title={title} description={description} image={resolvedImage} headings={headings}>
-    <div class={`flex gap-4 pb-20 md:pb-0 ${headings && headings.length > 0 ? '' : 'md:justify-center'}`}>
-        <main class={`w-full ${headings && headings.length > 0 ? 'md:w-3/4' : 'md:max-w-4xl'}`} role="main" aria-label="Article content">
-            <slot />
-        </main>
-        {headings && headings.length > 0 && (
-            <aside class="w-full md:w-1/4" role="complementary" aria-label="Table of contents sidebar">
-                <div class="sticky top-0 hidden md:block">
-                    <TableOfContents headings={headings} />
+<BaseLayout
+    showHeader={false}
+    title={title}
+    description={description}
+    image={resolvedImage}
+    pageType="article"
+>
+    <div class="pt-16 md:pt-20 pb-20 md:pb-24">
+        <div
+            class:list={[
+                'grid gap-10 md:gap-[72px] max-w-article mx-auto px-5 md:px-10',
+                hasToc ? 'md:grid-cols-[1fr_260px]' : 'max-w-[900px]'
+            ]}
+        >
+            <article>
+                <slot />
+            </article>
+
+            {hasToc && (
+                <aside class="hidden md:block">
+                    <div class="sticky top-[104px]">
+                        <TableOfContents headings={headings!} />
+                        <ShareLinks title={title} url={href} />
+                    </div>
+                </aside>
+            )}
+        </div>
+    </div>
+
+    {hasToc && (
+        <div class="mobile-toc-root md:hidden" data-mobile-toc>
+            <button
+                type="button"
+                class="mobile-toc-toggle fixed left-4 right-4 bottom-4 z-[60] grid grid-cols-[auto_1fr_auto] items-center gap-3.5 px-[18px] py-3 rounded-full border border-hair-2 font-mono text-[11px] tracking-wider uppercase cursor-pointer shadow-[0_6px_24px_rgba(0,0,0,0.4)] transition-colors hover:border-ink"
+                style="background: rgba(27,26,23,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: rgb(var(--ink));"
+                aria-controls="mobile-toc-panel"
+                aria-expanded="false"
+            >
+                <span class="text-ink-3">Contents</span>
+                <span class="text-left text-ink tracking-[0.04em] normal-case text-[12.5px] leading-tight overflow-hidden text-ellipsis whitespace-nowrap" data-toc-current>
+                    Jump to section
+                </span>
+                <span class="mobile-toc-caret text-ink-3 text-xs transition-transform" aria-hidden="true">↑</span>
+            </button>
+
+            <div class="mobile-toc-backdrop fixed inset-0 bg-black/55 opacity-0 pointer-events-none transition-opacity z-[58]" aria-hidden="true"></div>
+
+            <div
+                id="mobile-toc-panel"
+                class="mobile-toc-panel fixed inset-x-0 bottom-0 z-[61] max-h-[75vh] bg-paper-2 border-t border-hair-2 rounded-t-2xl translate-y-full transition-transform flex flex-col"
+                style="padding-bottom: env(safe-area-inset-bottom);"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Table of contents"
+                aria-hidden="true"
+            >
+                <div class="flex items-center justify-between px-5 py-4 border-b border-hair">
+                    <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">Contents</span>
+                    <button
+                        type="button"
+                        class="mobile-toc-close bg-transparent border border-hair-2 text-ink-2 w-8 h-8 rounded-full cursor-pointer inline-flex items-center justify-center text-sm hover:text-ink hover:border-ink"
+                        aria-label="Close contents"
+                    >✕</button>
+                </div>
+                <div class="overflow-y-auto px-5 pt-4 pb-6">
+                    <TableOfContents headings={headings!} showTitle={false} />
                     <ShareLinks title={title} url={href} />
                 </div>
-            </aside>
-        )}
-    </div>
-    <TableOfContentsMobile headings={headings} title={title} url={href} />
+            </div>
+        </div>
+    )}
 </BaseLayout>
+
+<style>
+    /* State transitions that aren't ergonomic in pure utilities */
+    .mobile-toc-root.is-open .mobile-toc-caret { transform: rotate(180deg); color: rgb(var(--ink)); }
+    .mobile-toc-root.is-open .mobile-toc-backdrop { opacity: 1; pointer-events: auto; }
+    .mobile-toc-root.is-open .mobile-toc-panel { transform: translateY(0); }
+</style>
+
+<script is:inline>
+    (function () {
+        function wireMobileToc() {
+            var root = document.querySelector('[data-mobile-toc]');
+            if (!root) return;
+            var toggle = root.querySelector('.mobile-toc-toggle');
+            var panel = root.querySelector('.mobile-toc-panel');
+            var backdrop = root.querySelector('.mobile-toc-backdrop');
+            var closeBtn = root.querySelector('.mobile-toc-close');
+            var currentEl = root.querySelector('[data-toc-current]');
+            var links = panel ? Array.prototype.slice.call(panel.querySelectorAll('a[data-heading-id]')) : [];
+            if (!toggle || !panel || !backdrop) return;
+            if (root.dataset.wired === 'true') return;
+            root.dataset.wired = 'true';
+
+            function setOpen(open) {
+                root.classList.toggle('is-open', open);
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+
+            toggle.addEventListener('click', function () { setOpen(!root.classList.contains('is-open')); });
+            backdrop.addEventListener('click', function () { setOpen(false); });
+            if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && root.classList.contains('is-open')) setOpen(false);
+            });
+            links.forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+
+            var headings = links
+                .map(function (a) { return document.getElementById(a.dataset.headingId); })
+                .filter(function (el) { return !!el; });
+
+            function updateCurrent() {
+                if (!currentEl) return;
+                var y = window.scrollY + 140;
+                var current = null;
+                for (var i = 0; i < headings.length; i++) {
+                    if (headings[i].offsetTop <= y) current = headings[i];
+                }
+                currentEl.textContent = (current && current.textContent && current.textContent.trim()) || 'Jump to section';
+            }
+
+            var ticking = false;
+            window.addEventListener('scroll', function () {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(function () {
+                    updateCurrent();
+                    ticking = false;
+                });
+            });
+            updateCurrent();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', wireMobileToc);
+        } else {
+            wireMobileToc();
+        }
+        document.addEventListener('astro:page-load', wireMobileToc);
+    })();
+</script>

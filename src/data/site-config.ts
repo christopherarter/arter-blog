@@ -46,30 +46,11 @@ const siteConfig: SiteConfig = {
         alt: 'Chris Arter'
     },
     headerNavLinks: [
-        {
-            text: 'Home',
-            href: '/'
-        },
-        {
-            text: 'Blog',
-            href: '/blog'
-        },
-        {
-            text: 'Projects',
-            href: '/projects'
-        },
-        {
-            text: 'About',
-            href: '/about'
-        },
-        {
-            text: 'Hire Me',
-            href: '/hire-me'
-        },
-        // {
-        //     text: 'Newsletter',
-        //     href: 'https://newsletter.arter.dev/subscription/form'
-        // }
+        { text: 'Home', href: '/' },
+        { text: 'Writing', href: '/blog' },
+        { text: 'Projects', href: '/projects' },
+        { text: 'About', href: '/about' },
+        { text: 'Hire', href: '/hire-me' }
     ],
     footerNavLinks: [
         {

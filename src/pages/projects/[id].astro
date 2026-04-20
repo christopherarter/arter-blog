@@ -17,30 +17,52 @@ export async function getStaticPaths() {
     }));
 }
 
-type Props = { project: CollectionEntry<'projects'>; prevProject: CollectionEntry<'projects'>; nextProject: CollectionEntry<'projects'> };
+type Props = {
+    project: CollectionEntry<'projects'>;
+    prevProject: CollectionEntry<'projects'> | null;
+    nextProject: CollectionEntry<'projects'> | null;
+};
 
 const { project, prevProject, nextProject } = Astro.props;
 const { title, description, seo } = project.data;
 const { Content } = await render(project);
 ---
 
-<BaseLayout title={seo?.title ?? title} description={seo?.description ?? description} image={seo?.image} pageType="article" showHeader={false}>
-    <article class="mb-16 sm:mb-24">
-        <header class="mb-8">
-            <h1 class="text-3xl md:text-5xl leading-tight font-serif font-medium">{title}</h1>
+<BaseLayout
+    title={seo?.title ?? title}
+    description={seo?.description ?? description}
+    image={seo?.image}
+    pageType="article"
+    showHeader={false}
+>
+    <main class="max-w-[900px] mx-auto px-5 md:px-10 pt-16 md:pt-20 pb-16 md:pb-24">
+        <header class="border-b border-hair pb-8 mb-11">
+            <h1 class="font-serif font-normal text-ink text-[clamp(40px,6vw,64px)] leading-none tracking-[-0.025em] m-0 mb-5">
+                {title}
+            </h1>
+            {description && (
+                <p class="text-ink-2 text-[17px] leading-relaxed m-0 max-w-[54ch]">{description}</p>
+            )}
         </header>
-        <div class="max-w-none prose prose-dante sm:prose-lg">
-            {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
+
+        {seo?.image?.src && (
+            <figure class="m-0 mb-12 border border-hair-2 overflow-hidden">
+                <img src={seo.image.src} alt={seo.image.alt ?? ''} loading="eager" class="block w-full h-auto" />
+            </figure>
+        )}
+
+        <div class="prose-editorial">
             <Content />
         </div>
-    </article>
-    {
-        (prevProject || nextProject) && (
-            <div class="my-16 sm:my-24">
-                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">View Next</h2>
-                {nextProject && <ProjectPreview project={nextProject} class="mb-10 sm:mb-12" headingLevel="h3" />}
-                {prevProject && <ProjectPreview project={prevProject} class="mb-10 sm:mb-12" headingLevel="h3" />}
-            </div>
-        )
-    }
+
+        {(prevProject || nextProject) && (
+            <section class="mt-20 pt-10 border-t border-hair">
+                <h2 class="font-serif font-normal text-[32px] tracking-[-0.015em] m-0 mb-6">View Next</h2>
+                <div>
+                    {nextProject && <ProjectPreview project={nextProject} headingLevel="h3" />}
+                    {prevProject && <ProjectPreview project={prevProject} headingLevel="h3" />}
+                </div>
+            </section>
+        )}
+    </main>
 </BaseLayout>

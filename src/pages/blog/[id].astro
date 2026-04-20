@@ -1,18 +1,10 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Button from '../../components/Button.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import PostPreview from '../../components/PostPreview.astro';
-import Subscribe from '../../components/Subscribe.astro';
-import Share from '../../components/Share.astro';
-import AuthorCard from '../../components/AuthorCard.astro';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 import { slugify } from '../../utils/common-utils';
-import Newsletter from '../../components/Newsletter.astro';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
-import TableOfContents from '../../components/TableOfContents.astro';
 import ArticleSchema from '../../components/ArticleSchema.astro';
 import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro';
 import Footnotes from '../../components/Footnotes.astro';
@@ -30,117 +22,150 @@ export async function getStaticPaths() {
     }));
 }
 
-type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>; nextPost: CollectionEntry<'blog'> };
+type Props = {
+    post: CollectionEntry<'blog'>;
+    prevPost: CollectionEntry<'blog'> | null;
+    nextPost: CollectionEntry<'blog'> | null;
+};
 
 const { href } = Astro.url;
 const { post, prevPost, nextPost } = Astro.props;
 const { title, publishDate, updatedDate, excerpt, tags = [], seo, subtitle } = post.data;
 const { Content } = await render(post);
 
-// Extract headings from markdown for table of contents
 const headings = extractHeadingsFromMarkdown(post.body || '');
 
-// Breadcrumb data
 const breadcrumbs = [
     { name: 'Home', url: 'https://arter.dev/' },
     { name: 'Blog', url: 'https://arter.dev/blog/' },
     { name: title, url: href }
 ];
+
+function estimateReadTime(body: string | undefined): number {
+    if (!body) return 4;
+    const words = body.split(/\s+/).filter(Boolean).length;
+    return Math.max(3, Math.round(words / 220));
+}
+const readMinutes = estimateReadTime(post.body);
+const coverImage = seo?.image?.src;
+const coverAlt = seo?.image?.alt ?? '';
+
+const eyebrowItems: string[] = [];
+if (tags[0]) eyebrowItems.push(tags[0]);
+if (tags.length > 1) eyebrowItems.push(tags.slice(1, 3).join(' · '));
+eyebrowItems.push(`${readMinutes} min read`);
 ---
 
-<BlogPostLayout title={seo?.title ?? title} description={seo?.description ?? excerpt} image={seo?.image} showHeader={false} headings={headings}>
+<BlogPostLayout
+    title={seo?.title ?? title}
+    description={seo?.description ?? excerpt}
+    image={seo?.image}
+    showHeader={false}
+    headings={headings}
+>
     <ArticleSchema post={post} url={href} />
     <BreadcrumbSchema items={breadcrumbs} />
-    <article class="">
-        <header class="mb-8 flex flex-col gap-8">
-            <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight blog-post-title">{title}</h1>
-            {subtitle && <p class="text-2xl md:text-3xl font-serif font-medium">{subtitle}</p>}
-            {
-                tags.length > 0 && (
-                    <div class="mt-4 text-sm">
-                        {tags.map((tag) => (
-                            <a class="text-main hover:underline" href={`/tags/${slugify(tag)}`}>
-                                #{tag}
-                            </a>
-                        ))}
-                    </div>
-                )
-            }
-            {
-                publishDate && (
-                    <>
-                        <span>
-                            Written by <strong>Chris Arter</strong> | Published on <FormattedDate date={publishDate} />
-                        </span>
-                    </>
-                )
-            }
-            {
-                updatedDate && (
-                    <>
-                        {' '}
-                        <span>
-                            (Updated on <FormattedDate date={updatedDate} />)
-                        </span>
-                    </>
-                )
-            }
-        </header>
-    </article>
-    <div class="max-w-none prose prose-dante sm:prose-lg content" id="main-content">
-        {seo?.image?.src && <img src={seo.image.src} alt={seo.image.alt} class="w-full h-auto" />}
+
+    <header class="border-b border-hair pb-8 mb-11">
+        <div class="font-mono text-[11px] tracking-[0.18em] text-ink-3 uppercase mb-6 flex gap-[18px] flex-wrap">
+            {eyebrowItems.map((item, i) => (
+                <>
+                    {i > 0 && <span class="text-ink-4">·</span>}
+                    <span>{item}</span>
+                </>
+            ))}
+        </div>
+        <h1 class="blog-post-title font-serif font-normal text-ink text-[clamp(40px,6vw,72px)] leading-none tracking-[-0.028em] m-0 mb-5 max-w-[18ch]">
+            {title}
+        </h1>
+        {subtitle && (
+            <p class="font-serif italic text-[24px] leading-[1.32] text-ink-2 m-0 mb-8 max-w-[42ch] font-normal">
+                {subtitle}
+            </p>
+        )}
+        <div class="flex items-center gap-4 font-mono text-[11.5px] tracking-[0.06em] text-ink-3 uppercase flex-wrap">
+            <span>Written by <b class="text-ink font-medium">Chris Arter</b></span>
+            {publishDate && (
+                <>
+                    <span class="text-ink-4">·</span>
+                    <span>Published <FormattedDate date={publishDate} /></span>
+                </>
+            )}
+            {updatedDate && (
+                <>
+                    <span class="text-ink-4">·</span>
+                    <span>Updated <FormattedDate date={updatedDate} /></span>
+                </>
+            )}
+        </div>
+    </header>
+
+    {coverImage && (
+        <figure class="m-0 mb-[52px] aspect-[16/9] border border-hair-2 overflow-hidden">
+            <img src={coverImage} alt={coverAlt} loading="eager" decoding="async" class="block w-full h-full object-cover" />
+        </figure>
+    )}
+
+    <div class="prose-editorial" id="main-content">
         <Content />
         <Footnotes />
-        <Newsletter />
-        <Share title={title} url={href} />
-        <AuthorCard />
-        <div class="giscus mt-12">
-            <script
-                src="https://giscus.app/client.js"
-                data-repo="christopherarter/arter-blog"
-                data-repo-id="R_kgDONtMC0Q"
-                data-category="General"
-                data-category-id="DIC_kwDONtMC0c4Cmpzl"
-                data-mapping="pathname"
-                data-strict="0"
-                data-reactions-enabled="1"
-                data-emit-metadata="0"
-                data-input-position="bottom"
-                data-theme="preferred_color_scheme"
-                data-lang="en"
-                crossorigin="anonymous"
-                async></script>
+    </div>
+
+    {tags.length > 0 && (
+        <div class="mt-12 pt-5 border-t border-hair flex flex-wrap gap-4 font-mono text-xs tracking-mono uppercase">
+            {tags.map((tag) => (
+                <a
+                    href={`/tags/${slugify(tag)}`}
+                    class="text-ink-3 hover:text-ink hover:underline hover:decoration-ink-4 hover:underline-offset-[3px]"
+                >#{tag}</a>
+            ))}
         </div>
+    )}
+
+    {(prevPost || nextPost) && (
+        <nav class="mt-16 pt-10 border-t border-hair grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10" aria-label="Post navigation">
+            {prevPost ? (
+                <a href={`/blog/${prevPost.id}/`} class="group block text-ink no-underline">
+                    <div class="font-mono text-[10.5px] tracking-[0.18em] text-ink-3 uppercase mb-2">← Previous</div>
+                    <div class="font-serif text-[22px] leading-tight tracking-[-0.01em] text-ink group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-[3px]">
+                        {prevPost.data.title}
+                    </div>
+                </a>
+            ) : <span />}
+            {nextPost ? (
+                <a href={`/blog/${nextPost.id}/`} class="group block text-ink no-underline md:text-right">
+                    <div class="font-mono text-[10.5px] tracking-[0.18em] text-ink-3 uppercase mb-2">Next →</div>
+                    <div class="font-serif text-[22px] leading-tight tracking-[-0.01em] text-ink group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-[3px]">
+                        {nextPost.data.title}
+                    </div>
+                </a>
+            ) : <span />}
+        </nav>
+    )}
+
+    <div class="mt-[72px]">
+        <div class="giscus" />
+        <script
+            src="https://giscus.app/client.js"
+            data-repo="christopherarter/arter-blog"
+            data-repo-id="R_kgDONtMC0Q"
+            data-category="General"
+            data-category-id="DIC_kwDONtMC0c4Cmpzl"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="dark"
+            data-lang="en"
+            crossorigin="anonymous"
+            async
+        ></script>
     </div>
-    <div class="mt-8 flex flex-wrap items-center gap-6 text-sm justify-between sm:mt-12 sm:text-base">
-        {
-            tags.length > 0 && (
-                <div class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
-                    {tags.map((tag) => (
-                        <a class="text-main hover:underline" href={`/tags/${slugify(tag)}`}>
-                            #{tag}
-                        </a>
-                    ))}
-                </div>
-            )
-        }
-        <Button class="copy-url-button" aria-label="Copy link" data-url={href} data-tooltip-default="Copy link" data-tooltip-success="Copied">Share</Button>
-    </div>
-    {
-        (prevPost || nextPost) && (
-            <div class="my-16 sm:my-24">
-                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Read Next</h2>
-                {nextPost && <PostPreview post={nextPost} class="mb-10 sm:mb-12" headingLevel="h3" />}
-                {prevPost && <PostPreview post={prevPost} class="mb-10 sm:mb-12" headingLevel="h3" />}
-            </div>
-        )
-    }
-    <Subscribe class="my-16 sm:my-24" />
 </BlogPostLayout>
 
 <script>
     document.addEventListener('astro:page-load', () => {
-        // Add IDs to headings to match table of contents
         const content = document.getElementById('main-content');
         if (content) {
             const headings = content.querySelectorAll('h2, h3, h4, h5, h6');
@@ -150,78 +175,34 @@ const breadcrumbs = [
                     const text = heading.textContent || '';
                     heading.id = text
                         .toLowerCase()
-                        .replace(/[^\w\s-]/g, '') // Remove special characters
-                        .replace(/\s+/g, '-') // Replace spaces with hyphens
-                        .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/\s+/g, '-')
+                        .replace(/^-+|-+$/g, '');
                 }
             });
         }
 
-        const copyUrlButton = document.querySelector('.copy-url-button') as HTMLButtonElement;
-        copyUrlButton?.addEventListener('click', async () => {
-            await copyUrl(copyUrlButton);
-        });
-
-        async function copyUrl(button: HTMLButtonElement) {
-            let url = button.getAttribute('data-url') || '';
-            let label = button.innerText;
-
-            await navigator.clipboard.writeText(url);
-
-            button.innerText = 'Copied';
-
-            setTimeout(() => {
-                button.innerText = label;
-            }, 2500);
-        }
-
-        // Handle source citations and footnotes
         const citations = document.querySelectorAll('.source-citation');
         const footnotesList = document.querySelector('.footnotes-list');
         const footnotesContainer = document.getElementById('footnotes');
-
         if (citations.length > 0 && footnotesList && footnotesContainer) {
             const sources: Array<{ num: number; url: string; title: string }> = [];
-
             citations.forEach((cite, index) => {
                 const url = cite.getAttribute('data-source-url') || '';
                 const title = cite.getAttribute('data-source-title') || url;
                 const num = index + 1;
-
-                // Update inline citation
                 cite.textContent = `[${num}]`;
                 cite.setAttribute('href', `#footnote-${num}`);
                 cite.id = `citation-${num}`;
-
                 sources.push({ num, url, title });
             });
-
-            // Render footnotes
             sources.forEach(({ num, url, title }) => {
                 const li = document.createElement('li');
                 li.id = `footnote-${num}`;
-                li.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="text-main hover:underline">${title}</a> <a href="#citation-${num}" class="text-main/60 hover:text-main ml-1">↩</a>`;
+                li.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="text-ink hover:underline">${title}</a> <a href="#citation-${num}" class="text-ink/60 hover:text-ink ml-1">↩</a>`;
                 footnotesList.appendChild(li);
             });
-
-            // Show footnotes container
             footnotesContainer.classList.remove('hidden');
-
-            // Update schema with citations
-            const schemaScript = document.querySelector('script[type="application/ld+json"]');
-            if (schemaScript && schemaScript.textContent) {
-                try {
-                    const schema = JSON.parse(schemaScript.textContent);
-                    schema.citation = sources.map(({ url, title }) => ({
-                        '@type': 'WebPage',
-                        url: url,
-                        name: title
-                    }));
-                    schemaScript.textContent = JSON.stringify(schema);
-                } catch (e) {
-                    // Schema parsing failed, skip citation injection
-                }
-            }
         }
     });
 </script>

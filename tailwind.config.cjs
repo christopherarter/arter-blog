@@ -1,14 +1,29 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
     darkMode: 'class',
     theme: {
         fontFamily: {
             sans: ['Inter Variable', ...defaultTheme.fontFamily.sans],
-            serif: ['DM Serif Text', ...defaultTheme.fontFamily.serif]
+            serif: ['DM Serif Display', 'DM Serif Text', ...defaultTheme.fontFamily.serif],
+            mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono]
         },
         extend: {
+            colors: {
+                ink: {
+                    DEFAULT: 'rgb(var(--ink) / <alpha-value>)',
+                    2: 'rgb(var(--ink-2) / <alpha-value>)',
+                    3: 'rgb(var(--ink-3) / <alpha-value>)',
+                    4: 'rgb(var(--ink-4) / <alpha-value>)'
+                },
+                paper: {
+                    DEFAULT: 'rgb(var(--paper) / <alpha-value>)',
+                    2: 'rgb(var(--paper-2) / <alpha-value>)',
+                    3: 'rgb(var(--paper-3) / <alpha-value>)'
+                }
+            },
             textColor: {
                 main: 'rgb(var(--color-text-main) / <alpha-value>)'
             },
@@ -16,72 +31,42 @@ module.exports = {
                 main: 'rgb(var(--color-bg-main) / <alpha-value>)',
                 muted: 'rgb(var(--color-bg-muted) / <alpha-value>)'
             },
-            gradientColorStops: {
-                main: 'rgb(var(--color-bg-main) / <alpha-value>)'
-            },
             borderColor: {
-                main: 'rgb(var(--color-border-main) / <alpha-value>)'
+                main: 'rgb(var(--color-border-main) / <alpha-value>)',
+                hair: 'rgba(243, 241, 234, 0.10)',
+                'hair-2': 'rgba(243, 241, 234, 0.18)'
+            },
+            letterSpacing: {
+                mono: '0.08em',
+                wider: '0.12em',
+                widest: '0.2em'
+            },
+            maxWidth: {
+                shell: '1280px',
+                article: '1180px'
             },
             transitionProperty: {
-                'colors': 'color, background-color, border-color, text-decoration-color, fill, stroke'
+                colors: 'color, background-color, border-color, text-decoration-color, fill, stroke'
             },
             typography: (theme) => ({
-                dante: {
-                    css: {
-                        '--tw-prose-body': theme('textColor.main / 100%'),
-                        '--tw-prose-headings': theme('textColor.main / 100%'),
-                        '--tw-prose-lead': theme('textColor.main / 100%'),
-                        '--tw-prose-links': theme('textColor.main / 100%'),
-                        '--tw-prose-bold': theme('textColor.main / 100%'),
-                        '--tw-prose-counters': theme('textColor.main / 100%'),
-                        '--tw-prose-bullets': theme('textColor.main / 100%'),
-                        '--tw-prose-hr': theme('borderColor.main / 100%'),
-                        '--tw-prose-quotes': theme('textColor.main / 100%'),
-                        '--tw-prose-quote-borders': theme('borderColor.main / 100%'),
-                        '--tw-prose-captions': theme('textColor.main / 100%'),
-                        '--tw-prose-code': theme('textColor.main / 100%'),
-                        '--tw-prose-pre-code': theme('colors.zinc.100'),
-                        '--tw-prose-pre-bg': theme('colors.zinc.800'),
-                        '--tw-prose-th-borders': theme('borderColor.main / 100%'),
-                        '--tw-prose-td-borders': theme('borderColor.main / 100%')
-                    }
-                },
                 DEFAULT: {
                     css: {
-                        a: {
-                            fontWeight: 'normal',
-                            textDecoration: 'underline',
-                            textDecorationStyle: 'dashed',
-                            textDecorationThickness: '1px',
-                            textUnderlineOffset: '2px',
-                            '&:hover': {
-                                textDecorationStyle: 'solid'
-                            }
-                        },
-                        'h1,h2,h3,h4,h5,h6': {
-                            fontFamily: theme('fontFamily.sans'),
-                            fontWeight: 700,
-                        },
-                        blockquote: {
-                            border: 0,
-                            fontFamily: theme('fontFamily.serif'),
-                            fontSize: '1.3125em',
-                            fontStyle: 'italic',
-                            fontWeight: 'normal',
-                            lineHeight: 1.4,
-                            paddingLeft: 0,
-                            '@media (min-width: theme("screens.sm"))': {
-                                fontSize: '1.66667em',
-                                lineHeight: 1.3
-                            }
-                        }
-                    }
-                },
-                lg: {
-                    css: {
-                        blockquote: {
-                            paddingLeft: 0
-                        }
+                        '--tw-prose-body': 'rgb(var(--ink))',
+                        '--tw-prose-headings': 'rgb(var(--ink))',
+                        '--tw-prose-lead': 'rgb(var(--ink-2))',
+                        '--tw-prose-links': 'rgb(var(--ink))',
+                        '--tw-prose-bold': 'rgb(var(--ink))',
+                        '--tw-prose-counters': 'rgb(var(--ink-3))',
+                        '--tw-prose-bullets': 'rgb(var(--ink-4))',
+                        '--tw-prose-hr': 'rgba(243, 241, 234, 0.10)',
+                        '--tw-prose-quotes': 'rgb(var(--ink))',
+                        '--tw-prose-quote-borders': 'rgb(var(--ink-4))',
+                        '--tw-prose-captions': 'rgb(var(--ink-3))',
+                        '--tw-prose-code': 'rgb(var(--ink))',
+                        '--tw-prose-pre-code': 'rgb(var(--ink-2))',
+                        '--tw-prose-pre-bg': 'rgb(var(--paper-2))',
+                        '--tw-prose-th-borders': 'rgba(243, 241, 234, 0.18)',
+                        '--tw-prose-td-borders': 'rgba(243, 241, 234, 0.10)'
                     }
                 }
             })

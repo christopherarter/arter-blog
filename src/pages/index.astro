@@ -1,67 +1,104 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
 import PostList from '../components/PostList.astro';
-import ProjectPreview from '../components/ProjectPreview.astro';
 import WebsiteSchema from '../components/WebsiteSchema.astro';
 import siteConfig from '../data/site-config';
 import { sortItemsByDateDesc } from '../utils/data-utils';
+import { slugify } from '../utils/common-utils';
+
+type Post = CollectionEntry<'blog'>;
 
 const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-const latestPosts = posts.filter(({ data }) => !data.tags.includes('Car Stuff')).slice(0, 3);
-const latestCarsPosts = posts.filter(({ data }) => data.tags.includes('Car Stuff')).slice(0, 3);
 
-const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
-const featuredProjects = projects.filter(({ data }) => data.isFeatured);
+const LIFE_TAGS = new Set(['Life', 'Career']);
+const GARAGE_TAGS = new Set(['Car Stuff', 'Miata', 'NB', 'Cars', 'Garage']);
 
-const tags = posts.map(({ data }) => data.tags).flat();
-const uniqueTags = [...new Set(tags)];
+function hasAny(post: Post, set: Set<string>) {
+    return (post.data.tags || []).some((t: string) => set.has(t));
+}
+
+const garagePosts = posts.filter((p) => hasAny(p, GARAGE_TAGS));
+const lifePosts = posts.filter((p) => !hasAny(p, GARAGE_TAGS) && hasAny(p, LIFE_TAGS));
+const techPosts = posts.filter((p) => !hasAny(p, GARAGE_TAGS) && !hasAny(p, LIFE_TAGS));
+
+const numberByPostId = new Map<string, number>();
+posts.forEach((post, index) => {
+    numberByPostId.set(post.id, posts.length - index);
+});
+
+function numbersFor(list: Post[]): number[] {
+    return list.map((p) => numberByPostId.get(p.id) ?? 0);
+}
+
+const techLatest = techPosts.slice(0, 4);
+const lifeLatest = lifePosts.slice(0, 3);
+const garageLatest = garagePosts.slice(0, 3);
+
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+    for (const tag of post.data.tags || []) {
+        tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+    }
+}
+const topTopics = Array.from(tagCounts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8);
+
+type Section = { title: string; posts: Post[]; total: number; href: string };
+const sections: Section[] = [];
+if (techLatest.length) sections.push({ title: 'Latest in Tech', posts: techLatest, total: techPosts.length, href: '/blog' });
+if (lifeLatest.length) sections.push({ title: 'Notes on Living', posts: lifeLatest, total: lifePosts.length, href: '/tags/life' });
+if (garageLatest.length) sections.push({ title: 'Cars & Wrenching', posts: garageLatest, total: garagePosts.length, href: '/tags/car-stuff' });
 ---
 
 <BaseLayout showHeader={false} description={siteConfig.description} image={siteConfig.image}>
     <WebsiteSchema />
-    <Hero />
-    {
-        featuredProjects?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Projects</h2>
-                {featuredProjects.map((project) => (
-                    <ProjectPreview project={project} class="mb-10 sm:mb-12" headingLevel="h3" />
-                ))}
-                <div class="mt-12 sm:mt-16">
-                    <Button href="/projects">View All Projects</Button>
-                </div>
-            </div>
-        )
-    }
-    {
-        latestPosts?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Latest in Tech</h2>
-                <PostList posts={latestPosts} />
-            </div>
-        )
-    }
-    {
-        latestCarsPosts?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Latest in Cars</h2>
-                <PostList posts={latestCarsPosts} />
-            </div>
-        )
-    }
-    {
-        uniqueTags?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-2xl md:text-4xl font-serif font-medium leading-tight sm:mb-16">Browse by Topic</h2>
-                <div class="flex flex-wrap gap-2">
-                    {uniqueTags.map((tag) => (
-                        <Button href={`/tags/${tag.toLowerCase().replace(/ /g, '-')}`}>{tag}</Button>
+    <main>
+        <Hero />
+
+        {sections.map(({ title, posts, total, href }) => (
+            <section class="max-w-shell mx-auto px-5 md:px-10 pt-14 md:pt-20">
+                <header class="grid grid-cols-[1fr_auto] items-baseline gap-6 pb-5 border-b border-ink-4">
+                    <h2 class="font-serif font-normal text-[30px] md:text-[40px] leading-none tracking-[-0.02em] m-0 text-ink">
+                        {title}
+                    </h2>
+                    <a
+                        href={href}
+                        class="font-mono text-[11px] tracking-wider text-ink-3 uppercase hover:text-ink transition-colors"
+                    >
+                        All {total} posts →
+                    </a>
+                </header>
+                <PostList posts={posts} numbers={numbersFor(posts)} />
+            </section>
+        ))}
+
+        {topTopics.length > 0 && (
+            <section class="max-w-shell mx-auto px-5 md:px-10 pt-14 md:pt-20">
+                <header class="grid grid-cols-[1fr_auto] items-baseline gap-6 pb-5 border-b border-ink-4">
+                    <h2 class="font-serif font-normal text-[30px] md:text-[40px] leading-none tracking-[-0.02em] m-0 text-ink">
+                        Browse by Topic
+                    </h2>
+                    <a href="/tags" class="font-mono text-[11px] tracking-wider text-ink-3 uppercase hover:text-ink transition-colors">
+                        All tags →
+                    </a>
+                </header>
+                <div class="mt-8 border border-hair grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-hair">
+                    {topTopics.map(([tag, count]) => (
+                        <a
+                            href={`/tags/${slugify(tag)}`}
+                            class="py-5 px-6 block text-ink hover:bg-paper-2 transition-colors"
+                        >
+                            <span class="font-serif text-[22px] tracking-[-0.01em] text-ink mb-1 block">{tag}</span>
+                            <span class="font-mono text-[10.5px] tracking-[0.1em] text-ink-3 uppercase">
+                                {count} post{count === 1 ? '' : 's'}
+                            </span>
+                        </a>
                     ))}
                 </div>
-            </div>
-        )
-    }
+            </section>
+        )}
+    </main>
 </BaseLayout>

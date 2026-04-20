@@ -1,45 +1,71 @@
 ---
 import { type CollectionEntry } from 'astro:content';
-import ArrowRight from '../icons/ArrowRight.astro';
-import FormattedDate from './FormattedDate.astro';
 
-type Props = { post: CollectionEntry<'blog'>; class?: string; headingLevel?: 'h2' | 'h3' };
+type Props = {
+    post: CollectionEntry<'blog'>;
+    number: number;
+    class?: string;
+};
 
-const { post, class: className, headingLevel = 'h2' } = Astro.props;
-const { title, publishDate, updatedDate, excerpt, seo } = post.data;
-const TitleTag = headingLevel;
+const { post, number, class: className } = Astro.props;
+const { title, publishDate, excerpt, tags = [] } = post.data;
+
+function formatDate(date: Date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}.${m}.${d}`;
+}
+
+function estimateReadTime(body: string | undefined): number {
+    if (!body) return 4;
+    const words = body.split(/\s+/).filter(Boolean).length;
+    return Math.max(3, Math.round(words / 220));
+}
+
+const paddedNumber = String(number).padStart(3, '0');
+const formattedDate = formatDate(new Date(publishDate));
+const readMinutes = estimateReadTime(post.body);
+const topTags = tags.slice(0, 3);
 ---
 
-<a class:list={['flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-8 group', className]} href={`/blog/${post.id}/`}>
-    {
-        seo?.image?.src && (
-            <div class="w-full sm:w-24 h-48 sm:h-24 shrink-0">
-                <img src={seo.image.src} alt="" class="w-full h-full object-cover rounded" />
-            </div>
-        )
-    }
-    <div class="grow">
-        <TitleTag
-            class="text-3xl leading-tight font-serif font-bold group-hover:underline group-hover:decoration-dashed group-hover:underline-offset-4 group-hover:decoration-1 sm:text-2xl"
-        >
-            {title}
-        </TitleTag>
-        <div class="mt-1 text-sm leading-normal">
-            <FormattedDate date={publishDate} />
-            {
-                updatedDate && (
-                    <>
-                        {' '}
-                        <span>
-                            (Updated on <FormattedDate date={updatedDate} />)
-                        </span>
-                    </>
-                )
-            }
+<li class:list={['list-none border-b border-hair group', className]}>
+    <a
+        href={`/blog/${post.id}/`}
+        class="grid grid-cols-1 sm:grid-cols-[200px_1fr_auto] gap-2 sm:gap-8 items-start py-6 sm:py-7 text-ink transition-[padding] duration-200 ease-out hover:pl-3"
+    >
+        <div class="hidden sm:flex font-mono text-[11px] tracking-wider text-ink-3 flex-col gap-1.5">
+            <span class="font-serif text-[48px] leading-[0.9] text-ink font-normal tracking-[-0.02em]">
+                {paddedNumber}
+            </span>
+            <span class="text-ink-3 tabular-nums">{formattedDate}</span>
         </div>
-        {excerpt && <div class="mt-3 text-sm leading-normal">{excerpt}</div>}
-    </div>
-    <div class="hidden font-serif italic opacity-0 transition group-hover:opacity-100 sm:inline-flex sm:gap-1 sm:items-center sm:shrink-0">
-        Read Post <ArrowRight class="fill-current w-4 h-4" />
-    </div>
-</a>
+
+        <div class="max-w-[60ch]">
+            <div class="sm:hidden font-mono text-[11px] tracking-wider text-ink-3 tabular-nums mb-2.5">
+                {formattedDate}
+            </div>
+            <h3 class="font-serif font-normal text-[24px] sm:text-[32px] leading-tight tracking-[-0.015em] m-0 mb-2.5 text-ink group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-4">
+                {title}
+            </h3>
+            {excerpt && (
+                <p class="text-ink-2 text-[15px] leading-[1.55] m-0 [text-wrap:pretty]">{excerpt}</p>
+            )}
+            {topTags.length > 0 && (
+                <div class="flex gap-2 mt-3 font-mono text-[10px] tracking-[0.1em] text-ink-3 uppercase flex-wrap">
+                    {topTags.map((tag, i) => (
+                        <span>
+                            {i > 0 && <span class="mr-2 text-ink-4">·</span>}
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+            )}
+        </div>
+
+        <div class="font-mono text-[11px] tracking-mono text-ink-3 uppercase text-left sm:text-right sm:min-w-[100px] mt-2 sm:mt-0">
+            {readMinutes} min
+            <span class="ml-1.5 text-ink opacity-0 transition-opacity group-hover:opacity-100">→</span>
+        </div>
+    </a>
+</li>
