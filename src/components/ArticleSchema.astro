@@ -30,12 +30,12 @@ const articleSchema = {
         sameAs: ['https://github.com/christopherarter', 'https://bsky.app/profile/arter.dev', 'https://www.linkedin.com/in/chrisarter1/']
     },
     publisher: {
-        '@type': 'Organization',
+        '@type': 'Person',
         name: 'Chris Arter',
         url: 'https://arter.dev',
-        logo: {
+        image: {
             '@type': 'ImageObject',
-            url: 'https://arter.dev/images/logo.png'
+            url: 'https://arter.dev/images/chris-arter.jpg'
         }
     },
     articleSection: tags.length > 0 ? tags[0] : 'Technology',

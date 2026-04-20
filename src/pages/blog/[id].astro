@@ -6,7 +6,7 @@ import { slugify } from '../../utils/common-utils';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
 import ArticleSchema from '../../components/ArticleSchema.astro';
-import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Footnotes from '../../components/Footnotes.astro';
 
 export async function getStaticPaths() {
@@ -36,8 +36,8 @@ const { Content } = await render(post);
 const headings = extractHeadingsFromMarkdown(post.body || '');
 
 const breadcrumbs = [
-    { name: 'Home', url: 'https://arter.dev/' },
-    { name: 'Blog', url: 'https://arter.dev/blog/' },
+    { name: 'Home', url: '/' },
+    { name: 'Writing', url: '/blog/' },
     { name: title, url: href }
 ];
 
@@ -62,9 +62,13 @@ eyebrowItems.push(`${readMinutes} min read`);
     image={seo?.image}
     showHeader={false}
     headings={headings}
+    publishedTime={publishDate}
+    modifiedTime={updatedDate}
+    tags={tags}
 >
     <ArticleSchema post={post} url={href} />
-    <BreadcrumbSchema items={breadcrumbs} />
+
+    <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
     <header class="border-b border-hair pb-8 mb-11">
         <div class="font-mono text-[11px] tracking-[0.18em] text-ink-3 uppercase mb-6 flex gap-[18px] flex-wrap">

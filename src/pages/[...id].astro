@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPostLayout from '../layouts/BlogPostLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { extractHeadingsFromMarkdown } from '../utils/markdown-utils';
 
 export async function getStaticPaths() {
@@ -13,20 +14,29 @@ export async function getStaticPaths() {
 
 type Props = { page: CollectionEntry<'pages'> };
 
+const { href } = Astro.url;
 const { page } = Astro.props;
-const { title, seo } = page.data;
+const { title, description, subtitle, seo } = page.data;
+const resolvedDescription = seo?.description ?? description ?? subtitle;
 const { Content } = await render(page);
 
 const headings = extractHeadingsFromMarkdown(page.body || '');
+
+const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: title, url: href }
+];
 ---
 
 <BlogPostLayout
     title={seo?.title ?? title}
-    description={seo?.description}
+    description={resolvedDescription}
     image={seo?.image}
     showHeader={false}
     headings={headings}
 >
+    <Breadcrumbs items={breadcrumbs} class="mb-8" />
+
     <header class="border-b border-hair pb-8 mb-11">
         <h1 class="font-serif font-normal text-ink text-[clamp(40px,6vw,64px)] leading-none tracking-[-0.025em] m-0">
             {title}

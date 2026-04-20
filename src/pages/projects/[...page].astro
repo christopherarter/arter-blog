@@ -19,8 +19,10 @@ const portfolio = page.data;
 ---
 
 <BaseLayout
-    title="Projects"
-    description="Things I've built, maintained, or contributed to."
+    title={page.currentPage === 1 ? 'Projects' : `Projects — Page ${page.currentPage} of ${page.lastPage}`}
+    description={page.currentPage === 1
+        ? "Things I've built, maintained, or contributed to."
+        : `Page ${page.currentPage} of projects by Chris Arter — things I've built, maintained, or contributed to.`}
     image={{ src: '/dante-preview.jpg', alt: 'arter.dev projects' }}
     showHeader={false}
 >

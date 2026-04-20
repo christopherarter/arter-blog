@@ -21,8 +21,10 @@ const startNumber = page.total - startIndex;
 ---
 
 <BaseLayout
-    title="Writing"
-    description="Essays and notes on software, the craft of shipping, and the long game of learning."
+    title={page.currentPage === 1 ? 'Writing' : `Writing — Page ${page.currentPage} of ${page.lastPage}`}
+    description={page.currentPage === 1
+        ? 'Essays and notes on software, the craft of shipping, and the long game of learning.'
+        : `Page ${page.currentPage} of writing by Chris Arter — essays and notes on software, the craft of shipping, and the long game of learning.`}
     image={{ src: '/dante-preview.jpg', alt: 'arter.dev writing archive' }}
     showHeader={false}
 >

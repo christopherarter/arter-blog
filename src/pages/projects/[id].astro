@@ -1,8 +1,11 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 import ProjectPreview from '../../components/ProjectPreview.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
+import { extractHeadingsFromMarkdown } from '../../utils/markdown-utils';
 
 export async function getStaticPaths() {
     const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
@@ -23,46 +26,79 @@ type Props = {
     nextProject: CollectionEntry<'projects'> | null;
 };
 
+const { href } = Astro.url;
 const { project, prevProject, nextProject } = Astro.props;
-const { title, description, seo } = project.data;
+const { title, description, publishDate, seo } = project.data;
 const { Content } = await render(project);
+
+const headings = extractHeadingsFromMarkdown(project.body || '');
+
+const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Projects', url: '/projects/' },
+    { name: title, url: href }
+];
 ---
 
-<BaseLayout
+<BlogPostLayout
     title={seo?.title ?? title}
     description={seo?.description ?? description}
     image={seo?.image}
-    pageType="article"
     showHeader={false}
+    headings={headings}
 >
-    <main class="max-w-[900px] mx-auto px-5 md:px-10 pt-16 md:pt-20 pb-16 md:pb-24">
-        <header class="border-b border-hair pb-8 mb-11">
-            <h1 class="font-serif font-normal text-ink text-[clamp(40px,6vw,64px)] leading-none tracking-[-0.025em] m-0 mb-5">
-                {title}
-            </h1>
-            {description && (
-                <p class="text-ink-2 text-[17px] leading-relaxed m-0 max-w-[54ch]">{description}</p>
-            )}
-        </header>
+    <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
-        {seo?.image?.src && (
-            <figure class="m-0 mb-12 border border-hair-2 overflow-hidden">
-                <img src={seo.image.src} alt={seo.image.alt ?? ''} loading="eager" class="block w-full h-auto" />
-            </figure>
+    <header class="border-b border-hair pb-8 mb-11">
+        <h1 class="font-serif font-normal text-ink text-[clamp(40px,6vw,64px)] leading-none tracking-[-0.025em] m-0 mb-5">
+            {title}
+        </h1>
+        {description && (
+            <p class="text-ink-2 text-[17px] leading-relaxed m-0 max-w-[54ch]">{description}</p>
         )}
-
-        <div class="prose-editorial">
-            <Content />
-        </div>
-
-        {(prevProject || nextProject) && (
-            <section class="mt-20 pt-10 border-t border-hair">
-                <h2 class="font-serif font-normal text-[32px] tracking-[-0.015em] m-0 mb-6">View Next</h2>
-                <div>
-                    {nextProject && <ProjectPreview project={nextProject} headingLevel="h3" />}
-                    {prevProject && <ProjectPreview project={prevProject} headingLevel="h3" />}
-                </div>
-            </section>
+        {publishDate && (
+            <div class="mt-8 flex items-center gap-4 font-mono text-[11.5px] tracking-[0.06em] text-ink-3 uppercase flex-wrap">
+                <span>Published <FormattedDate date={publishDate} /></span>
+            </div>
         )}
-    </main>
-</BaseLayout>
+    </header>
+
+    {seo?.image?.src && (
+        <figure class="m-0 mb-12 border border-hair-2 overflow-hidden">
+            <img src={seo.image.src} alt={seo.image.alt ?? ''} loading="eager" class="block w-full h-auto" />
+        </figure>
+    )}
+
+    <div class="prose-editorial" id="main-content">
+        <Content />
+    </div>
+
+    {(prevProject || nextProject) && (
+        <section class="mt-20 pt-10 border-t border-hair">
+            <h2 class="font-serif font-normal text-[32px] tracking-[-0.015em] m-0 mb-6">View Next</h2>
+            <div>
+                {nextProject && <ProjectPreview project={nextProject} headingLevel="h3" />}
+                {prevProject && <ProjectPreview project={prevProject} headingLevel="h3" />}
+            </div>
+        </section>
+    )}
+</BlogPostLayout>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const content = document.getElementById('main-content');
+        if (!content) return;
+        const headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+        headings.forEach((element) => {
+            const heading = element as HTMLHeadingElement;
+            if (!heading.id) {
+                const text = heading.textContent || '';
+                heading.id = text
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+            }
+        });
+    });
+</script>

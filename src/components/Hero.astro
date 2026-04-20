@@ -1,12 +1,12 @@
 ---
-const portraitSrc = '/images/chris-arter.jpg';
+const portraitSrc = '/images/chris-arter-pen.png';
 ---
 
 <section class="py-14 md:py-20 border-b border-hair-2 overflow-hidden">
     <div class="grid items-center gap-10 md:grid-cols-[220px_1fr] md:gap-14 max-w-shell mx-auto px-5 md:px-10">
         <div class="max-w-[260px]">
-            <div class="aspect-[4/5] w-full overflow-hidden bg-paper-2">
-                <img src={portraitSrc} alt="Portrait of Chris Arter" class="w-full h-full object-cover block [filter:grayscale(0.15)_contrast(1.02)]" />
+            <div class="aspect-square w-full">
+                <img src={portraitSrc} alt="Portrait of Chris Arter" class="w-full h-full object-contain block" />
             </div>
         </div>
         <div>
@@ -16,7 +16,8 @@ const portraitSrc = '/images/chris-arter.jpg';
                 <em class="italic text-ink-2">Builder</em>.
             </h1>
             <p class="text-[17px] leading-relaxed text-ink-2 max-w-[54ch] m-0 [text-wrap:pretty]">
-                I'm a software engineer in Raleigh, North Carolina. I write about software, life, and the best sports car ever made: the Mazda Miata.
+                Hey there, I'm <strong>Chris Arter</strong>, a software engineer in Raleigh, North Carolina. I write about software, life, and the best sports
+                car ever made: the Mazda Miata.
             </p>
             <dl class="mt-8 pt-5 border-t border-hair grid grid-cols-2 md:grid-cols-4 gap-6 font-mono">
                 <div>

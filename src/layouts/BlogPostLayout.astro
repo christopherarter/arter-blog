@@ -10,9 +10,12 @@ type Props = {
     image?: string | { src: string; alt?: string };
     showHeader?: boolean;
     headings?: Heading[];
+    publishedTime?: Date;
+    modifiedTime?: Date;
+    tags?: string[];
 };
 
-const { title, description, image, headings } = Astro.props;
+const { title, description, image, headings, publishedTime, modifiedTime, tags } = Astro.props;
 const resolvedImage = typeof image === 'string' ? { src: image } : image;
 const { href } = Astro.url;
 const hasToc = !!(headings && headings.length > 0);
@@ -24,6 +27,9 @@ const hasToc = !!(headings && headings.length > 0);
     description={description}
     image={resolvedImage}
     pageType="article"
+    publishedTime={publishedTime}
+    modifiedTime={modifiedTime}
+    tags={tags}
 >
     <div class="pt-16 md:pt-20 pb-20 md:pb-24">
         <div

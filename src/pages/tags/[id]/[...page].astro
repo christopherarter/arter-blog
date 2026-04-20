@@ -4,6 +4,7 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Pagination from '../../../components/Pagination.astro';
 import PostList from '../../../components/PostList.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import siteConfig from '../../../data/site-config';
 import { sortItemsByDateDesc, getAllTags, getPostsByTag } from '../../../utils/data-utils';
 
@@ -31,15 +32,26 @@ const currentTag = allTags.find((tag) => tag.id === params.id);
 
 const startIndex = (page.currentPage - 1) * page.size;
 const startNumber = page.total - startIndex;
+
+const breadcrumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Tags', url: '/tags/' },
+    { name: currentTag?.name ?? '', url: Astro.url.href }
+];
 ---
 
 <BaseLayout
-    title={`Posts tagged ${currentTag?.name}`}
-    description={`A curated collection of posts under ${currentTag?.name}.`}
+    title={page.currentPage === 1
+        ? `Posts tagged ${currentTag?.name}`
+        : `Posts tagged ${currentTag?.name} — Page ${page.currentPage} of ${page.lastPage}`}
+    description={page.currentPage === 1
+        ? `A curated collection of posts under ${currentTag?.name}.`
+        : `Page ${page.currentPage} of posts tagged ${currentTag?.name} on arter.dev.`}
     image={{ src: '/dante-preview.jpg', alt: 'arter.dev tag archive' }}
     showHeader={false}
 >
     <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
+        <Breadcrumbs items={breadcrumbs} class="mb-8" />
         <header class="border-b border-ink-4 pb-10 mb-8 flex items-baseline justify-between gap-6 flex-wrap">
             <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0">
                 {currentTag?.name}

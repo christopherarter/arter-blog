@@ -1,0 +1,57 @@
+---
+import BreadcrumbSchema from './BreadcrumbSchema.astro';
+
+interface BreadcrumbItem {
+    name: string;
+    url: string;
+}
+
+interface Props {
+    items: BreadcrumbItem[];
+    class?: string;
+}
+
+const { items, class: className } = Astro.props;
+
+const origin = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const absoluteItems = items.map((item) => ({
+    name: item.name,
+    url: item.url.startsWith('http') ? item.url : `${origin}${item.url}`
+}));
+
+const lastIndex = items.length - 1;
+---
+
+<BreadcrumbSchema items={absoluteItems} />
+
+<nav aria-label="Breadcrumb" class:list={['not-prose', className]}>
+    <ol class="flex items-center flex-wrap gap-x-2 gap-y-1 list-none m-0 p-0 font-mono text-[11px] tracking-widest uppercase">
+        {items.map((item, i) => {
+            const isLast = i === lastIndex;
+            return (
+                <li class="flex items-center gap-2 min-w-0">
+                    {i > 0 && (
+                        <span aria-hidden="true" class="text-ink-4 select-none">/</span>
+                    )}
+                    {isLast ? (
+                        <span
+                            aria-current="page"
+                            class="text-ink truncate max-w-[36ch] inline-flex items-baseline gap-1.5"
+                        >
+                            <span aria-hidden="true" class="text-ink-4 font-normal">[</span>
+                            <span class="truncate">{item.name}</span>
+                            <span aria-hidden="true" class="text-ink-4 font-normal">]</span>
+                        </span>
+                    ) : (
+                        <a
+                            href={item.url}
+                            class="text-ink-3 no-underline transition-colors hover:text-ink focus-visible:text-ink focus-visible:outline-none"
+                        >
+                            {item.name}
+                        </a>
+                    )}
+                </li>
+            );
+        })}
+    </ol>
+</nav>
