@@ -1,0 +1,99 @@
+rules:
+  no-any:
+    description: "Do not use the 'any' type; prefer a specific type or 'unknown'."
+    engine: script
+    scope: "*.{ts,tsx,astro}"
+    severity: error
+    script: "grep -nE ':\\s*any\\b' {file} && exit 1 || exit 0"
+
+  no-ts-ignore:
+    description: "Do not use @ts-ignore; use @ts-expect-error with an explanation so stale suppressions surface."
+    engine: script
+    scope: "*.{ts,tsx,astro}"
+    severity: error
+    script: "grep -n '@ts-ignore' {file} && exit 1 || exit 0"
+
+  type-imports:
+    description: >
+      Imports used only for types should use `import type { ... }` (or inline `import { type Foo }`)
+      so bundlers can drop them at build time.
+    engine: semantic
+    scope: "*.{ts,tsx,astro}"
+    severity: error
+
+  no-console-log:
+    description: "No console.log in committed source. Use a comment or remove before committing."
+    engine: script
+    scope: "*.{ts,tsx,js,mjs,astro}"
+    severity: warning
+    script: "grep -nE 'console\\.log\\(' {file} && exit 1 || exit 0"
+
+  no-debugger:
+    description: "No leftover `debugger;` statements."
+    engine: script
+    scope: "*.{ts,tsx,js,mjs,astro}"
+    severity: error
+    script: "grep -n 'debugger;' {file} && exit 1 || exit 0"
+
+  no-client-directive-overuse:
+    description: >
+      Avoid `client:load` when `client:visible` or `client:idle` would suffice.
+      `client:load` blocks hydration on the critical path; use it only when the
+      component must be interactive immediately on first paint.
+    engine: semantic
+    scope: "*.astro"
+    severity: warning
+
+  frontmatter-required-fields:
+    description: >
+      Blog post markdown/MDX files in src/content/blog/ must include `title`,
+      `publishDate`, and either `excerpt` or `seo.description` in frontmatter.
+      These feed the post list, RSS, and OG metadata.
+    engine: semantic
+    scope: "src/content/blog/*.{md,mdx}"
+    severity: error
+
+  no-inline-styles:
+    description: >
+      Prefer Tailwind utility classes over inline `style=""` or `style={...}` attributes.
+      Inline styles bypass the design tokens defined in tailwind.config.cjs.
+    engine: script
+    scope: "*.{astro,tsx,jsx}"
+    severity: warning
+    script: "grep -nE 'style=(\"|\\{)' {file} && exit 1 || exit 0"
+
+  require-alt-text:
+    description: >
+      Every `<img>` tag (Astro, JSX, or TSX) must have an `alt` attribute.
+      Decorative images should use `alt=\"\"`; content images must describe the image.
+      Also applies to the Astro `<Image />` component.
+    engine: semantic
+    scope: "*.{astro,tsx,jsx}"
+    severity: error
+
+  no-orchestration-labels:
+    description: >
+      No sprint/wave/task/phase/v1/v2 labels in source code. These are planning
+      artifacts that rot; keep them in issue trackers and PR descriptions.
+    engine: semantic
+    scope: "*.{ts,tsx,js,mjs,astro,md,mdx}"
+    severity: warning
+
+  no-todo-without-ticket:
+    description: >
+      TODO and FIXME comments must reference a ticket id (e.g., #123 or PROJ-456)
+      so they can be tracked and don't become orphans.
+    engine: script
+    scope: "*.{ts,tsx,js,mjs,astro,md,mdx}"
+    severity: warning
+    script: "grep -nP '(TODO|FIXME)(?!.*(#|[A-Z]+-)[0-9]+)' {file} && exit 1 || exit 0"
+
+  prettier-check:
+    description: >
+      Run Prettier in check mode against the edited file. Adds ~500ms per edit and
+      requires prettier installed locally (it is in devDependencies).
+      Downgrade to warning so formatting drift surfaces without blocking work.
+    engine: script
+    scope: "*.{ts,tsx,js,mjs,astro,md,mdx,json,yaml,yml}"
+    severity: warning
+    script: "npx prettier --check {file}"

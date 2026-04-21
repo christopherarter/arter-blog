@@ -20,5 +20,11 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# playwright mcp
+# playwright / playwright-mcp output
 .playwright-mcp/
+screenshots/
+playwright-report/
+test-results/
+
+# stray screenshots dumped in repo root
+/*.png
