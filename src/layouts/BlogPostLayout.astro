@@ -31,77 +31,91 @@ const hasToc = !!(headings && headings.length > 0);
     modifiedTime={modifiedTime}
     tags={tags}
 >
-    <div class="pt-16 md:pt-20 pb-20 md:pb-24">
-        <div
-            class:list={[
-                'grid gap-10 md:gap-[72px] max-w-article mx-auto px-5 md:px-10',
-                hasToc ? 'md:grid-cols-[1fr_260px]' : 'max-w-[900px]'
-            ]}
-        >
+    <main id="main-content" class="pt-16 pb-20 md:pt-20 md:pb-24">
+        <div class:list={['max-w-article mx-auto grid gap-10 px-5 md:gap-[72px] md:px-10', hasToc ? 'md:grid-cols-[1fr_260px]' : 'max-w-[900px]']}>
             <article class="min-w-0">
                 <slot />
             </article>
 
-            {hasToc && (
-                <aside class="hidden md:block">
-                    <div class="sticky top-[104px]">
-                        <TableOfContents headings={headings!} />
+            {
+                hasToc && (
+                    <aside class="hidden md:block">
+                        <div class="sticky top-[104px]">
+                            <TableOfContents headings={headings!} />
+                            <ShareLinks title={title} url={href} />
+                        </div>
+                    </aside>
+                )
+            }
+        </div>
+    </main>
+
+    {
+        hasToc && (
+            <div class="mobile-toc-root md:hidden" data-mobile-toc>
+                <button
+                    type="button"
+                    class="mobile-toc-toggle border-hair-2 hover:border-ink fixed right-4 bottom-4 left-4 z-60 grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-3.5 rounded-full border px-[18px] py-3 font-mono text-[11px] tracking-wider uppercase shadow-[0_6px_24px_rgba(0,0,0,0.4)] transition-colors"
+                    style="background: rgba(27,26,23,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: rgb(var(--ink));"
+                    aria-controls="mobile-toc-panel"
+                    aria-expanded="false"
+                >
+                    <span class="text-ink-3">Contents</span>
+                    <span
+                        class="text-ink overflow-hidden text-left text-[12.5px] leading-tight tracking-[0.04em] text-ellipsis whitespace-nowrap normal-case"
+                        data-toc-current
+                    >
+                        Jump to section
+                    </span>
+                    <span class="mobile-toc-caret text-ink-3 text-xs transition-transform" aria-hidden="true">
+                        ↑
+                    </span>
+                </button>
+
+                <div class="mobile-toc-backdrop pointer-events-none fixed inset-0 z-58 bg-black/55 opacity-0 transition-opacity" aria-hidden="true" />
+
+                <div
+                    id="mobile-toc-panel"
+                    class="mobile-toc-panel bg-paper-2 border-hair-2 fixed inset-x-0 bottom-0 z-61 flex max-h-[75vh] translate-y-full flex-col rounded-t-2xl border-t transition-transform"
+                    style="padding-bottom: env(safe-area-inset-bottom);"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Table of contents"
+                    aria-hidden="true"
+                >
+                    <div class="border-hair flex items-center justify-between border-b px-5 py-4">
+                        <span class="text-ink-3 font-mono text-[11px] tracking-widest uppercase">Contents</span>
+                        <button
+                            type="button"
+                            class="mobile-toc-close border-hair-2 text-ink-2 hover:text-ink hover:border-ink inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border bg-transparent text-sm"
+                            aria-label="Close contents"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                    <div class="overflow-y-auto px-5 pt-4 pb-6">
+                        <TableOfContents headings={headings!} showTitle={false} />
                         <ShareLinks title={title} url={href} />
                     </div>
-                </aside>
-            )}
-        </div>
-    </div>
-
-    {hasToc && (
-        <div class="mobile-toc-root md:hidden" data-mobile-toc>
-            <button
-                type="button"
-                class="mobile-toc-toggle fixed left-4 right-4 bottom-4 z-60 grid grid-cols-[auto_1fr_auto] items-center gap-3.5 px-[18px] py-3 rounded-full border border-hair-2 font-mono text-[11px] tracking-wider uppercase cursor-pointer shadow-[0_6px_24px_rgba(0,0,0,0.4)] transition-colors hover:border-ink"
-                style="background: rgba(27,26,23,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: rgb(var(--ink));"
-                aria-controls="mobile-toc-panel"
-                aria-expanded="false"
-            >
-                <span class="text-ink-3">Contents</span>
-                <span class="text-left text-ink tracking-[0.04em] normal-case text-[12.5px] leading-tight overflow-hidden text-ellipsis whitespace-nowrap" data-toc-current>
-                    Jump to section
-                </span>
-                <span class="mobile-toc-caret text-ink-3 text-xs transition-transform" aria-hidden="true">↑</span>
-            </button>
-
-            <div class="mobile-toc-backdrop fixed inset-0 bg-black/55 opacity-0 pointer-events-none transition-opacity z-58" aria-hidden="true"></div>
-
-            <div
-                id="mobile-toc-panel"
-                class="mobile-toc-panel fixed inset-x-0 bottom-0 z-61 max-h-[75vh] bg-paper-2 border-t border-hair-2 rounded-t-2xl translate-y-full transition-transform flex flex-col"
-                style="padding-bottom: env(safe-area-inset-bottom);"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Table of contents"
-                aria-hidden="true"
-            >
-                <div class="flex items-center justify-between px-5 py-4 border-b border-hair">
-                    <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">Contents</span>
-                    <button
-                        type="button"
-                        class="mobile-toc-close bg-transparent border border-hair-2 text-ink-2 w-8 h-8 rounded-full cursor-pointer inline-flex items-center justify-center text-sm hover:text-ink hover:border-ink"
-                        aria-label="Close contents"
-                    >✕</button>
-                </div>
-                <div class="overflow-y-auto px-5 pt-4 pb-6">
-                    <TableOfContents headings={headings!} showTitle={false} />
-                    <ShareLinks title={title} url={href} />
                 </div>
             </div>
-        </div>
-    )}
+        )
+    }
 </BaseLayout>
 
 <style>
     /* State transitions that aren't ergonomic in pure utilities */
-    .mobile-toc-root.is-open .mobile-toc-caret { transform: rotate(180deg); color: rgb(var(--ink)); }
-    .mobile-toc-root.is-open .mobile-toc-backdrop { opacity: 1; pointer-events: auto; }
-    .mobile-toc-root.is-open .mobile-toc-panel { transform: translateY(0); }
+    .mobile-toc-root.is-open .mobile-toc-caret {
+        transform: rotate(180deg);
+        color: rgb(var(--ink));
+    }
+    .mobile-toc-root.is-open .mobile-toc-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .mobile-toc-root.is-open .mobile-toc-panel {
+        transform: translateY(0);
+    }
 </style>
 
 <script is:inline>
@@ -126,17 +140,32 @@ const hasToc = !!(headings && headings.length > 0);
                 document.body.style.overflow = open ? 'hidden' : '';
             }
 
-            toggle.addEventListener('click', function () { setOpen(!root.classList.contains('is-open')); });
-            backdrop.addEventListener('click', function () { setOpen(false); });
-            if (closeBtn) closeBtn.addEventListener('click', function () { setOpen(false); });
+            toggle.addEventListener('click', function () {
+                setOpen(!root.classList.contains('is-open'));
+            });
+            backdrop.addEventListener('click', function () {
+                setOpen(false);
+            });
+            if (closeBtn)
+                closeBtn.addEventListener('click', function () {
+                    setOpen(false);
+                });
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && root.classList.contains('is-open')) setOpen(false);
             });
-            links.forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+            links.forEach(function (a) {
+                a.addEventListener('click', function () {
+                    setOpen(false);
+                });
+            });
 
             var headings = links
-                .map(function (a) { return document.getElementById(a.dataset.headingId); })
-                .filter(function (el) { return !!el; });
+                .map(function (a) {
+                    return document.getElementById(a.dataset.headingId);
+                })
+                .filter(function (el) {
+                    return !!el;
+                });
 
             function updateCurrent() {
                 if (!currentEl) return;

@@ -10,83 +10,91 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="sticky top-0 z-50 bg-paper border-b border-hair">
-    <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 md:gap-8 h-[72px] max-w-shell mx-auto px-5 md:px-10">
-        <a href="/" class="flex items-center gap-3.5 text-ink">
-            <span class="font-mono text-[20px] font-medium leading-none tracking-[-0.01em] text-ink inline-flex items-baseline">
-                <span class="text-ink-4 font-normal">[</span>arter.dev<span class="text-ink-4 font-normal">]</span>
+<header class="bg-paper border-hair sticky top-0 z-50 border-b">
+    <div class="max-w-shell mx-auto grid h-[72px] grid-cols-[auto_1fr_auto] items-center gap-4 px-5 md:gap-8 md:px-10">
+        <a href="/" class="text-ink flex items-center gap-3.5">
+            <span class="text-ink inline-flex items-baseline font-mono text-[20px] leading-none font-medium tracking-[-0.01em]">
+                <span class="text-ink-4 font-normal" aria-hidden="true">[</span>arter.dev<span class="text-ink-4 font-normal" aria-hidden="true">]</span>
             </span>
-            <span class="hidden md:inline font-mono text-[10.5px] tracking-wider uppercase text-ink-3">
-                A Log of Tech &amp; Cars
-            </span>
+            <span class="text-ink-3 hidden font-mono text-[10.5px] tracking-wider uppercase md:inline"> A Log of Tech &amp; Cars </span>
         </a>
 
-        <ul class="hidden md:flex justify-center gap-0.5 list-none m-0 p-0">
-            {navLinks.map((link) => {
+        <ul class="m-0 hidden list-none justify-center gap-0.5 p-0 md:flex">
+            {
+                navLinks.map((link) => {
+                    const active = isActive(link.href);
+                    return (
+                        <li>
+                            <a
+                                href={link.href}
+                                class:list={[
+                                    'tracking-mono relative block px-4 py-2.5 font-mono text-xs uppercase transition-colors',
+                                    active ? 'text-ink pl-[22px]' : 'text-ink-3 hover:text-ink'
+                                ]}
+                            >
+                                {active && (
+                                    <span aria-hidden="true" class="text-ink absolute top-2.5 left-1 text-[11px]">
+                                        →
+                                    </span>
+                                )}
+                                {link.text}
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+
+        <div class="flex min-w-[44px] items-center justify-end">
+            <button
+                type="button"
+                class="menu-toggle flex cursor-pointer flex-col gap-1 border-0 bg-transparent p-2 md:hidden"
+                aria-label="Open menu"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+            >
+                <span class="bg-ink block h-px w-[22px] transition-all"></span>
+                <span class="bg-ink block h-px w-[22px] transition-all"></span>
+                <span class="bg-ink block h-px w-[22px] transition-all"></span>
+            </button>
+        </div>
+    </div>
+
+    <ul id="mobile-menu" class="mobile-menu border-hair m-0 hidden list-none flex-col border-t p-0 md:hidden" aria-hidden="true">
+        {
+            navLinks.map((link) => {
                 const active = isActive(link.href);
                 return (
                     <li>
                         <a
                             href={link.href}
                             class:list={[
-                                'relative block px-4 py-2.5 font-mono text-xs uppercase tracking-mono transition-colors',
-                                active ? 'text-ink pl-[22px]' : 'text-ink-3 hover:text-ink'
+                                'tracking-mono block border-b border-white/5 px-5 py-3.5 font-mono text-[13px] uppercase',
+                                active ? 'text-ink' : 'text-ink-2 hover:text-ink'
                             ]}
                         >
-                            {active && (
-                                <span aria-hidden="true" class="absolute left-1 top-2.5 text-ink text-[11px]">→</span>
-                            )}
                             {link.text}
                         </a>
                     </li>
                 );
-            })}
-        </ul>
-
-        <div class="flex items-center justify-end min-w-[44px]">
-            <button
-                type="button"
-                class="menu-toggle md:hidden flex flex-col gap-1 bg-transparent border-0 p-2 cursor-pointer"
-                aria-label="Open menu"
-                aria-expanded="false"
-                aria-controls="mobile-menu"
-            >
-                <span class="block w-[22px] h-px bg-ink transition-all"></span>
-                <span class="block w-[22px] h-px bg-ink transition-all"></span>
-                <span class="block w-[22px] h-px bg-ink transition-all"></span>
-            </button>
-        </div>
-    </div>
-
-    <ul
-        id="mobile-menu"
-        class="mobile-menu list-none m-0 p-0 hidden flex-col border-t border-hair md:hidden"
-        aria-hidden="true"
-    >
-        {navLinks.map((link) => {
-            const active = isActive(link.href);
-            return (
-                <li>
-                    <a
-                        href={link.href}
-                        class:list={[
-                            'block px-5 py-3.5 font-mono text-[13px] tracking-mono uppercase border-b border-white/5',
-                            active ? 'text-ink' : 'text-ink-2 hover:text-ink'
-                        ]}
-                    >
-                        {link.text}
-                    </a>
-                </li>
-            );
-        })}
+            })
+        }
     </ul>
 </header>
 
 <style>
-    .menu-toggle.is-open span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
-    .menu-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .menu-toggle.is-open span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
-    .mobile-menu.is-open { display: flex; }
+    .menu-toggle.is-open span:nth-child(1) {
+        transform: translateY(5px) rotate(45deg);
+    }
+    .menu-toggle.is-open span:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.is-open span:nth-child(3) {
+        transform: translateY(-5px) rotate(-45deg);
+    }
+    .mobile-menu.is-open {
+        display: flex;
+    }
 </style>
 
 <script>

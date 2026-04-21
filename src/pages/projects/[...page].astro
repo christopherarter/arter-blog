@@ -26,19 +26,15 @@ const portfolio = page.data;
     image={{ src: '/dante-preview.jpg', alt: 'arter.dev projects' }}
     showHeader={false}
 >
-    <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
-        <header class="border-b border-ink-4 pb-10 mb-8">
-            <div class="flex items-baseline justify-between gap-6 flex-wrap">
-                <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0 mb-5">
-                    Projects
-                </h1>
-                <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">
+    <main id="main-content" class="max-w-article mx-auto px-5 pt-12 pb-16 md:px-10 md:pt-16 md:pb-24">
+        <header class="border-ink-4 mb-8 border-b pb-10">
+            <div class="flex flex-wrap items-baseline justify-between gap-6">
+                <h1 class="text-ink m-0 mb-5 font-serif text-[clamp(44px,6vw,72px)] leading-none font-normal tracking-[-0.02em]">Projects</h1>
+                <span class="text-ink-3 font-mono text-[11px] tracking-widest uppercase">
                     {page.total} project{page.total === 1 ? '' : 's'}
                 </span>
             </div>
-            <p class="max-w-[54ch] text-ink-2 text-[17px] leading-relaxed m-0">
-                Things I've built, maintained, or contributed to.
-            </p>
+            <p class="text-ink-2 m-0 max-w-[54ch] text-[17px] leading-relaxed">Things I've built, maintained, or contributed to.</p>
         </header>
         <div>
             {portfolio.map((project) => <ProjectPreview project={project} />)}

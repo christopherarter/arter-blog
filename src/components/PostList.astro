@@ -17,6 +17,6 @@ function numberFor(index: number, post: CollectionEntry<'blog'>): number {
 }
 ---
 
-<ul class="list-none p-0 m-0">
+<ul class="m-0 list-none p-0">
     {posts.map((post, i) => <PostPreview post={post} number={numberFor(i, post)} />)}
 </ul>

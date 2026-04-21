@@ -24,18 +24,18 @@ Here's a simple example demonstrating traffic splitting:
 
 ```typescript
 const options = [
-    {
-        weight: 10,
-        value: "10% of the time",
-    },
-    {
-        weight: 20,
-        value: "20% of the time",
-    },
-    {
-        weight: 70,
-        value: "70% of the time",
-    },
+  {
+    weight: 10,
+    value: '10% of the time'
+  },
+  {
+    weight: 20,
+    value: '20% of the time'
+  },
+  {
+    weight: 70,
+    value: '70% of the time'
+  }
 ];
 
 const splitr = new Splitr(options);

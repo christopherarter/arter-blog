@@ -1,10 +1,10 @@
 ---
-title: "Model Factories for Custom Namespace Models"
-slug: "model-factories-for-custom-namespace-models"
-subtitle: "A quick tip on how to allow Laravel to detect custom namespace models"
-author: "Chris Arter"
-publishDate: "2023-05-02T12:46:58.598Z"
-updatedDate: "2025-01-21T12:46:58.598Z"
+title: 'Model Factories for Custom Namespace Models'
+slug: 'model-factories-for-custom-namespace-models'
+subtitle: 'A quick tip on how to allow Laravel to detect custom namespace models'
+author: 'Chris Arter'
+publishDate: '2023-05-02T12:46:58.598Z'
+updatedDate: '2025-01-21T12:46:58.598Z'
 ---
 
 _Update:_
@@ -57,7 +57,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class AppServiceProvider extends ServiceProvider
 {
   public function boot(): void {
-     // ...  
+     // ...
     Factory::guessFactoryNamesUsing(function(string $modelName) {
       return 'Database\\Factories\\' . class_basename($modelName) . 'Factory';
     });

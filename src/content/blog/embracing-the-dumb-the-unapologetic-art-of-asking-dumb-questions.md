@@ -1,10 +1,10 @@
 ---
-title: "Embracing the \"Dumb\": The Unapologetic Art of Asking Dumb Questions"
-slug: "embracing-the-dumb-the-unapologetic-art-of-asking-dumb-questions"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2023-05-27T14:39:24.107Z"
-dateUpdated: ""
+title: 'Embracing the "Dumb": The Unapologetic Art of Asking Dumb Questions'
+slug: 'embracing-the-dumb-the-unapologetic-art-of-asking-dumb-questions'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2023-05-27T14:39:24.107Z'
+dateUpdated: ''
 ---
 
 Let's start with a truth bomb: dumb questions exist.

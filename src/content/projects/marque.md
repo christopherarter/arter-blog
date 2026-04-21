@@ -50,12 +50,8 @@ Roles, boundaries, and deny rules can live in version-controlled JSON and import
 
 ```json
 {
-  "roles": [
-    { "id": "editor", "permissions": ["posts.*", "!posts.delete"] }
-  ],
-  "boundaries": [
-    { "scope": "plan::free", "max_permissions": ["posts.read"] }
-  ]
+  "roles": [{ "id": "editor", "permissions": ["posts.*", "!posts.delete"] }],
+  "boundaries": [{ "scope": "plan::free", "max_permissions": ["posts.read"] }]
 }
 ```
 

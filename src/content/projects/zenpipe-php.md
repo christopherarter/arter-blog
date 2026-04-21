@@ -30,7 +30,7 @@ Here's a simple example that applies a discount and tax calculation:
 
 ```php
 $calculator = zenpipe()
-   ->pipe(fn($price, $next) => $next($price * 0.8)) // 20% discount  
+   ->pipe(fn($price, $next) => $next($price * 0.8)) // 20% discount
    ->pipe(fn($price, $next) => $next($price * 1.1)); // add 10% tax
 
 $calculator(100); // $88 (100 -> 80 -> 88)

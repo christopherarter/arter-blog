@@ -1,10 +1,10 @@
 ---
 title: "I'm free!"
-slug: "im-free"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2024-11-15T16:32:53.329Z"
-dateUpdated: ""
+slug: 'im-free'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2024-11-15T16:32:53.329Z'
+dateUpdated: ''
 ---
 
 I’ve finally left Twitter / X and currently hanging out on BlueSky: [https://bsky.app/profile/arter.dev](https://bsky.app/profile/arter.dev)

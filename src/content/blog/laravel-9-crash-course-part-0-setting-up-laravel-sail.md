@@ -1,10 +1,10 @@
 ---
-title: "Laravel 9 Crash Course Part 0: Setting up Laravel Sail"
-slug: "laravel-9-crash-course-part-0-setting-up-laravel-sail"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2022-03-23T12:26:53.000Z"
-dateUpdated: "2022-04-02T12:29:22.349Z"
+title: 'Laravel 9 Crash Course Part 0: Setting up Laravel Sail'
+slug: 'laravel-9-crash-course-part-0-setting-up-laravel-sail'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2022-03-23T12:26:53.000Z'
+dateUpdated: '2022-04-02T12:29:22.349Z'
 ---
 
 ### Step 0: Docker Desktop
@@ -18,7 +18,6 @@ Docker installed? Awesome, we're ready to go.
 If you're on a mac, you can use this command to start a fresh project.
 
     curl -s "https://laravel.build/crash-course" | bash
-    
 
 There's quite a few ways to install Laravel based on your preferred approach and OS. To install on Windows, check the [Windows installation docs.](https://laravel.com/docs/9.x#getting-started-on-windows)
 

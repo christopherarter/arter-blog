@@ -28,15 +28,13 @@ const startNumber = page.total - startIndex;
     image={{ src: '/dante-preview.jpg', alt: 'arter.dev writing archive' }}
     showHeader={false}
 >
-    <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
-        <header class="border-b border-ink-4 pb-10 mb-8">
-            <span class="block font-mono text-[11px] tracking-widest text-ink-3 uppercase mb-4">
+    <main id="main-content" class="max-w-article mx-auto px-5 pt-12 pb-16 md:px-10 md:pt-16 md:pb-24">
+        <header class="border-ink-4 mb-8 border-b pb-10">
+            <span class="text-ink-3 mb-4 block font-mono text-[11px] tracking-widest uppercase">
                 Page {page.currentPage} of {page.lastPage} · {page.total} posts
             </span>
-            <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0 mb-5">
-                Writing
-            </h1>
-            <p class="max-w-[54ch] text-ink-2 text-[17px] leading-relaxed m-0">
+            <h1 class="text-ink m-0 mb-5 font-serif text-[clamp(44px,6vw,72px)] leading-none font-normal tracking-[-0.02em]">Writing</h1>
+            <p class="text-ink-2 m-0 max-w-[54ch] text-[17px] leading-relaxed">
                 Essays and notes on software, the craft of shipping, and the long game of learning.
             </p>
         </header>

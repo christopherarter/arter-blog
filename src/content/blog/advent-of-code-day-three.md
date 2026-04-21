@@ -1,10 +1,10 @@
 ---
-title: "Advent of Code Day Three"
-slug: "advent-of-code-day-three"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2020-12-03T16:21:34.655Z"
-dateUpdated: "2020-12-03T16:21:57.305Z"
+title: 'Advent of Code Day Three'
+slug: 'advent-of-code-day-three'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2020-12-03T16:21:34.655Z'
+dateUpdated: '2020-12-03T16:21:57.305Z'
 ---
 
 This one seemed hard AF. Then seemed pretty easy, then seemed hard again.
@@ -18,22 +18,22 @@ Then after looking at some different hints & approaches (is this cheating?) I ca
     {
         class Day3
         {
-    
+
             public int TreeCount = 0;
-    
+
             public string Tree = "#";
-    
+
             public void solve(){
                 part1();
                 part2();
             }
-    
+
             public void part1()
             {
                 ThoseTreesTho(3, 1);
                 Console.WriteLine(TreeCount);
             }
-    
+
             public void part2()
             {
                 var mValues = new int[] {
@@ -43,17 +43,17 @@ Then after looking at some different hints & approaches (is this cheating?) I ca
                     ThoseTreesTho(7, 1),
                     ThoseTreesTho(1, 2)
                 };
-    
+
                 Int64 answer = 1;
-    
+
                 foreach(int val in mValues)
-                {       
+                {
                     answer *= val;
                 }
-    
+
                 Console.WriteLine(answer);
             }
-    
+
             private int ThoseTreesTho(int xSlope, int ySlope)
             {
                 TreeCount = 0;
@@ -61,7 +61,7 @@ Then after looking at some different hints & approaches (is this cheating?) I ca
                 var y = ySlope;
                 while (y < PuzzleInput.Count)
                 {
-                    if (PuzzleInput[y][x] == Convert.ToChar(Tree)) 
+                    if (PuzzleInput[y][x] == Convert.ToChar(Tree))
                     {
                         TreeCount++;
                     }
@@ -70,10 +70,10 @@ Then after looking at some different hints & approaches (is this cheating?) I ca
                 }
                 return TreeCount;
             }
-    
-            protected List<string> PuzzleInput = new List<string>() { 
+
+            protected List<string> PuzzleInput = new List<string>() {
                 //...
              };
-    
+
         }
     }

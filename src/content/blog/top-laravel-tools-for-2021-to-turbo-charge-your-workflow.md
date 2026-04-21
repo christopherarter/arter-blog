@@ -1,10 +1,10 @@
 ---
-title: "Top Laravel Tools for 2021 to Turbo-charge Your Workflow"
-slug: "top-laravel-tools-for-2021-to-turbo-charge-your-workflow"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2021-01-06T17:32:27.413Z"
-dateUpdated: "2021-01-06T17:59:07.154Z"
+title: 'Top Laravel Tools for 2021 to Turbo-charge Your Workflow'
+slug: 'top-laravel-tools-for-2021-to-turbo-charge-your-workflow'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2021-01-06T17:32:27.413Z'
+dateUpdated: '2021-01-06T17:59:07.154Z'
 ---
 
 Let's talk tooling! One of the benchmarks of a great framework is the ecosystem & tooling. I may be biased, but I think Laravel has some of the best tooling around. These are _my_ top tooling choices for 2021. Let's gooo.
@@ -17,10 +17,10 @@ Tinkerwell may be my new favorite tool. What is it? It's a "magical code editor"
 
 My typical workflow for this is:
 
-*   Have a feature idea, or query I'm trying to write
-*   Write the queries / feature in Tinkerwell on my local dev DB data.
-*   Get feature working in this scratch pad
-*   Refactor and implement in the actual codebase with tests.
+- Have a feature idea, or query I'm trying to write
+- Write the queries / feature in Tinkerwell on my local dev DB data.
+- Get feature working in this scratch pad
+- Refactor and implement in the actual codebase with tests.
 
 It may seem like an extra step, but the freedom and flexibility of having a place to try out ideas has speed up my development considerably, especially when writing new features.
 
@@ -44,10 +44,10 @@ From this panel above, I'm able to see that the eloquent call that created this 
 
 So far, this has helped me:
 
-*   Find slow queries
-*   Find N+1
-*   Optimize queries
-*   Find caching opportunities
+- Find slow queries
+- Find N+1
+- Optimize queries
+- Find caching opportunities
 
 🔗 [Clockwork](https://underground.works/clockwork/)
 
@@ -59,16 +59,16 @@ This is basically the NBA All-star team of VS Code extensions in the Laravel eco
 
 The pack includes:
 
-*   [Laravel Blade Snippets](https://github.com/onecentlin/laravel-blade-snippets-vscode)
-*   [Laravel Snippets](https://github.com/onecentlin/laravel5-snippets-vscode)
-*   [Laravel Artisan VS Code](https://github.com/TheColorRed/vscode-laravel-artisan)
-*   [Laravel GoToView](https://github.com/codingyu/laravel-goto-view)
-*   [Laravel GoToController](https://github.com/stef-k/laravel-goto-controller)
-*   [Laravel Extra Intellisense](https://github.com/amir9480/vscode-laravel-extra-intellisense)
-*   [DotEnv](https://github.com/mikestead/vscode-dotenv)
-*   [EditorConfig](https://github.com/editorconfig/editorconfig-vscode)
-*   [PHP Debug](https://github.com/xdebug/vscode-php-debug)
-*   [PHP Intellisense](https://github.com/bmewburn/vscode-intelephense)
+- [Laravel Blade Snippets](https://github.com/onecentlin/laravel-blade-snippets-vscode)
+- [Laravel Snippets](https://github.com/onecentlin/laravel5-snippets-vscode)
+- [Laravel Artisan VS Code](https://github.com/TheColorRed/vscode-laravel-artisan)
+- [Laravel GoToView](https://github.com/codingyu/laravel-goto-view)
+- [Laravel GoToController](https://github.com/stef-k/laravel-goto-controller)
+- [Laravel Extra Intellisense](https://github.com/amir9480/vscode-laravel-extra-intellisense)
+- [DotEnv](https://github.com/mikestead/vscode-dotenv)
+- [EditorConfig](https://github.com/editorconfig/editorconfig-vscode)
+- [PHP Debug](https://github.com/xdebug/vscode-php-debug)
+- [PHP Intellisense](https://github.com/bmewburn/vscode-intelephense)
 
 🔗 [Laravel Extensions Pack](https://github.com/onecentlin/laravel-extension-pack-vscode)
 

@@ -1,17 +1,17 @@
 ---
-title: "Introducing WP Events, a simple event listener pattern for WordPress"
-slug: "introducing-wp-events-a-simple-event-listener-pattern-for-wordpress"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2021-01-02T22:43:17.292Z"
-dateUpdated: "2021-01-17T01:16:04.507Z"
+title: 'Introducing WP Events, a simple event listener pattern for WordPress'
+slug: 'introducing-wp-events-a-simple-event-listener-pattern-for-wordpress'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2021-01-02T22:43:17.292Z'
+dateUpdated: '2021-01-17T01:16:04.507Z'
 ---
 
 ### Update:
 
 I've archived this repo. While it is dependency-free, it's very similar to Wordpress' native filters & action features. Given that they're core to WP, I would advise using them instead of this package.
 
-* * *
+---
 
 I started the year off by open-sourcing a helper I wrote for a previous project. I've been using this helper in other projects ever since.
 

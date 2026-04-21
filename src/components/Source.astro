@@ -1,14 +1,9 @@
 ---
 interface Props {
-  url: string;
-  title?: string;
+    url: string;
+    title?: string;
 }
 const { url, title } = Astro.props;
 ---
 
-<a
-  class="source-citation"
-  data-source-url={url}
-  data-source-title={title}
-  href="#footnotes"
->[*]</a>
+<a class="source-citation" data-source-url={url} data-source-title={title} href="#footnotes">[*]</a>

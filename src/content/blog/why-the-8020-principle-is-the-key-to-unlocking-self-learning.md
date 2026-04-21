@@ -1,10 +1,10 @@
 ---
-title: "Why the 80/20 Principle is The Key to Unlocking Self Learning"
-slug: "why-the-8020-principle-is-the-key-to-unlocking-self-learning"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2020-12-05T15:06:44.201Z"
-dateUpdated: "2020-12-05T21:36:24.519Z"
+title: 'Why the 80/20 Principle is The Key to Unlocking Self Learning'
+slug: 'why-the-8020-principle-is-the-key-to-unlocking-self-learning'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2020-12-05T15:06:44.201Z'
+dateUpdated: '2020-12-05T21:36:24.519Z'
 ---
 
 ### First, what is the 80/20 Principle?
@@ -27,9 +27,9 @@ Through my education in the University of Hard Knocks, I've noticed the 80/20 ru
 
 For example, when looking at new languages, I first try to understand:
 
-*   The type system
-*   Control structure syntax
-*   Packages / Library ecosystem.
+- The type system
+- Control structure syntax
+- Packages / Library ecosystem.
 
 Sure, there are _plenty_ of other vertices that come into play when learning a new language, but in my opinion, having a solid grasp of these topics will get me 80% of the way there.
 
@@ -41,9 +41,9 @@ While the 80/20 Principle has been used in everything from macroeconomics, sales
 
 The broad stroke topics that will give you 80% of the tools to be effective when working with Laravel are:
 
-*   Routing
-*   Eloquent
-*   Blade
+- Routing
+- Eloquent
+- Blade
 
 Although, the Laravel documentation covers hundreds of framework features, knowledge of those three domains will cover a vast majority of use cases.
 

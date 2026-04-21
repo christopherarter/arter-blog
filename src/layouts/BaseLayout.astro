@@ -10,12 +10,18 @@ const { showHeader: _showHeader = true, ...head } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="antialiased wrap-break-word">
+<html lang="en" class="wrap-break-word antialiased">
     <head>
         <BaseHead {...head} />
         <ClientRouter />
     </head>
     <body class="bg-paper text-ink">
+        <a
+            href="#main-content"
+            class="bg-ink text-paper focus:ring-ink-3 sr-only rounded-sm px-4 py-2 font-mono text-xs tracking-wider uppercase focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:ring-2 focus:outline-none"
+        >
+            Skip to content
+        </a>
         <Nav />
         <slot />
         <Footer />

@@ -27,18 +27,18 @@ schema_version: 1
 
 rules:
   no-console-log:
-    description: "No console.log in committed source. Use the project logger."
+    description: 'No console.log in committed source. Use the project logger.'
     engine: script
-    scope: ["src/**/*.ts", "src/**/*.tsx"]
+    scope: ['src/**/*.ts', 'src/**/*.tsx']
     severity: error
     script: "grep -nE 'console\\.log\\(' {file} && exit 1 || exit 0"
 
   no-any-cast:
-    description: "No `as any` casts. Use a precise type or `unknown` plus narrowing."
+    description: 'No `as any` casts. Use a precise type or `unknown` plus narrowing.'
     engine: ast
-    scope: ["src/**/*.ts", "src/**/*.tsx"]
+    scope: ['src/**/*.ts', 'src/**/*.tsx']
     severity: error
-    pattern: "$EXPR as any"
+    pattern: '$EXPR as any'
 
   prefer-derived-state:
     description: >
@@ -47,7 +47,7 @@ rules:
       if expensive). Effect-based derivation causes unnecessary renders
       and stale reads.
     engine: semantic
-    scope: "src/**/*.tsx"
+    scope: 'src/**/*.tsx'
     severity: warning
 ```
 

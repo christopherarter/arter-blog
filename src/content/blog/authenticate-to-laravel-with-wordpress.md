@@ -1,10 +1,10 @@
 ---
-title: "Authenticate to Laravel with WordPress"
-slug: "authenticate-to-laravel-with-wordpress"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2022-05-25T14:06:59.486Z"
-dateUpdated: ""
+title: 'Authenticate to Laravel with WordPress'
+slug: 'authenticate-to-laravel-with-wordpress'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2022-05-25T14:06:59.486Z'
+dateUpdated: ''
 ---
 
 I know what you're thinking.
@@ -16,10 +16,10 @@ This package allows WordPress users to authenticate users to your Laravel applic
 Once this package is installed, we can declare the connection details in our `config/services.php`
 
 ```php
-'wordpress' => [    
-    'client_id' => env('WORDPRESS_CLIENT_ID'),  
-    'client_secret' => env('WORDPRESS_CLIENT_SECRET'),  
-    'redirect' => env('WORDPRESS_REDIRECT_URI') 
+'wordpress' => [
+    'client_id' => env('WORDPRESS_CLIENT_ID'),
+    'client_secret' => env('WORDPRESS_CLIENT_SECRET'),
+    'redirect' => env('WORDPRESS_REDIRECT_URI')
 ],
 ```
 
@@ -42,11 +42,11 @@ return Socialite::driver('wordpress')->redirect();
 
 The details we get back from WordPress on this user are:
 
-*   id
-*   nickname
-*   name
-*   email
-*   avatar
+- id
+- nickname
+- name
+- email
+- avatar
 
 Adding a `wordpress_user_id` to the `users` table in the corresponding Laravel application will also us to preserve the native primary key. So, that when we get a user back from WordPress, we can match it to the `wordpress_user_id` instead of other details that may change, such as, `email`.
 

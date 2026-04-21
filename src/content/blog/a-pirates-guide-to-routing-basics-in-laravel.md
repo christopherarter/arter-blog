@@ -1,10 +1,10 @@
 ---
 title: "A pirate's guide to routing basics in Laravel"
-slug: "a-pirates-guide-to-routing-basics-in-laravel"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2023-03-28T15:36:23.239Z"
-dateUpdated: "2023-03-28T15:40:32.091Z"
+slug: 'a-pirates-guide-to-routing-basics-in-laravel'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2023-03-28T15:36:23.239Z'
+dateUpdated: '2023-03-28T15:40:32.091Z'
 ---
 
 Ahoy, me hearties! Cap'n Chris here with another thrillin' Laravel adventure. Today, we be divin' into the mysterious world of route structures in a Laravel application. So, hoist the Jolly Roger and let's set sail!
@@ -18,13 +18,9 @@ Laravel, as ye know, be an elegant, expressive, and powerful web application fra
 Laravel stows all route definitions in the `routes` folder. By default, ye'll find four route files:
 
 1.  `web.php`: Handles all web routes with session state and CSRF protection.
-    
 2.  `api.php`: For yer API routes, which be stateless.
-    
 3.  `console.php`: Houses the artisan command routes.
-    
 4.  `channels.php`: For yer event broadcastin' routes.
-    
 
 Keep 'em shipshape, and ye'll have smooth sailin'!
 

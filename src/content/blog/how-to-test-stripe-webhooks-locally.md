@@ -1,10 +1,10 @@
 ---
-title: "How to test stripe webhooks locally"
-slug: "how-to-test-stripe-webhooks-locally"
+title: 'How to test stripe webhooks locally'
+slug: 'how-to-test-stripe-webhooks-locally'
 subtitle: "The new Stripe CLI is real, and it's spectacular 😎"
-author: "Chris Arter"
-publishDate: "2021-07-20T12:05:37.697Z"
-dateUpdated: "2022-02-08T22:11:56.468Z"
+author: 'Chris Arter'
+publishDate: '2021-07-20T12:05:37.697Z'
+dateUpdated: '2022-02-08T22:11:56.468Z'
 ---
 
 In this article, I'm going to walk you through how to get started with testing stripe webhooks locally using the new Stripe CLI tool. This will allow you to simulate a real stripe API response to your locally running application. If you'd like to test your application running on localhost and determine how it would interact with Stripe webhooks, this will show you how to get started.
@@ -17,9 +17,9 @@ When an event happens in an application, webhooks allow for information about th
 
 In this example, when a user registers in the application, the webhook triggers HTTP Post requests to the following destinations:
 
-*   Hubspot (our CRM)
-*   Stripe (our payment processor)
-*   Slack (to notify our sales team)
+- Hubspot (our CRM)
+- Stripe (our payment processor)
+- Slack (to notify our sales team)
 
 This could be sent to an (almost) unlimited number of destinations. The information sent to these destinations typically contains information related to the event.
 
@@ -35,7 +35,7 @@ Stripe has now introduced the [Stripe CLI](https://ngrok.com/), a mult-tool CLI 
 
 ##### **Step 1: Installation**
 
-Follow the installation instructions [here](https://stripe.com/docs/stripe-cli#install). The documentation will ask you to login with your Stripe credentials, so be sure you have a Stripe account set up.
+Follow the [Stripe CLI installation instructions](https://stripe.com/docs/stripe-cli#install). The documentation will ask you to login with your Stripe credentials, so be sure you have a Stripe account set up.
 
 ##### **Step 2: Prepare Your Application to Receive Webhooks**
 
@@ -50,12 +50,10 @@ With our Stripe CLI installed and authenticated, we can send Stripe events to ou
 To turn it on, let's run:
 
     stripe listen --forward-to http://localhost:8000/webhooks/stripe
-    
 
 This should return a response in the console like:
 
      Ready! Your webhook signing secret is <your signing secret>
-    
 
 The signing secret is what is used in the previous step to verify the signature.
 

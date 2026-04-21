@@ -41,22 +41,20 @@ const breadcrumbs = [
 ---
 
 <BaseLayout
-    title={page.currentPage === 1
-        ? `Posts tagged ${currentTag?.name}`
-        : `Posts tagged ${currentTag?.name} — Page ${page.currentPage} of ${page.lastPage}`}
+    title={page.currentPage === 1 ? `Posts tagged ${currentTag?.name}` : `Posts tagged ${currentTag?.name} — Page ${page.currentPage} of ${page.lastPage}`}
     description={page.currentPage === 1
         ? `A curated collection of posts under ${currentTag?.name}.`
         : `Page ${page.currentPage} of posts tagged ${currentTag?.name} on arter.dev.`}
     image={{ src: '/dante-preview.jpg', alt: 'arter.dev tag archive' }}
     showHeader={false}
 >
-    <main class="max-w-article mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
+    <main id="main-content" class="max-w-article mx-auto px-5 pt-12 pb-16 md:px-10 md:pt-16 md:pb-24">
         <Breadcrumbs items={breadcrumbs} class="mb-8" />
-        <header class="border-b border-ink-4 pb-10 mb-8 flex items-baseline justify-between gap-6 flex-wrap">
-            <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0">
+        <header class="border-ink-4 mb-8 flex flex-wrap items-baseline justify-between gap-6 border-b pb-10">
+            <h1 class="text-ink m-0 font-serif text-[clamp(44px,6vw,72px)] leading-none font-normal tracking-[-0.02em]">
                 {currentTag?.name}
             </h1>
-            <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">
+            <span class="text-ink-3 font-mono text-[11px] tracking-widest uppercase">
                 {page.total} post{page.total === 1 ? '' : 's'}
             </span>
         </header>

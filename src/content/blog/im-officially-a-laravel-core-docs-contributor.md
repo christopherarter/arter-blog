@@ -1,10 +1,10 @@
 ---
 title: "I'm officially a Laravel core (docs) contributor! 🎉"
-slug: "im-officially-a-laravel-core-docs-contributor"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2020-01-30T14:15:32.000Z"
-dateUpdated: ""
+slug: 'im-officially-a-laravel-core-docs-contributor'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2020-01-30T14:15:32.000Z'
+dateUpdated: ''
 ---
 
 Currently, my colleagues and I are troubleshooting some deployment issues with our Laravel Horizon queue. On our development server, the deploy process works beautifully, and subsiquent jobs are firing correctly when the jobs are placed into the queue.
@@ -18,11 +18,10 @@ After discovering this, this command was incredibly useful for debugging our iss
 On a whim, I submitted a PR to add just a small blurb to the documentation about this status command, so that others in my situation would find it faster, without having to dig through source code or github issues like I had.
 
     You may check the current status of the Horizon process using the horizon:status Artisan command:
-    
+
     ```bash
     php artisan horizon:status
     ```
-    
 
 ☝️ That's it. That's my claim to fame. A small blurb about one command. But, it feels great to contribute the project and add my little piece to it, however small.
 

@@ -1,16 +1,15 @@
 ---
-title: "How to Integrate Laravel Sanctum with Spatie Permissions"
-slug: "how-to-integrate-laravel-sanctum-with-spatie-permissions"
-subtitle: "Use a single source of truth for your user permissions.  One rules set to rule them all."
-author: "Chris Arter"
-publishDate: "2024-12-23T16:56:49.653Z"
-dateUpdated: "2025-01-10T14:46:54.138Z"
+title: 'How to Integrate Laravel Sanctum with Spatie Permissions'
+slug: 'how-to-integrate-laravel-sanctum-with-spatie-permissions'
+subtitle: 'Use a single source of truth for your user permissions.  One rules set to rule them all.'
+author: 'Chris Arter'
+publishDate: '2024-12-23T16:56:49.653Z'
+dateUpdated: '2025-01-10T14:46:54.138Z'
 ---
 
 In this article, I’m going to show you a simplified setup of how I’ve used Spatie [Roles & Permissions](https://spatie.be/docs/laravel-permission/v6/introduction) package with [Laravel Sanctum.](https://laravel.com/docs/11.x/sanctum) This will allow users Sanctum tokens to respect the user’s abilities through this package.
 
-Why?
-----
+## Why?
 
 Roles and permissions is a widely used package for determining authorization within your application. I treat a user’s abilities through its role as the source of truth for what this user can or cannot do.
 
@@ -32,8 +31,7 @@ In effect, we’d be maintaining **_two authorization systems._** Life is too sh
 
 By default, abilities are stored in the `abilities` column in the `personal access tokens` table.
 
-How to sync with Spatie Permissions
------------------------------------
+## How to sync with Spatie Permissions
 
 Basically, we’re going to override how Laravel’s default `PersonalAccessToken` class looks up a token’s capabilities and defer to its `tokenable` model’s capabilities. The `tokenable` model is our `User` model by default.
 
@@ -43,12 +41,9 @@ To begin, you should have both Spatie Roles & Permissions installed, as well as 
 
 During installation, make sure you:
 
-*   Apply the `HasRoles` and `HasApiTokens` traits to the User model.
-    
-*   Publish the configurations and run all applicable migrations.
-    
-*   If your user model is using UUIDs, then be sure to [configure your migrations.](https://spatie.be/docs/laravel-permission/v6/advanced-usage/uuid)
-    
+- Apply the `HasRoles` and `HasApiTokens` traits to the User model.
+- Publish the configurations and run all applicable migrations.
+- If your user model is using UUIDs, then be sure to [configure your migrations.](https://spatie.be/docs/laravel-permission/v6/advanced-usage/uuid)
 
 ### Extend the Personal Access Token
 
@@ -60,13 +55,13 @@ Following the same pattern, create a new file in `/app/Models/CustomToken.php` T
 <?php
 
     namespace App\Models;
-    
+
     use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
-    
+
     class CustomToken extends SanctumPersonalAccessToken
     {
         public $table = 'personal_access_tokens';
-    
+
         public function can($ability)
         {
             return $this->tokenable->can($ability);
@@ -88,14 +83,14 @@ namespace App\Providers;
 use App\Models\CustomToken;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-    
+
     class AppServiceProvider extends ServiceProvider
     {
         public function register(): void
         {
             //
         }
-    
+
         public function boot(): void
         {
             Sanctum::usePersonalAccessTokenModel(CustomToken::class);
@@ -103,8 +98,7 @@ use Laravel\Sanctum\Sanctum;
     }
 ```
 
-Example Usage
--------------
+## Example Usage
 
 Here is a basic setup for seeing the same rule set in action across web guard and sanctum.
 
@@ -151,39 +145,39 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\get;
-    
+
     beforeEach(function () {
         $this->role = Role::create(['name' => 'admin']);
         $this->permission = Permission::create(['name' => 'view-protected']);
         $this->role->givePermissionTo($this->permission);
         $this->route = route('api.protected');
     });
-    
+
     test('user can access protected route', function () {
         $user = User::factory()
             ->create()
             ->assignRole($this->role);
-    
+
         $this->actingAs($user)
             ->get('/protected')
             ->assertStatus(200);
     });
-    
+
     test('user cannot access protected route', function () {
         $user = User::factory()->create();
         $this->actingAs($user)
             ->get('/protected')
             ->assertStatus(403);
     });
-    
+
     test('Spatie permissions are proxied to token abilities', function () {
-    
+
         $token = User::factory()
             ->create()
             ->givePermissionTo('view-protected')
             ->createToken('test-token')
             ->plainTextToken;
-    
+
         get(route('api.protected'), ['Authorization' => 'Bearer '.$token])
             ->assertOk(200);
     });
@@ -191,8 +185,7 @@ use function Pest\Laravel\get;
 
 In the tests above, we’re verifying that a user can access the same respective abilities in both the API as well as the web guard (our web app).
 
-Trade-offs & Advanced Usage
----------------------------
+## Trade-offs & Advanced Usage
 
 In a tradition as old as time, when figuring out if this pattern makes sense for your application, the answer is always _it depends._ I find this approach works brilliantly if I have a both a user-facing dashboard, as well as a public API, and I want to create a simple token that allows users to do exactly what they can do in the admin. However, there are trade offs. In our simpler approach, we don’t account for allowing users to create more granular-permission tokens, which violates the [Principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege#:~:text=If%20execution%20picks%20up%20after,in%20defence%20and%20intelligence%20agencies.).
 
@@ -202,34 +195,34 @@ If a user wants to be more granular with token scopes, we can alter our approach
 <?php
 
     namespace App\Models;
-    
+
     use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
-    
+
     class CustomToken extends SanctumPersonalAccessToken
     {
         public $table = 'personal_access_tokens';
-    
+
         public function can($ability)
         {
             // if the user can't do it, our token can't either.
             if(!$this->tokenable->can($ability)) {
                 return false;
             }
-    
+
             // no wildcards. sorry Charlie.
             $abilities = collect($this->abilities)->filter(function($ability) {
                 return $ability !== '*';
             })->toArray();
-    
+
             // we have explicit permissions passed to `createAccessToken`
             if(count($abilities) > 0) {
                 return $this->canDb($abilities);
             }
-    
+
             return true;
-    
+
         }
-    
+
         protected function canDb($ability): bool
         {
             return array_key_exists($ability, array_flip($this->abilities));
@@ -237,10 +230,10 @@ If a user wants to be more granular with token scopes, we can alter our approach
 }
 ```
 
-* * *
+---
 
 ### Video Tutorial
 
 If you are a visual learner, I recorded this video just for you :)
 
-[https://www.youtube.com/watch?v=YX\_X-kYLN8c](https://www.youtube.com/watch?v=YX_X-kYLN8c)
+[https://www.youtube.com/watch?v=YX_X-kYLN8c](https://www.youtube.com/watch?v=YX_X-kYLN8c)

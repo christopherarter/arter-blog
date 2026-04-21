@@ -1,10 +1,10 @@
 ---
-title: "Middleware for the Wordpress REST API"
-slug: "middleware-for-the-wordpress-rest-api"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2019-05-25T13:22:06.000Z"
-dateUpdated: ""
+title: 'Middleware for the Wordpress REST API'
+slug: 'middleware-for-the-wordpress-rest-api'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2019-05-25T13:22:06.000Z'
+dateUpdated: ''
 ---
 
 When I originally began doing significant development around the Wordpress REST API, I was excited to finally get hands-on with it.
@@ -28,7 +28,6 @@ This is the way you can perform middleware checks according to the current WP Co
         }
       ) );
     } );
-    
 
 All we're left with is `permission_callback` to pass in a function string, or closure as seen in the documentation.
 
@@ -42,51 +41,46 @@ This helper simply takes the `WP_REST_Request` from the `rest_pre_dispatch` filt
 
 This allows you to write simple checks, with all of the objects you need all in one place:
 
-    
     middleware()->get('/wp/v2/posts', ['check_foo', 'check_bar']);
-    
+
     // callback check
     function check_foo($request) {
         if( $request->get_param('foo') != 'foo' ){
             return reject();
         }
     }
-    
+
     // callback check
     function check_bar($request) {
         if( $request->get_param('bar') != 'bar' ){
             return reject();
         }
     }
-    
 
 Simply return the `reject()` function to reject the request and return a `401`. You can also pass custom rejection messages and response code.
 
     return reject("foo doesn't equal bar!", 400);
-    
 
 ### Authorization
 
 This also opens the door to allow for certain API operations based on external sources, e.g. using user tokens from Cognito, or approving or denying requests based on other token data in the request, like Stripe.
 
     middleware()->post('/wp/v2/stripe-webhook', ['stripe_check']);
-    
+
     function stripe_check($request){
         // verify the webhook came from stripe
     }
-    
 
 ### Middleware Stacks
 
 This also allows you to create pre-described middleware stacks that allow for portable, consolidated check logic across your application.
 
     $middlewareStack = ['check_foo', 'check_bar'];
-    
+
     middleware()->guard([
         '/wp/v2/posts',
-        '/wp/v2/users' ], 
+        '/wp/v2/users' ],
         $middlewareStack);
-    
 
 ### Getting Started
 

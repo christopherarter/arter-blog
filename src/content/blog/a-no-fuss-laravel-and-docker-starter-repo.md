@@ -1,10 +1,10 @@
 ---
-title: "A No Fuss Laravel & Docker Starter Repo"
-slug: "a-no-fuss-laravel-and-docker-starter-repo"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2019-11-20T05:00:00.000Z"
-dateUpdated: "2020-11-28T14:21:06.433Z"
+title: 'A No Fuss Laravel & Docker Starter Repo'
+slug: 'a-no-fuss-laravel-and-docker-starter-repo'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2019-11-20T05:00:00.000Z'
+dateUpdated: '2020-11-28T14:21:06.433Z'
 ---
 
 When I initially wanted to transition from Homestead & Vagrant to a containerized version of Laravel, I struggled to get it working. I Googled far and wide, and tried a ton of different "simple" walk throughs that were anything but.
@@ -23,13 +23,17 @@ Prerequisites:
 ### Get started
 
 1.  Clone this repo and navigate to the repo folder. Run:
+
 ```bash
 composer create-project --prefer-dist laravel/laravel my-app
 ```
+
 2.  Run:
+
 ```bash
 mv my-app/* my-app/.* ./ && rm -rf my-app
 ```
+
 3.  Change the values in your `.env` to the values below:
 
 ```env
@@ -42,6 +46,7 @@ DB_PASSWORD=myStrongPassword1234
 ```
 
 The last step, run:
+
 ```bash
 docker-compose up
 ```

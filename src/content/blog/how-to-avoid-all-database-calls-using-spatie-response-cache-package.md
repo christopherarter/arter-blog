@@ -1,10 +1,10 @@
 ---
-title: "How to avoid all database calls using Spatie Response Cache package"
-slug: "how-to-avoid-all-database-calls-using-spatie-response-cache-package"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2020-12-24T12:19:14.706Z"
-dateUpdated: ""
+title: 'How to avoid all database calls using Spatie Response Cache package'
+slug: 'how-to-avoid-all-database-calls-using-spatie-response-cache-package'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2020-12-24T12:19:14.706Z'
+dateUpdated: ''
 ---
 
 It's no secret I stan [Spatie](https://spatie.be/) packages. I'm convinced there must be something in the water over there in Belgium, because, all they seem to do is pump out quality package after quality package. And, the most impressive thing is that they're all incredibly well maintained.
@@ -30,7 +30,7 @@ This is all well and good, however, despite caching this route, **we will still 
 The workaround for this is fetching the record from the controller action. This will allow the response to be truly cached.
 
 ```php
-// PostsController.php 
+// PostsController.php
 
 public function show(string $slug)
 {

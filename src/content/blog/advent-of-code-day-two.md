@@ -1,10 +1,10 @@
 ---
-title: "Advent of Code Day Two"
-slug: "advent-of-code-day-two"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2020-12-03T00:53:05.831Z"
-dateUpdated: ""
+title: 'Advent of Code Day Two'
+slug: 'advent-of-code-day-two'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2020-12-03T00:53:05.831Z'
+dateUpdated: ''
 ---
 
 **SPOILERS**
@@ -20,13 +20,13 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
         class Day2
         {
             protected List<String> PuzzleInput = new List<String>() { ... };
-    
+
             public void solve()
             {
                 part1();
                 part2();
             }
-    
+
             public void part1()
             {
                 var correctPasswords = new List<Password>();
@@ -40,7 +40,7 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
                 }
                 Console.WriteLine("The answer to part 1 is {0}", correctPasswords.Count);
             }
-    
+
             public void part2()
             {
                 var correctPasswords = new List<Password>();
@@ -54,9 +54,9 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
                 }
                Console.WriteLine("The answer to part 2 is {0}", correctPasswords.Count);
             }
-    
+
         }
-    
+
         class Password
         {
             public int PasswordMin;
@@ -66,7 +66,7 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
             public string InputString;
             public char Position1Char;
             public char Position2Char;
-    
+
             public int CharacterFrequency;
             public Password(string inputString)
             {
@@ -74,7 +74,7 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
                 SetProperties();
                 SetPositionChars();
             }
-    
+
             protected void SetProperties()
             {
                 var matches = Regex.Matches(InputString, @"(\d*)[^-](\d*)[^ ](\w*)");
@@ -84,12 +84,12 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
                 PasswordString = matches[2].Value.Replace(" ", "");
                 CharacterFrequency = PasswordString.Split(Letter).Count() - 1;
             }
-    
+
             public bool IsValid()
             {
                 return CharacterFrequency >= PasswordMin && CharacterFrequency <= PasswordMax;
             }
-    
+
             public bool IsValid2()
             {
                 var letter = Convert.ToChar(Letter);
@@ -97,14 +97,14 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
                 {
                     return true;
                 }
-    
+
                 if( letter == Position2Char && letter != Position1Char)
                 {
                     return true;
                 }
                 return false;
             }
-    
+
             protected void SetPositionChars()
             {
                 var letter = Convert.ToChar(Letter);
@@ -118,5 +118,5 @@ This one ended up being a bit trickier than I anticipated in part 2, but eventua
                 }
             }
         }
-    
+
     }

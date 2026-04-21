@@ -1,10 +1,10 @@
 ---
-title: "Kraken Low-Mount Coolant Mixer Modification"
-slug: "kraken-low-mount-coolant-mixer-modification"
-subtitle: "A less than obvious step for clearance on low mount install for the Miata Kraken Turbo Kit"
-author: "Chris Arter"
-publishDate: "2024-04-20"
-tags: ["Car Stuff"]
+title: 'Kraken Low-Mount Coolant Mixer Modification'
+slug: 'kraken-low-mount-coolant-mixer-modification'
+subtitle: 'A less than obvious step for clearance on low mount install for the Miata Kraken Turbo Kit'
+author: 'Chris Arter'
+publishDate: '2024-04-20'
+tags: ['Car Stuff']
 ---
 
 When doing a loose fitment test just to make sure everything generally fit together,
@@ -21,7 +21,7 @@ Photo of the issue:
   />
 </div>
 
-But, thanks to Car Guy Friday's video [here](https://www.youtube.com/watch?v=8tQahLGNxEk&t=14s),
+But, thanks to [Car Guy Friday's modification video](https://www.youtube.com/watch?v=8tQahLGNxEk&t=14s),
 they showed how they modified the housing to clear the turbo. It's as simple as cutting off the 90 degree
 elbow (no welding).
 

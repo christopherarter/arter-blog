@@ -1,10 +1,10 @@
 ---
-title: "Laravel chunk vs cursor methods compared"
-slug: "laravel-chunk-vs-cursor-methods-compared"
-subtitle: "When to use chunk(), and when to use cursor()"
-author: "Chris Arter"
-publishDate: "2023-03-23T10:47:00.664Z"
-dateUpdated: "2024-05-14T14:51:45.541Z"
+title: 'Laravel chunk vs cursor methods compared'
+slug: 'laravel-chunk-vs-cursor-methods-compared'
+subtitle: 'When to use chunk(), and when to use cursor()'
+author: 'Chris Arter'
+publishDate: '2023-03-23T10:47:00.664Z'
+dateUpdated: '2024-05-14T14:51:45.541Z'
 ---
 
 When working with large datasets in Laravel, efficiently managing memory usage is essential. Eloquent provides two powerful methods, `cursor()` and `chunk()`, to assist in retrieving and processing these large datasets. But how do they differ, and which should you choose for your specific use case? I most commonly use `chunk()` but recently took a dive into `cursor()` to compare. In this blog post, we'll compare `cursor()` and `chunk()` to help you make an informed decision, so you don't melt your $5 Digital Ocean droplet 🙃
@@ -70,9 +70,7 @@ Notice we're just grabbing users in increments of 200 as an entire "chunk" in a 
 Pros of using `chunk()`:
 
 1.  Controlled memory usage: You can define the number of records to load into memory at a time.
-    
 2.  Faster execution: Fetching records in chunks can lead to faster processing times compared to fetching them individually.
-    
 
 Cons of using `chunk()`:
 
@@ -107,9 +105,7 @@ The key difference is cursor will the results from the DB, and processes it one 
 **Pros of using**`cursor()`**:**
 
 1.  Efficient memory usage: Since records are streamed and only one eloquent model is hydrated in memory, memory usage remains low.
-    
 2.  Simple implementation: The `cursor()` method is easy to implement in your code.
-    
 
 **Cons of using**`cursor()`**:**
 
@@ -120,11 +116,8 @@ The key difference is cursor will the results from the DB, and processes it one 
 When deciding between `cursor()` and `chunk()`, consider the following factors:
 
 1.  Memory usage: If you want to keep memory usage as low as possible, go with `cursor()`. If you're comfortable with higher memory usage and want faster execution, `chunk()` is a better choice. Just keep in mind you'll be trading memory for _N_ number of queries. So instead of 10 queries returning 10 results each with `chunk()`, you'll make 100 queries with 1 result each. This will place this workload on your database (which can be fine).
-    
 2.  Execution speed: `chunk()` can potentially offer faster execution times as it processes records in batches, while `cursor()` fetches them one at a time.
-    
 3.  Implementation complexity: If you prefer a simple implementation, `cursor()` is easier to implement compared to `chunk()`.
-    
 
 ### Conclusion
 

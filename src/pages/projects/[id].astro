@@ -40,48 +40,48 @@ const breadcrumbs = [
 ];
 ---
 
-<BlogPostLayout
-    title={seo?.title ?? title}
-    description={seo?.description ?? description}
-    image={seo?.image}
-    showHeader={false}
-    headings={headings}
->
+<BlogPostLayout title={seo?.title ?? title} description={seo?.description ?? description} image={seo?.image} showHeader={false} headings={headings}>
     <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
-    <header class="border-b border-hair pb-8 mb-11">
-        <h1 class="font-serif font-normal text-ink text-[clamp(40px,6vw,64px)] leading-none tracking-tight m-0 mb-5">
+    <header class="border-hair mb-11 border-b pb-8">
+        <h1 class="text-ink m-0 mb-5 font-serif text-[clamp(40px,6vw,64px)] leading-none font-normal tracking-tight">
             {title}
         </h1>
-        {description && (
-            <p class="text-ink-2 text-[17px] leading-relaxed m-0 max-w-[54ch]">{description}</p>
-        )}
-        {publishDate && (
-            <div class="mt-8 flex items-center gap-4 font-mono text-[11.5px] tracking-[0.06em] text-ink-3 uppercase flex-wrap">
-                <span>Published <FormattedDate date={publishDate} /></span>
-            </div>
-        )}
+        {description && <p class="text-ink-2 m-0 max-w-[54ch] text-[17px] leading-relaxed">{description}</p>}
+        {
+            publishDate && (
+                <div class="text-ink-3 mt-8 flex flex-wrap items-center gap-4 font-mono text-[11.5px] tracking-[0.06em] uppercase">
+                    <span>
+                        Published <FormattedDate date={publishDate} />
+                    </span>
+                </div>
+            )
+        }
     </header>
 
-    {seo?.image?.src && (
-        <figure class="m-0 mb-12 border border-hair-2 overflow-hidden">
-            <img src={seo.image.src} alt={seo.image.alt ?? ''} loading="eager" class="block w-full h-auto" />
-        </figure>
-    )}
+    {
+        seo?.image?.src && (
+            <figure class="border-hair-2 m-0 mb-12 overflow-hidden border">
+                <img src={seo.image.src} alt={seo.image.alt ?? ''} loading="eager" class="block h-auto w-full" />
+            </figure>
+        )
+    }
 
-    <div class="prose-editorial" id="main-content">
+    <div class="prose-editorial">
         <Content />
     </div>
 
-    {(prevProject || nextProject) && (
-        <section class="mt-20 pt-10 border-t border-hair">
-            <h2 class="font-serif font-normal text-[32px] tracking-[-0.015em] m-0 mb-6">View Next</h2>
-            <div>
-                {nextProject && <ProjectPreview project={nextProject} headingLevel="h3" />}
-                {prevProject && <ProjectPreview project={prevProject} headingLevel="h3" />}
-            </div>
-        </section>
-    )}
+    {
+        (prevProject || nextProject) && (
+            <section class="border-hair mt-20 border-t pt-10">
+                <h2 class="m-0 mb-6 font-serif text-[32px] font-normal tracking-[-0.015em]">View Next</h2>
+                <div>
+                    {nextProject && <ProjectPreview project={nextProject} headingLevel="h3" />}
+                    {prevProject && <ProjectPreview project={prevProject} headingLevel="h3" />}
+                </div>
+            </section>
+        )
+    }
 </BlogPostLayout>
 
 <script>

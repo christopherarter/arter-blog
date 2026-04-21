@@ -4,6 +4,7 @@ seo:
   title: About Me
   description: My name is Chris Arter, and I'm a self-taught Software Engineer from sunny Florida. 🌴
 ---
+
 My name is Chris Arter, and I'm a self-taught Software Engineer originally from sunny Florida. 🌴
 
 ## Origin Story

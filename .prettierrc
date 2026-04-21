@@ -3,7 +3,14 @@
     "singleQuote": true,
     "trailingComma": "none",
     "tabWidth": 4,
+    "plugins": ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
     "overrides": [
+        {
+            "files": "*.astro",
+            "options": {
+                "parser": "astro"
+            }
+        },
         {
             "files": ["*.md", "*.mdx", "*.yaml"],
             "options": {

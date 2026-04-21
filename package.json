@@ -7,7 +7,10 @@
         "start": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
-        "astro": "astro"
+        "astro": "astro",
+        "format": "biome format --write . && prettier --write \"**/*.{astro,md,mdx,yaml,yml}\"",
+        "lint": "biome lint .",
+        "check": "biome check --write . && prettier --write \"**/*.{astro,md,mdx,yaml,yml}\""
     },
     "dependencies": {
         "@astrojs/markdoc": "^1.0.3",
@@ -29,8 +32,10 @@
         "tailwindcss": "^4.2.3"
     },
     "devDependencies": {
+        "@biomejs/biome": "2.4.12",
         "@tailwindcss/typography": "^0.5.15",
         "prettier": "^3.4.2",
+        "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.7.2"
     }
 }

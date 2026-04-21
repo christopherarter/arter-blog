@@ -1,15 +1,29 @@
 ---
-type Props = { date: Date };
+type Props = { date: Date; format?: 'long' | 'short' | 'responsive' };
 
-const { date } = Astro.props;
+const { date, format = 'long' } = Astro.props;
+
+const long = date.toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
+const short = date.toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+});
 ---
 
 <time datetime={date.toISOString()}>
+    {format === 'short' && short}
+    {format === 'long' && long}
     {
-        date.toLocaleDateString('en-us', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        })
+        format === 'responsive' && (
+            <>
+                <span class="sm:hidden">{short}</span>
+                <span class="hidden sm:inline">{long}</span>
+            </>
+        )
     }
 </time>

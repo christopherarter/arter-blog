@@ -1,10 +1,10 @@
 ---
-title: "Automatic Alt Text With Spatie Media Package and AWS Rekognition"
-slug: "automatic-alt-text-with-spatie-media-package-and-aws-rekognition"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2021-01-01T19:08:30.304Z"
-dateUpdated: ""
+title: 'Automatic Alt Text With Spatie Media Package and AWS Rekognition'
+slug: 'automatic-alt-text-with-spatie-media-package-and-aws-rekognition'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2021-01-01T19:08:30.304Z'
+dateUpdated: ''
 ---
 
 I recently implemented a feature in our API that automatically creates alt tags for all images uploaded with [Spatie Laravel-medialibrary](https://spatie.be/docs/laravel-medialibrary/v9/introduction). This allows all images added to automatically be tagged with AWS's Rekgonition API, saving our marketing team hundreds of hours per year.
@@ -18,7 +18,7 @@ This is how the feature works:
 3.  Using Laravel's DI container, we will inject our `AltTagService` into the handler.
 4.  That service will call AWS Rekognition API to provide the image tags for the image.
 
-![Screen Shot 2021-01-01 at 1.43.10 PM.png](/images/1737473617711-srPH398Jm.png)
+![Diagram showing the flow from media upload event through AltTagService to AWS Rekognition and back](/images/1737473617711-srPH398Jm.png)
 
 #### Could you handle everything in the listener?
 
@@ -211,6 +211,5 @@ You can now upload files with the Spatie media library. The alt tag should be av
 An example:
 
     $altTag = $myMediaModel->getCustomProperty('alt');
-    
 
 Enjoy!

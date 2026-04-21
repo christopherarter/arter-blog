@@ -49,11 +49,6 @@ function estimateReadTime(body: string | undefined): number {
 const readMinutes = estimateReadTime(post.body);
 const coverImage = seo?.image?.src;
 const coverAlt = seo?.image?.alt ?? '';
-
-const eyebrowItems: string[] = [];
-if (tags[0]) eyebrowItems.push(tags[0]);
-if (tags.length > 1) eyebrowItems.push(tags.slice(1, 3).join(' · '));
-eyebrowItems.push(`${readMinutes} min read`);
 ---
 
 <BlogPostLayout
@@ -68,87 +63,103 @@ eyebrowItems.push(`${readMinutes} min read`);
 >
     <ArticleSchema post={post} url={href} />
 
-    <Breadcrumbs items={breadcrumbs} class="mb-8" />
+    <Breadcrumbs items={breadcrumbs} class="mb-6 md:mb-8" hideCurrentOnMobile />
 
-    <header class="border-b border-hair pb-8 mb-11">
-        <div class="font-mono text-[11px] tracking-[0.18em] text-ink-3 uppercase mb-6 flex gap-[18px] flex-wrap">
-            {eyebrowItems.map((item, i) => (
-                <>
-                    {i > 0 && <span class="text-ink-4">·</span>}
-                    <span>{item}</span>
-                </>
-            ))}
-        </div>
-        <h1 class="blog-post-title font-serif font-normal text-ink text-[clamp(40px,6vw,72px)] leading-none tracking-[-0.028em] m-0 mb-5 max-w-[18ch]">
+    <header class="border-hair mb-8 border-b pb-6 md:mb-11 md:pb-8">
+        <h1 class="blog-post-title text-ink m-0 mb-5 max-w-[18ch] font-serif text-[clamp(40px,6vw,72px)] leading-none font-normal tracking-[-0.028em]">
             {title}
         </h1>
-        {subtitle && (
-            <p class="font-serif italic text-[24px] leading-[1.32] text-ink-2 m-0 mb-8 max-w-[42ch] font-normal">
-                {subtitle}
-            </p>
-        )}
-        <div class="flex items-center gap-4 font-mono text-[11.5px] tracking-[0.06em] text-ink-3 uppercase flex-wrap">
-            <span>Written by <b class="text-ink font-medium">Chris Arter</b></span>
-            {publishDate && (
-                <>
-                    <span class="text-ink-4">·</span>
-                    <span>Published <FormattedDate date={publishDate} /></span>
-                </>
-            )}
-            {updatedDate && (
-                <>
-                    <span class="text-ink-4">·</span>
-                    <span>Updated <FormattedDate date={updatedDate} /></span>
-                </>
-            )}
+        {subtitle && <p class="text-ink-2 m-0 mb-6 max-w-[42ch] font-serif text-[22px] leading-[1.32] font-normal italic md:mb-8 md:text-[24px]">{subtitle}</p>}
+        <div
+            class="text-ink-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tracking-[0.12em] uppercase md:gap-x-4 md:text-[11.5px] md:tracking-[0.06em]"
+        >
+            <span class="text-ink font-medium">Chris Arter</span>
+            {
+                publishDate && (
+                    <>
+                        <span class="text-ink-4" aria-hidden="true">
+                            ·
+                        </span>
+                        <span>
+                            <>
+                                <span class="sr-only md:not-sr-only md:mr-1">Published</span>
+                                <FormattedDate date={publishDate} format="responsive" />
+                            </>
+                        </span>
+                    </>
+                )
+            }
+            <span class="text-ink-4" aria-hidden="true">·</span>
+            <span>{readMinutes} min<span class="hidden md:inline"> read</span></span>
+            {
+                updatedDate && (
+                    <>
+                        <span class="text-ink-4 hidden md:inline" aria-hidden="true">
+                            ·
+                        </span>
+                        <span class="hidden md:inline">
+                            Updated <FormattedDate date={updatedDate} />
+                        </span>
+                    </>
+                )
+            }
         </div>
     </header>
 
-    {coverImage && (
-        <figure class="m-0 mb-[52px] aspect-video border border-hair-2 overflow-hidden">
-            <img src={coverImage} alt={coverAlt} loading="eager" decoding="async" class="block w-full h-full object-cover" />
-        </figure>
-    )}
+    {
+        coverImage && (
+            <figure class="border-hair-2 m-0 mb-[52px] aspect-video overflow-hidden border">
+                <img src={coverImage} alt={coverAlt} loading="eager" decoding="async" class="block h-full w-full object-cover" />
+            </figure>
+        )
+    }
 
-    <div class="prose-editorial" id="main-content">
+    <div class="prose-editorial">
         <Content />
         <Footnotes />
     </div>
 
-    {tags.length > 0 && (
-        <div class="mt-12 pt-5 border-t border-hair flex flex-wrap gap-4 font-mono text-xs tracking-mono uppercase">
-            {tags.map((tag) => (
-                <a
-                    href={`/tags/${slugify(tag)}`}
-                    class="text-ink-3 hover:text-ink hover:underline hover:decoration-ink-4 hover:underline-offset-[3px]"
-                >#{tag}</a>
-            ))}
-        </div>
-    )}
+    {
+        tags.length > 0 && (
+            <div class="border-hair tracking-mono mt-12 flex flex-wrap gap-4 border-t pt-5 font-mono text-xs uppercase">
+                {tags.map((tag) => (
+                    <a href={`/tags/${slugify(tag)}`} class="text-ink-3 hover:text-ink hover:decoration-ink-4 hover:underline hover:underline-offset-[3px]">
+                        #{tag}
+                    </a>
+                ))}
+            </div>
+        )
+    }
 
-    {(prevPost || nextPost) && (
-        <nav class="mt-16 pt-10 border-t border-hair grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10" aria-label="Post navigation">
-            {prevPost ? (
-                <a href={`/blog/${prevPost.id}/`} class="group block text-ink no-underline">
-                    <div class="font-mono text-[10.5px] tracking-[0.18em] text-ink-3 uppercase mb-2">← Previous</div>
-                    <div class="font-serif text-[22px] leading-tight tracking-[-0.01em] text-ink group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-[3px]">
-                        {prevPost.data.title}
-                    </div>
-                </a>
-            ) : <span />}
-            {nextPost ? (
-                <a href={`/blog/${nextPost.id}/`} class="group block text-ink no-underline md:text-right">
-                    <div class="font-mono text-[10.5px] tracking-[0.18em] text-ink-3 uppercase mb-2">Next →</div>
-                    <div class="font-serif text-[22px] leading-tight tracking-[-0.01em] text-ink group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-[3px]">
-                        {nextPost.data.title}
-                    </div>
-                </a>
-            ) : <span />}
-        </nav>
-    )}
+    {
+        (prevPost || nextPost) && (
+            <nav class="border-hair mt-16 grid grid-cols-1 gap-6 border-t pt-10 md:grid-cols-2 md:gap-10" aria-label="Post navigation">
+                {prevPost ? (
+                    <a href={`/blog/${prevPost.id}/`} class="group text-ink block no-underline">
+                        <div class="text-ink-3 mb-2 font-mono text-[10.5px] tracking-[0.18em] uppercase">← Previous</div>
+                        <div class="text-ink group-hover:decoration-ink-4 font-serif text-[22px] leading-tight tracking-[-0.01em] group-hover:underline group-hover:underline-offset-[3px]">
+                            {prevPost.data.title}
+                        </div>
+                    </a>
+                ) : (
+                    <span />
+                )}
+                {nextPost ? (
+                    <a href={`/blog/${nextPost.id}/`} class="group text-ink block no-underline md:text-right">
+                        <div class="text-ink-3 mb-2 font-mono text-[10.5px] tracking-[0.18em] uppercase">Next →</div>
+                        <div class="text-ink group-hover:decoration-ink-4 font-serif text-[22px] leading-tight tracking-[-0.01em] group-hover:underline group-hover:underline-offset-[3px]">
+                            {nextPost.data.title}
+                        </div>
+                    </a>
+                ) : (
+                    <span />
+                )}
+            </nav>
+        )
+    }
 
     <div class="mt-[72px]">
-        <div class="giscus" />
+        <div class="giscus"></div>
         <script
             src="https://giscus.app/client.js"
             data-repo="christopherarter/arter-blog"
@@ -163,8 +174,7 @@ eyebrowItems.push(`${readMinutes} min read`);
             data-theme="dark"
             data-lang="en"
             crossorigin="anonymous"
-            async
-        ></script>
+            async></script>
     </div>
 </BlogPostLayout>
 

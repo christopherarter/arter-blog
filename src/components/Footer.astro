@@ -13,17 +13,17 @@ const paddedCount = String(postsCount).padStart(3, '0');
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-[120px] border-t border-ink-4 bg-paper-2">
-    <div class="max-w-shell mx-auto px-5 md:px-10 pt-10 md:pt-14 pb-8 grid gap-8 md:gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+<footer class="border-ink-4 bg-paper-2 mt-[120px] border-t">
+    <div class="max-w-shell mx-auto grid grid-cols-1 gap-8 px-5 pt-10 pb-8 sm:grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-12 md:px-10 md:pt-14">
         <div>
-            <p class="font-mono text-[10px] tracking-widest text-ink-3 uppercase m-0 mb-4 pb-2.5 border-b border-hair">Colophon</p>
-            <p class="font-serif text-[34px] leading-tight tracking-[-0.02em] m-0 mb-3.5 text-ink">
+            <p class="text-ink-3 border-hair m-0 mb-4 border-b pb-2.5 font-mono text-[10px] tracking-widest uppercase">Colophon</p>
+            <p class="text-ink m-0 mb-3.5 font-serif text-[34px] leading-tight tracking-[-0.02em]">
                 Written &amp; wrenched<br />from Raleigh, NC.
             </p>
-            <p class="text-[13.5px] leading-normal text-ink-2 m-0 mb-5 max-w-[36ch]">
+            <p class="text-ink-2 m-0 mb-5 max-w-[36ch] text-[13.5px] leading-normal">
                 This site is my field notebook. Occasional essays on software, the long game of learning, and (sometimes) a Miata that refuses to die.
             </p>
-            <div class="font-mono text-[11px] leading-[1.9] tracking-[0.02em] text-ink-3">
+            <div class="text-ink-3 font-mono text-[11px] leading-[1.9] tracking-[0.02em]">
                 <div><b class="text-ink font-medium">Since</b> &nbsp; 2014</div>
                 <div><b class="text-ink font-medium">Posts</b> &nbsp; {paddedCount}</div>
                 <div><b class="text-ink font-medium">Built with</b> &nbsp; Astro</div>
@@ -31,86 +31,76 @@ const year = new Date().getFullYear();
         </div>
 
         <div>
-            <p class="font-mono text-[10px] tracking-widest text-ink-3 uppercase m-0 mb-4 pb-2.5 border-b border-hair">Navigate</p>
-            <ul class="list-none p-0 m-0">
-                <li class="py-1"><a class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors" href="/blog"><span class="text-ink-4">·</span> Writing</a></li>
-                <li class="py-1"><a class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors" href="/projects"><span class="text-ink-4">·</span> Projects</a></li>
-                <li class="py-1"><a class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors" href="/about"><span class="text-ink-4">·</span> About</a></li>
-                <li class="py-1"><a class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors" href="/hire-me"><span class="text-ink-4">·</span> Hire Me</a></li>
-                <li class="py-1"><a class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors" href="/tags"><span class="text-ink-4">·</span> Tags</a></li>
-                <li class="py-1"><a class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors" href="/rss.xml"><span class="text-ink-4">·</span> RSS</a></li>
+            <p class="text-ink-3 border-hair m-0 mb-4 border-b pb-2.5 font-mono text-[10px] tracking-widest uppercase">Navigate</p>
+            <ul class="m-0 list-none p-0">
+                <li class="py-1">
+                    <a class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors" href="/blog"
+                        ><span class="text-ink-4" aria-hidden="true">·</span> Writing</a>
+                </li>
+                <li class="py-1">
+                    <a class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors" href="/projects"
+                        ><span class="text-ink-4" aria-hidden="true">·</span> Projects</a>
+                </li>
+                <li class="py-1">
+                    <a class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors" href="/about"
+                        ><span class="text-ink-4" aria-hidden="true">·</span> About</a>
+                </li>
+                <li class="py-1">
+                    <a class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors" href="/hire-me"
+                        ><span class="text-ink-4" aria-hidden="true">·</span> Hire Me</a>
+                </li>
+                <li class="py-1">
+                    <a class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors" href="/tags"
+                        ><span class="text-ink-4" aria-hidden="true">·</span> Tags</a>
+                </li>
+                <li class="py-1">
+                    <a class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors" href="/rss.xml"
+                        ><span class="text-ink-4" aria-hidden="true">·</span> RSS</a>
+                </li>
             </ul>
         </div>
 
         <div>
-            <p class="font-mono text-[10px] tracking-widest text-ink-3 uppercase m-0 mb-4 pb-2.5 border-b border-hair">Elsewhere</p>
-            <ul class="list-none p-0 m-0">
-                {socialLinks.map((link) => (
-                    <li class="py-1">
-                        <a
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="font-mono text-xs tracking-[0.04em] text-ink-2 inline-flex items-center gap-3 hover:text-ink transition-colors"
-                        >
-                            <span class="text-ink-4">↗</span> {link.text}
-                        </a>
-                    </li>
-                ))}
+            <p class="text-ink-3 border-hair m-0 mb-4 border-b pb-2.5 font-mono text-[10px] tracking-widest uppercase">Elsewhere</p>
+            <ul class="m-0 list-none p-0">
+                {
+                    socialLinks.map((link) => (
+                        <li class="py-1">
+                            <a
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-ink-2 hover:text-ink inline-flex items-center gap-3 font-mono text-xs tracking-[0.04em] transition-colors"
+                            >
+                                <span class="text-ink-4" aria-hidden="true">↗</span> {link.text}
+                            </a>
+                        </li>
+                    ))
+                }
             </ul>
         </div>
 
         <div>
-            <p class="font-mono text-[10px] tracking-widest text-ink-3 uppercase m-0 mb-4 pb-2.5 border-b border-hair">Contact</p>
-            <p class="text-[13.5px] leading-normal text-ink-2 m-0 mb-2.5 max-w-[36ch]">
+            <p class="text-ink-3 border-hair m-0 mb-4 border-b pb-2.5 font-mono text-[10px] tracking-widest uppercase">Contact</p>
+            <p class="text-ink-2 m-0 mb-2.5 max-w-[36ch] text-[13.5px] leading-normal">
                 Questions, collaborations, or a shared appreciation of well-composed code.
             </p>
-            <div class="font-mono text-[11px] leading-[1.9] tracking-[0.02em] text-ink-3">
+            <div class="text-ink-3 font-mono text-[11px] leading-[1.9] tracking-[0.02em]">
                 <div>
-                    <a
-                        class="email-obf text-ink-3 no-underline hover:text-ink transition-colors"
-                        data-e-u="chris"
-                        data-e-d="arter.dev"
-                        aria-label="Email Chris"
-                    ></a>
+                    <a class="text-ink-3 hover:text-ink no-underline transition-colors" href="mailto:chris@arter.dev">
+                        <b class="text-ink font-medium">chris@</b>arter.dev
+                    </a>
                 </div>
                 <div><b class="text-ink font-medium">tz</b> &nbsp; America/New_York</div>
             </div>
         </div>
     </div>
 
-    <div class="border-t border-hair max-w-shell mx-auto px-5 md:px-10 py-5 flex flex-col sm:flex-row gap-1.5 sm:justify-between font-mono text-[10.5px] tracking-wider text-ink-4 uppercase">
+    <div
+        class="border-hair max-w-shell text-ink-3 mx-auto flex flex-col gap-1.5 border-t px-5 py-5 font-mono text-[10.5px] tracking-wider uppercase sm:flex-row sm:justify-between md:px-10"
+    >
         <span>© {year} <b class="text-ink-3 font-medium">Chris Arter</b></span>
         <span>All rights reserved</span>
     </div>
 </footer>
-
-<style is:global>
-    .email-obf::before {
-        content: attr(data-e-u) '\0040' attr(data-e-d);
-    }
-    .email-obf[data-populated]::before { content: none; }
-</style>
-
-<script is:inline>
-    (function () {
-        function hydrate() {
-            document.querySelectorAll('a.email-obf').forEach(function (el) {
-                if (el.getAttribute('data-populated')) return;
-                var u = el.getAttribute('data-e-u');
-                var d = el.getAttribute('data-e-d');
-                if (!u || !d) return;
-                el.setAttribute('href', 'mailto:' + u + '\u0040' + d);
-                el.innerHTML = '<b class="text-ink font-medium">' + u + '\u0040</b>' + d;
-                el.setAttribute('data-populated', 'true');
-            });
-        }
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', hydrate);
-        } else {
-            hydrate();
-        }
-        document.addEventListener('astro:page-load', hydrate);
-    })();
-</script>
 

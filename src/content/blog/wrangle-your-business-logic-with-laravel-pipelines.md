@@ -1,18 +1,18 @@
 ---
-title: "Wrangle Your Business Logic with Laravel Pipelines"
-slug: "wrangle-your-business-logic-with-laravel-pipelines"
-subtitle: "A guide on how to use pipe patterns in Laravel to handle complex data processing tasks."
-author: "Chris Arter"
+title: 'Wrangle Your Business Logic with Laravel Pipelines'
+slug: 'wrangle-your-business-logic-with-laravel-pipelines'
+subtitle: 'A guide on how to use pipe patterns in Laravel to handle complex data processing tasks.'
+author: 'Chris Arter'
 seo:
   image:
-    src: "/images/laravel-pipelines-chris-arter.jpg"
-    alt: "A cat herder"
-publishDate: "2025-01-29T14:48:31.175Z"
-dateUpdated: ""
+    src: '/images/laravel-pipelines-chris-arter.jpg'
+    alt: 'A cat herder'
+publishDate: '2025-01-29T14:48:31.175Z'
+dateUpdated: ''
 ---
 
-
 Picture this: A user uploads a CSV file to your application. Simple enough, right? You just need to:
+
 - Parse the file
 - Validate the data
 - Transform it to match your database schema
@@ -30,7 +30,7 @@ public function handleUpload($file) {
     $this->repository->saveAll($transformed);
     $this->sendConfirmation();
     $this->updateAnalytics();
-    
+
     return response()->json(['message' => 'Success']);
 }
 ```
@@ -41,17 +41,16 @@ Some CSVs are 100MB large, and your users are timing out. Others have special ch
 
 Suddenly, you're adding try-catch blocks everywhere. You're implementing retry logic. You're moving things to background jobs. Your simple function has evolved into a tangled mess of error handling and edge cases.
 
-
 ```php
 public function handleUpload($file) {
     try {
         // Should this be in a transaction?
         DB::beginTransaction();
-        
+
         $data = $this->processWithRetry(function() use ($file) {
             return parseCsv($file);
         });
-        
+
         // What if validation fails halfway through?
         $validData = collect($data)->map(function($row) {
             try {
@@ -62,20 +61,20 @@ public function handleUpload($file) {
                 return null;
             }
         })->filter();
-        
+
         // Should we process in chunks?
         foreach($validData->chunk(100) as $chunk) {
             dispatch(new ProcessDataJob($chunk));
         }
-        
+
         DB::commit();
-        
+
         // What if the email fails but data was saved?
         dispatch(new SendConfirmationEmail());
-        
+
         // Fire and forget? Wait for result?
         UpdateAnalyticsJob::dispatch()->onQueue('low');
-        
+
         return response()->json(['message' => 'Processing started']);
     } catch (Exception $e) {
         DB::rollBack();
@@ -85,6 +84,7 @@ public function handleUpload($file) {
     }
 }
 ```
+
 <div class="tenor-gif-embed" data-postid="7676797" data-share-method="host" data-aspect-ratio="2.085" data-width="100%"><a href="https://tenor.com/view/herd-cats-cowboy-rancher-impossible-gif-7676797">Herd Cats GIF</a>from <a href="https://tenor.com/search/herd-gifs">Herd GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
 
 > Suddenly, you're a cat herder.
@@ -111,32 +111,32 @@ Here's what makes pipelines special:
 
 ```php
 // Regular procedural code - everything mixed together
-public function processUser(array $userData) 
+public function processUser(array $userData)
 {
     $userData['name'] = ucwords($userData['name']);
     $userData['email'] = strtolower($userData['email']);
-    
+
     if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
         throw new ValidationException('Invalid email');
     }
-    
+
     $user = User::create($userData);
     $user->profile()->create([
         'bio' => $userData['bio'] ?? null,
         'avatar' => $userData['avatar'] ?? null
     ]);
-    
+
     return $user;
 }
 
 // Pipeline approach - each step is isolated and focused
-class CreateUserPipeline 
+class CreateUserPipeline
 {
     public function __construct(
         private readonly EventDispatcher $events
     ) {}
 
-    public function process(array $userData) 
+    public function process(array $userData)
     {
         return app(Pipeline::class)
             ->send($userData)
@@ -159,9 +159,9 @@ class CreateUserPipeline
 Each step in your pipeline should do exactly one thing:
 
 ```php
-class FormatUserDataStep 
+class FormatUserDataStep
 {
-    public function handle($userData, $next) 
+    public function handle($userData, $next)
     {
         return $next([
             ...$userData,
@@ -171,9 +171,9 @@ class FormatUserDataStep
     }
 }
 
-class ValidateUserDataStep 
+class ValidateUserDataStep
 {
-    public function handle($userData, $next) 
+    public function handle($userData, $next)
     {
         $validator = Validator::make($userData, [
             'email' => ['required', 'email'],
@@ -182,18 +182,18 @@ class ValidateUserDataStep
             'bio' => ['nullable', 'string', 'max:1000'],
             'avatar' => ['nullable', 'image', 'max:2048']
         ]);
-        
+
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
-        
+
         return $next($userData);
     }
 }
 
-class CreateUserStep 
+class CreateUserStep
 {
-    public function handle($userData, $next) 
+    public function handle($userData, $next)
     {
         $user = DB::transaction(function() use ($userData) {
             $user = User::create([
@@ -201,23 +201,24 @@ class CreateUserStep
                 'email' => $userData['email'],
                 'password' => Hash::make($userData['password'])
             ]);
-            
+
             if (isset($userData['bio']) || isset($userData['avatar'])) {
                 $user->profile()->create([
                     'bio' => $userData['bio'] ?? null,
                     'avatar' => $userData['avatar'] ?? null
                 ]);
             }
-            
+
             return $user;
         });
-        
+
         return $next(['user' => $user, 'data' => $userData]);
     }
 }
 ```
 
 This approach gives you:
+
 1. Easy testing - each step can be tested in isolation
 2. Simple maintenance - when something breaks, you know exactly where to look
 3. Reusability - steps can be mixed and matched for different workflows
@@ -226,6 +227,7 @@ This approach gives you:
 ## How Data Flows Through Your Application
 
 In a pipeline, data flows one direction - forward. Each step can:
+
 - Transform the data
 - Validate it
 - Enrich it with more information
@@ -252,13 +254,13 @@ $result = $pipeline
 The real power of pipelines shows up when your process gets complex. Need to add logging? Add a step. Need to handle special cases? Add a conditional step. Need to retry something? Wrap the step in a retry decorator:
 
 ```php
-class RetryStep 
+class RetryStep
 {
     public function __construct(
         private readonly string $step,
         private readonly int $maxAttempts = 3
     ) {}
-    
+
     public function __invoke($data, Closure $next)
     {
         return retry($this->maxAttempts, function() use ($data, $next) {
@@ -279,6 +281,7 @@ $pipeline
 ```
 
 Your pipeline can grow without becoming a mess:
+
 - Each new requirement becomes a new step
 - Steps can be conditional
 - Steps can be decorated with retry logic, logging, or timing
@@ -296,6 +299,7 @@ The key decision isn't about code organization - both approaches help you break 
 ### Use a Pipeline When:
 
 1. **You Need the Result Right Now**
+
 ```php
 // User is waiting for the result
 $result = app(Pipeline::class)
@@ -312,6 +316,7 @@ return response()->json($result);
 ```
 
 2. **Steps are Quick**
+
 ```php
 // All steps are in-memory transformations
 $processed = app(Pipeline::class)
@@ -325,6 +330,7 @@ $processed = app(Pipeline::class)
 ```
 
 3. **You Need Database Transactions**
+
 ```php
 DB::transaction(function() use ($order) {
     return app(Pipeline::class)
@@ -342,6 +348,7 @@ DB::transaction(function() use ($order) {
 ### Use Queue Jobs When:
 
 1. **The Work is Time-Consuming**
+
 ```php
 // This could take minutes
 Bus::chain([
@@ -357,6 +364,7 @@ return response()->json([
 ```
 
 2. **You're Dealing with External Services**
+
 ```php
 // External APIs might be slow or fail
 Bus::chain([
@@ -367,6 +375,7 @@ Bus::chain([
 ```
 
 3. **You Need Parallel Processing**
+
 ```php
 $batch = Bus::batch([
     new ProcessChunk($data, 0, 1000),
@@ -419,4 +428,3 @@ class OrderController
 - When in doubt, ask "Would I be okay with this taking a few minutes?"
 
 Photo by <a href="https://unsplash.com/@realaxer?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">T K</a> on <a href="https://unsplash.com/photos/black-metal-tube-lot-9AxFJaNySB8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-      

@@ -1,5 +1,5 @@
-import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import rss from '@astrojs/rss';
 import siteConfig from '../data/site-config.ts';
 import { sortItemsByDateDesc } from '../utils/data-utils.ts';
 

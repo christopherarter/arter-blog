@@ -11,15 +11,17 @@ const TitleTag = headingLevel;
 <a
     href={`/projects/${project.id}/`}
     class:list={[
-        'group grid grid-cols-[1fr_auto] gap-8 py-7 border-b border-hair text-ink no-underline transition-[padding] duration-200 ease-out hover:pl-3',
+        'group border-hair text-ink grid grid-cols-[1fr_auto] gap-8 border-b py-7 no-underline transition-[padding] duration-200 ease-out hover:pl-3',
         className
     ]}
 >
     <div>
-        <TitleTag class="font-serif font-normal text-[28px] leading-tight tracking-[-0.015em] m-0 mb-2.5 group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-4">
+        <TitleTag
+            class="group-hover:decoration-ink-4 m-0 mb-2.5 font-serif text-[28px] leading-tight font-normal tracking-[-0.015em] group-hover:underline group-hover:underline-offset-4"
+        >
             {title}
         </TitleTag>
-        {description && <p class="text-ink-2 text-[15px] leading-[1.55] m-0">{description}</p>}
+        {description && <p class="text-ink-2 m-0 text-[15px] leading-[1.55]">{description}</p>}
     </div>
-    <span class="self-center text-ink-3 font-mono text-base opacity-0 transition-opacity group-hover:opacity-100">→</span>
+    <span class="text-ink-3 self-center font-mono text-base opacity-0 transition-opacity group-hover:opacity-100">→</span>
 </a>

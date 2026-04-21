@@ -29,43 +29,45 @@ const readMinutes = estimateReadTime(post.body);
 const topTags = tags.slice(0, 3);
 ---
 
-<li class:list={['list-none border-b border-hair group', className]}>
+<li class:list={['border-hair group list-none border-b', className]}>
     <a
         href={`/blog/${post.id}/`}
-        class="grid grid-cols-1 sm:grid-cols-[200px_1fr_auto] gap-2 sm:gap-8 items-start py-6 sm:py-7 text-ink transition-[padding] duration-200 ease-out hover:pl-3"
+        class="text-ink grid grid-cols-1 items-start gap-2 py-6 transition-[padding] duration-200 ease-out hover:pl-3 sm:grid-cols-[200px_1fr_auto] sm:gap-8 sm:py-7"
     >
-        <div class="hidden sm:flex font-mono text-[11px] tracking-wider text-ink-3 flex-col gap-1.5">
-            <span class="font-serif text-[48px] leading-[0.9] text-ink font-normal tracking-[-0.02em]">
+        <div class="text-ink-3 hidden flex-col gap-1.5 font-mono text-[11px] tracking-wider sm:flex">
+            <span class="text-ink font-serif text-[48px] leading-[0.9] font-normal tracking-[-0.02em]">
                 {paddedNumber}
             </span>
             <span class="text-ink-3 tabular-nums">{formattedDate}</span>
         </div>
 
         <div class="max-w-[60ch]">
-            <div class="sm:hidden font-mono text-[11px] tracking-wider text-ink-3 tabular-nums mb-2.5">
+            <div class="text-ink-3 mb-2.5 font-mono text-[11px] tracking-wider tabular-nums sm:hidden">
                 {formattedDate}
             </div>
-            <h3 class="font-serif font-normal text-[24px] sm:text-[32px] leading-tight tracking-[-0.015em] m-0 mb-2.5 text-ink group-hover:underline group-hover:decoration-ink-4 group-hover:underline-offset-4">
+            <h2
+                class="text-ink group-hover:decoration-ink-4 m-0 mb-2.5 font-serif text-[24px] leading-tight font-normal tracking-[-0.015em] group-hover:underline group-hover:underline-offset-4 sm:text-[32px]"
+            >
                 {title}
-            </h3>
-            {excerpt && (
-                <p class="text-ink-2 text-[15px] leading-[1.55] m-0 text-pretty">{excerpt}</p>
-            )}
-            {topTags.length > 0 && (
-                <div class="flex gap-2 mt-3 font-mono text-[10px] tracking-[0.1em] text-ink-3 uppercase flex-wrap">
-                    {topTags.map((tag, i) => (
-                        <span>
-                            {i > 0 && <span class="mr-2 text-ink-4">·</span>}
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-            )}
+            </h2>
+            {excerpt && <p class="text-ink-2 m-0 text-[15px] leading-[1.55] text-pretty">{excerpt}</p>}
+            {
+                topTags.length > 0 && (
+                    <div class="text-ink-3 mt-3 flex flex-wrap gap-2 font-mono text-[10px] tracking-[0.1em] uppercase">
+                        {topTags.map((tag, i) => (
+                            <span>
+                                {i > 0 && <span class="text-ink-4 mr-2">·</span>}
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                )
+            }
         </div>
 
-        <div class="font-mono text-[11px] tracking-mono text-ink-3 uppercase text-left sm:text-right sm:min-w-[100px] mt-2 sm:mt-0">
+        <div class="tracking-mono text-ink-3 mt-2 text-left font-mono text-[11px] uppercase sm:mt-0 sm:min-w-[100px] sm:text-right">
             {readMinutes} min
-            <span class="ml-1.5 text-ink opacity-0 transition-opacity group-hover:opacity-100">→</span>
+            <span class="text-ink ml-1.5 opacity-0 transition-opacity group-hover:opacity-100">→</span>
         </div>
     </a>
 </li>

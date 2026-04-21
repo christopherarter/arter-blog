@@ -1,10 +1,10 @@
 ---
-title: "How to Upgrade to PHP 8.2 on MacOS with Homebrew"
-slug: "how-to-upgrade-to-php-82-on-macos-with-homebrew"
-subtitle: "A no-frills guide"
-author: "Chris Arter"
-publishDate: "2022-12-08T15:23:26.466Z"
-dateUpdated: ""
+title: 'How to Upgrade to PHP 8.2 on MacOS with Homebrew'
+slug: 'how-to-upgrade-to-php-82-on-macos-with-homebrew'
+subtitle: 'A no-frills guide'
+author: 'Chris Arter'
+publishDate: '2022-12-08T15:23:26.466Z'
+dateUpdated: ''
 ---
 
 Here is a simple guide to installing or upgrading to PHP 8.2 on MacOS with Homebrew.

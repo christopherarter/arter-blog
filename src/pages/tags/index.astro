@@ -12,26 +12,26 @@ const tags = getAllTags(posts).sort((tagA, tagB) => {
 ---
 
 <BaseLayout title="Tags" description="Browse arter.dev posts by tag." showHeader={false}>
-    <main class="max-w-shell mx-auto px-5 md:px-10 pt-12 md:pt-16 pb-16 md:pb-24">
-        <header class="border-b border-ink-4 pb-10 mb-8 flex items-baseline justify-between gap-6 flex-wrap">
-            <h1 class="font-serif font-normal text-ink text-[clamp(44px,6vw,72px)] leading-none tracking-[-0.02em] m-0">
-                Browse by Topic
-            </h1>
-            <span class="font-mono text-[11px] tracking-widest text-ink-3 uppercase">{tags.length} tags</span>
+    <main id="main-content" class="max-w-shell mx-auto px-5 pt-12 pb-16 md:px-10 md:pt-16 md:pb-24">
+        <header class="border-ink-4 mb-8 flex flex-wrap items-baseline justify-between gap-6 border-b pb-10">
+            <h1 class="text-ink m-0 font-serif text-[clamp(44px,6vw,72px)] leading-none font-normal tracking-[-0.02em]">Browse by Topic</h1>
+            <span class="text-ink-3 font-mono text-[11px] tracking-widest uppercase">{tags.length} tags</span>
         </header>
 
-        <div class="border border-hair grid grid-cols-2 md:grid-cols-4 divide-x divide-y divide-hair">
-            {tags.map((tag) => {
-                const count = getPostsByTag(posts, tag.id).length;
-                return (
-                    <a href={`/tags/${tag.id}`} class="py-5 px-6 block text-ink hover:bg-paper-2 transition-colors">
-                        <span class="font-serif text-[22px] tracking-[-0.01em] mb-1 block">{tag.name}</span>
-                        <span class="font-mono text-[10.5px] tracking-[0.1em] text-ink-3 uppercase">
-                            {count} post{count === 1 ? '' : 's'}
-                        </span>
-                    </a>
-                );
-            })}
+        <div class="border-hair divide-hair grid grid-cols-2 divide-x divide-y border md:grid-cols-4">
+            {
+                tags.map((tag) => {
+                    const count = getPostsByTag(posts, tag.id).length;
+                    return (
+                        <a href={`/tags/${tag.id}`} class="text-ink hover:bg-paper-2 block px-6 py-5 transition-colors">
+                            <span class="mb-1 block font-serif text-[22px] tracking-[-0.01em]">{tag.name}</span>
+                            <span class="text-ink-3 font-mono text-[10.5px] tracking-[0.1em] uppercase">
+                                {count} post{count === 1 ? '' : 's'}
+                            </span>
+                        </a>
+                    );
+                })
+            }
         </div>
     </main>
 </BaseLayout>

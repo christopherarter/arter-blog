@@ -28,21 +28,15 @@ const breadcrumbs = [
 ];
 ---
 
-<BlogPostLayout
-    title={seo?.title ?? title}
-    description={resolvedDescription}
-    image={seo?.image}
-    showHeader={false}
-    headings={headings}
->
+<BlogPostLayout title={seo?.title ?? title} description={resolvedDescription} image={seo?.image} showHeader={false} headings={headings}>
     <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
-    <header class="border-b border-hair pb-8 mb-11">
-        <h1 class="font-serif font-normal text-ink text-[clamp(40px,6vw,64px)] leading-none tracking-tight m-0">
+    <header class="border-hair mb-11 border-b pb-8">
+        <h1 class="text-ink m-0 font-serif text-[clamp(40px,6vw,64px)] leading-none font-normal tracking-tight">
             {title}
         </h1>
     </header>
-    <div class="prose-editorial" id="main-content">
+    <div class="prose-editorial">
         <Content />
     </div>
 </BlogPostLayout>

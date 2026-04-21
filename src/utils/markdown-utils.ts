@@ -23,7 +23,7 @@ export function extractHeadingsFromMarkdown(markdownContent: string): Heading[] 
     const headingRegex = /^(#{2,6})\s+(.+)$/gm;
     const matches = [...markdownContent.matchAll(headingRegex)];
 
-    const flatHeadings = matches.map(match => {
+    const flatHeadings = matches.map((match) => {
         const level = match[1].length; // Count the # characters
         const text = match[2].trim();
         const id = slugify(text);
@@ -45,7 +45,7 @@ export function extractHeadingsFromMarkdown(markdownContent: string): Heading[] 
 function buildNestedHeadings(flatHeadings: Heading[]): Heading[] {
     const nestedHeadings: Heading[] = [];
 
-    flatHeadings.forEach(heading => {
+    flatHeadings.forEach((heading) => {
         // Find the correct parent for nesting
         let inserted = false;
 
@@ -65,4 +65,3 @@ function buildNestedHeadings(flatHeadings: Heading[]): Heading[] {
 
     return nestedHeadings;
 }
-

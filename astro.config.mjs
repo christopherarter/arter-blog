@@ -1,11 +1,11 @@
-import { defineConfig } from 'astro/config';
+import { readdirSync, readFileSync } from 'node:fs';
+import { basename, extname, join } from 'node:path';
+import markdoc from '@astrojs/markdoc';
 import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import react from '@astrojs/react';
-import markdoc from '@astrojs/markdoc';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join, basename, extname } from 'node:path';
+import { defineConfig } from 'astro/config';
 
 const SITE = 'https://arter.dev';
 
@@ -15,7 +15,7 @@ function extractFrontmatter(source) {
 }
 
 function readDateField(frontmatter, key) {
-    const re = new RegExp(`^${key}:\\s*['\"]?([0-9T:\\-\\.Z]+)['\"]?\\s*$`, 'm');
+    const re = new RegExp(`^${key}:\\s*['"]?([0-9T:\\-\\.Z]+)['"]?\\s*$`, 'm');
     const m = frontmatter.match(re);
     if (!m) return undefined;
     const d = new Date(m[1]);

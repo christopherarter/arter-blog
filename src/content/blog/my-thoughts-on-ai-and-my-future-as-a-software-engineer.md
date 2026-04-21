@@ -1,10 +1,10 @@
 ---
-title: "My Thoughts on AI and My Future As A Software Engineer"
-slug: "my-thoughts-on-ai-and-my-future-as-a-software-engineer"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2024-03-14T01:02:20.093Z"
-dateUpdated: "2024-03-14T02:35:09.776Z"
+title: 'My Thoughts on AI and My Future As A Software Engineer'
+slug: 'my-thoughts-on-ai-and-my-future-as-a-software-engineer'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2024-03-14T01:02:20.093Z'
+dateUpdated: '2024-03-14T02:35:09.776Z'
 ---
 
 > Will it replace us all? I don’t think so. But what is left behind will be a skeleton crew whose main job is to monitor AI systems like the sysadmin in Silicon Valley.
@@ -21,7 +21,7 @@ Just want to get a few things out of the way:
 
 \- Devin is vaporware
 
-![](/images/1737473617680-0c8ec5e3-668b-4845-8363-3791d9e65969.png)
+![Decorative illustration accompanying the author's reflections on AI and software engineering](/images/1737473617680-0c8ec5e3-668b-4845-8363-3791d9e65969.png)
 
 I’m doing some reflection looking for the most level-headed plan that both acknowledges and respects AI could displace a very large number of developers (myself included), but I’m also not advocating for panicking.
 

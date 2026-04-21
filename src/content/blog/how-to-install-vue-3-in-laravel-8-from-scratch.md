@@ -1,27 +1,27 @@
 ---
-title: "How To Install Vue 3 in Laravel 8 From Scratch"
-slug: "how-to-install-vue-3-in-laravel-8-from-scratch"
-subtitle: "A step-by-step guide to installing, mounting, and displaying Vue 3 components in a base Laravel 8 install."
-author: "Chris Arter"
-publishDate: "2021-04-21T17:58:29.847Z"
-dateUpdated: "2021-04-22T13:07:43.370Z"
+title: 'How To Install Vue 3 in Laravel 8 From Scratch'
+slug: 'how-to-install-vue-3-in-laravel-8-from-scratch'
+subtitle: 'A step-by-step guide to installing, mounting, and displaying Vue 3 components in a base Laravel 8 install.'
+author: 'Chris Arter'
+publishDate: '2021-04-21T17:58:29.847Z'
+dateUpdated: '2021-04-22T13:07:43.370Z'
 ---
 
 If you have a vanilla Laravel install and want to add some spicy Vue 3 components, then I'm going to show you exactly how to install Vue 3 in your Laravel 8 project.
 
 In this tutorial I will be detailing:
 
-*   How to install Vue 3
-*   How to register single-file-components
-*   How to display components inside your blade files
+- How to install Vue 3
+- How to register single-file-components
+- How to display components inside your blade files
 
 #### Prerequisites
 
 This tutorial assumes you are using:
 
-*   Laravel 8
-*   Laravel Mix 6
-*   Node version >=12.14
+- Laravel 8
+- Laravel Mix 6
+- Node version >=12.14
 
 ### Step 1: Install Vue & Dependencies
 
@@ -36,11 +36,9 @@ npm install --save vue@next && npm install --save-dev vue-loader@next
 Let's go to our `webpack.mix.js` file and add a `.vue()` method chain. Our mix file should now look something like this:
 
 ```js
-mix.js('resources/js/app.js', 'public/js')
-    .vue()
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+mix.js('resources/js/app.js', 'public/js').vue().postCss('resources/css/app.css', 'public/css', [
+  //
+]);
 ```
 
 _(Note: If you get an error, remember to check if your version of Laravel Mix is 6 and up.)_
@@ -51,14 +49,14 @@ Next, let's go ahead and create our Vue 3 component. In the spirit of adventure,
 
 ```vue
 <template>
-    <h1>{{ greeting }}</h1>
+  <h1>{{ greeting }}</h1>
 </template>
 <script>
 export default {
-    setup: () => ({
-        greeting: 'Hello World from Vue 3!'
-    })
-}
+  setup: () => ({
+    greeting: 'Hello World from Vue 3!'
+  })
+};
 </script>
 ```
 
@@ -69,7 +67,7 @@ Assuming your structure is the same from a vanilla install, we will be mounting 
 First, we are not going to import _Vue_, we are going to import a named export from Vue 3 called `createApp`.
 
 ```js
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 ```
 
 Next, let's import our `HelloWorld` component and create the Vue app.
@@ -93,12 +91,11 @@ app.mount('#app');
 Finally, our `app.js` file will look something like this:
 
 ```js
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 
 const app = createApp({});
-app.component('hello-world', HelloWorld)
-    .mount('#app');
+app.component('hello-world', HelloWorld).mount('#app');
 
 require('./bootstrap');
 ```
@@ -171,7 +168,7 @@ Lastly, we can now use our component in our Blade files. In our`resources/views/
 
 Run `php artisan serve` and check `http://localhost:8000` and you should see..
 
-![Screen Shot 2021-04-21 at 1.47.48 PM.png](/images/1737473617711-RjFlZ3fbE.png)
+![Browser showing the Laravel welcome page with a Vue 3 component rendered](/images/1737473617711-RjFlZ3fbE.png)
 
 That's it. You're now able to create single-file components and mix them into your blade files at will. Be sure to check the [Vue 3 docs](https://v3.vuejs.org/guide/component-basics.html#passing-data-to-child-components-with-props) to learn more about Components in Vue 3. If you'd like to learn more about how to initialize the application, check [that section](https://v3.vuejs.org/guide/instance.html#creating-an-application-instance) in the Vue 3 docs as well.
 

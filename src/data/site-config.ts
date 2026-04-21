@@ -40,7 +40,8 @@ export type SiteConfig = {
 const siteConfig: SiteConfig = {
     title: 'Chris Arter | A Blog of Tech & Cars',
     subtitle: 'Software Engineer',
-    description: "Hey there! I'm a software engineer based in North Carolina, USA. I'm a huge fan of Laravel and Docker, and I'm always looking for ways to improve my skills and learn new things.",
+    description:
+        "Hey there! I'm a software engineer based in North Carolina, USA. I'm a huge fan of Laravel and Docker, and I'm always looking for ways to improve my skills and learn new things.",
     image: {
         src: '/images/chris-arter.jpeg',
         alt: 'Chris Arter'
@@ -60,8 +61,7 @@ const siteConfig: SiteConfig = {
         {
             text: 'Tags',
             href: '/tags'
-        },
-
+        }
     ],
     socialLinks: [
         {
@@ -94,7 +94,7 @@ const siteConfig: SiteConfig = {
         },
         actions: [
             {
-                text: 'Let\'s Connect',
+                text: "Let's Connect",
                 href: 'https://www.linkedin.com/in/chrisarter1/'
             }
         ]

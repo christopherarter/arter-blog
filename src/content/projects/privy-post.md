@@ -11,6 +11,3 @@ publishDate: 'Feb 11 2025'
 - [Astro](https://astro.build/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Cloudflare Pages](https://pages.cloudflare.com/)
-
-
-

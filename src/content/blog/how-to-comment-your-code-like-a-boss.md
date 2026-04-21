@@ -1,10 +1,10 @@
 ---
-title: "How to Comment Your Code Like a Boss"
-slug: "how-to-comment-your-code-like-a-boss"
-subtitle: ""
-author: "Chris Arter"
-publishDate: "2020-11-30T16:28:33.903Z"
-dateUpdated: "2020-11-30T17:25:11.100Z"
+title: 'How to Comment Your Code Like a Boss'
+slug: 'how-to-comment-your-code-like-a-boss'
+subtitle: ''
+author: 'Chris Arter'
+publishDate: '2020-11-30T16:28:33.903Z'
+dateUpdated: '2020-11-30T17:25:11.100Z'
 ---
 
 Comments are like garlic.
@@ -23,13 +23,13 @@ Instead of this:
 
 ```js
 // get the length of an array
-const gl = a => a.length
+const gl = (a) => a.length;
 ```
 
 We write this:
 
 ```js
-const getArrayLength = a => a.length
+const getArrayLength = (a) => a.length;
 ```
 
 This allows us to write code that is expressive. The code itself tells you what is happening. In the simple example above, the name of the function tells you what it does. There is no need to parrot this in a comment above. Each time you write a comment, you add to the mental overhead of trying to parse not only the code, but the comments as well. This is why comments should be limited & meaningful.
@@ -42,14 +42,13 @@ Let's say we have a user base that is split between two databases. A client or p
 import oldsdk from 'old-sdk';
 import newsdk from 'new-sdk';
 
-const getUserByEmail = async email => {
-
-    // we switched identity providers
-    // and not all users are migrated yet.
-    const oldUserData = await oldsdk.getUserByEmail(email);
-    const newUserData = await newsdk.getUserByEmail(email);
-    return newUserData || oldUserData;
-}
+const getUserByEmail = async (email) => {
+  // we switched identity providers
+  // and not all users are migrated yet.
+  const oldUserData = await oldsdk.getUserByEmail(email);
+  const newUserData = await newsdk.getUserByEmail(email);
+  return newUserData || oldUserData;
+};
 ```
 
 In this example, we are fetching a user from some API using a new SDK, and an old SDK. Stuff like this happens _all the time_. For someone reading this code, while the variable names are descriptive, we don't know _why_ this is happening. The comments in this code explains the _purpose_ of this code. The _what_ is still clear.
