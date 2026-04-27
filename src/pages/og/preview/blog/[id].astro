@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import PreviewFrame from '../../../../og/PreviewFrame';
+import { blogPostToCard } from '../../../../og/post-to-card';
+
+export async function getStaticPaths() {
+    const posts = await getCollection('blog');
+    return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const card = blogPostToCard(post);
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>OG: {post.data.title}</title>
+        <meta name="robots" content="noindex" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" />
+        <style>
+            body {
+                background: #0d0c0a;
+                color: #f3f1ea;
+                margin: 0;
+                padding: 40px;
+                font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+            }
+            header {
+                display: flex;
+                gap: 16px;
+                align-items: baseline;
+                margin-bottom: 24px;
+            }
+            a {
+                color: #8a8576;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 11px;
+                text-decoration: none;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+            }
+            a:hover {
+                color: #f3f1ea;
+            }
+            h1 {
+                margin: 0;
+                font-family: 'DM Serif Display', serif;
+                font-weight: 400;
+                font-size: 22px;
+            }
+            .png-link {
+                margin-top: 16px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <a href="/og/preview/">← All</a>
+            <h1>{post.data.title}</h1>
+        </header>
+        <PreviewFrame client:idle card={card} />
+        <a class="png-link" href={`/og/blog/${post.id}.png`} target="_blank" rel="noreferrer">View rendered PNG →</a>
+    </body>
+</html>

@@ -13,15 +13,26 @@ export type Props = {
     tags?: string[];
 };
 
-const { description = '', image = siteConfig.image, pageType = 'website', publishedTime, modifiedTime, tags = [] } = Astro.props;
+const { description = '', pageType = 'website', publishedTime, modifiedTime, tags = [] } = Astro.props;
 const title = [Astro.props.title, siteConfig.title].filter(Boolean).join(' | ');
+const canonicalURL = new URL(Astro.request.url, Astro.site);
+
+// Derive a dynamic OG image for blog and project pages when no custom image is set.
+function dynamicOgFromPath(pathname: string): { src: string; alt?: string } | undefined {
+    const blog = pathname.match(/^\/blog\/([^/]+)\/?$/);
+    if (blog) return { src: `/og/blog/${blog[1]}.png` };
+    const project = pathname.match(/^\/projects\/([^/]+)\/?$/);
+    if (project) return { src: `/og/projects/${project[1]}.png` };
+    return undefined;
+}
+
+const image = Astro.props.image ?? dynamicOgFromPath(canonicalURL.pathname) ?? siteConfig.image;
 const resolvedImage = image?.src
     ? {
           src: new URL(image.src, Astro.site).toString(),
           alt: image.alt
       }
     : undefined;
-const canonicalURL = new URL(Astro.request.url, Astro.site);
 
 function formatCanonicalURL(url: string | URL) {
     const path = url.toString();
