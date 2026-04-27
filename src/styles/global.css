@@ -160,6 +160,7 @@
 }
 .prose-editorial img,
 .prose-editorial figure { max-width: 100%; }
+.prose-editorial table { width: 100%; }
 .prose-editorial hr {
     border: 0;
     border-top: 1px solid rgba(243, 241, 234, 0.10);

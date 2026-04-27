@@ -1,0 +1,71 @@
+---
+title: 'My AI Toolkit'
+slug: 'my-ai-toolkit'
+subtitle: 'My always-up-to-date list of tools & workflows that actually work in real life.'
+author: 'Chris Arter'
+publishDate: '2026-04-27T01:02:20.093Z'
+tags:
+  - AI
+  - Dev Tooling
+  - Claude Code
+---
+
+import LinkPreview from '../../components/mdx/LinkPreview.astro';
+
+I'm addicted to minmaxing. Diablo 4 builds, building track cars, writing fast code, I have a deep need to optimize. My AI tooling is no different. I'll share with you what tools that I consider my _daily drivers_ and why I use them.
+
+### Claude Code
+
+We'll just get this out of the way. Claude Code is my agentic platform of choice (for now). I *desperately* want [OpenCode](https://opencode.ai/) and an open source model to be viable. However, as of right now, this is what the economics look like based on my real usage:
+
+| Setup                          | Total/day | Monthly (22d) |
+| ------------------------------ | --------: | ------------: |
+| **Claude Code Max** (subscription) |         — |      **$200** |
+| DeepSeek V3.1                  |    $83.70 |    **$1,841** |
+| Qwen3 Coder 480B               |    $91.26 |    **$2,008** |
+| DeepSeek V3.2 Exp              |    $96.32 |    **$2,119** |
+| Kimi 2.6 only (no executor)    |   $154.08 |    **$3,390** |
+| **Claude API** (list price)    |   $261.63 |    **$5,756** |
+
+### Context7
+
+
+This is one of the lowest hanging fruits, highest yield tools I have. It provides an MCP for agents to verify real documentation during planning & execution phases (preferably during planning).
+
+I find that just adding a link to the docs in my `CLAUDE.md` or `AGENTS.md` file doesn't work as well or as consistently as installing context7. It tends to give me far more accurate implementions the first time around. I attempted to create something of my own called refdocs-cli, but simple `grep` & a local folder blew it out of the water.
+
+It's (mostly) free until you hit multi-user team kind of stuff.
+
+<LinkPreview url="https://context7.com/" />
+
+### Claude Super Powers
+
+Claude Superpowers is basically a ton of current best practices baked into one suite of skills.
+
+It gives you:
+
+- Brainstorming
+- Worktrees
+- Planning
+- Sub-agent orchestration
+- TDD (Test driven development)
+- Code Reviews
+
+There's a more detailed breakdown from [the repo](https://github.com/obra/superpowers#whats-inside).
+
+<LinkPreview url="https://github.com/obra/superpowers" />
+
+### Bully
+
+This is my own skill that hooks into the `PostToolUse` hook in Claude Code to enforce rules.
+
+I can enforce:
+- Rules from linters & static analysis tools
+- Raw bash script or `ast-grep` scripts
+- Semantic LLM judgement calls
+
+The goal of this tool is to short circuit code that goes against deterministic static rules
+before they hit the codebase. It's the enforcer arm of my `CLAUDE.md` file. This is so I can
+keep my prompts shorter and tigher, so that I don't use Claude as a linter (bad).
+
+<LinkPreview url="https://github.com/dynamik-dev/bully" />
