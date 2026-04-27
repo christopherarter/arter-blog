@@ -28,3 +28,6 @@ test-results/
 
 # stray screenshots dumped in repo root
 /*.png
+
+# git worktrees
+.worktrees/
